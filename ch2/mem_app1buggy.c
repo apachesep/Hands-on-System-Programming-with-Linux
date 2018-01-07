@@ -1,5 +1,5 @@
 /*
- * mem_app1buggy.c
+ * ch2:mem_app1buggy.c
  *
  ***************************************************************
  * This program is part of the source code released for the book
@@ -10,7 +10,9 @@
  * From:
  *  Ch 2 : Virtual Memory
  ****************************************************************
- * A simple demo to show that on Linux - full-fledged Virtual 
+ * Brief Description:
+ *
+ * A simple demo to show that on Linux - a full-fledged Virtual
  * Memory enabled OS - even a buggy app will _NOT_ cause system
  * failure; rather, the buggy process will be killed by the kernel!
  * OTOH, if we had run this or a similar program in a flat purely 
