@@ -19,6 +19,7 @@
  * physical address space based OS, this seemingly trivial bug can 
  * wreak havoc, bringing the entire system down.
  */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
@@ -38,7 +39,7 @@ int main(int argc, char **argv)
 	}
 
 	if (argc == 1)
-		dest = ptr;             /* correct */
+		dest = ptr;	/* correct */
 	else
 		dest = arbit_addr;	/* bug! */
 	memcpy(dest, src, n);
