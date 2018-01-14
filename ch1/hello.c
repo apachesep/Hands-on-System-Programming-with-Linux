@@ -14,6 +14,7 @@
  * show the corresponding assembly and machine language.
  *
  */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>

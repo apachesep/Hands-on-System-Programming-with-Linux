@@ -13,6 +13,7 @@
  * Inline assembly to access the contents of a CPU register.
  * NOTE: this program is written to work on x86_64 only.
  */
+#define _GNU_SOURCE
 #include <stdio.h>
 #include <unistd.h>
 #include <stdlib.h>
