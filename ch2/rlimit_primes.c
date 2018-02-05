@@ -25,6 +25,7 @@
 #include <sys/types.h>
 #include <sys/time.h>
 #include <sys/resource.h>
+#include "../common.h"
 
 /*---------------- Globals, Macros ----------------------------*/
 #define MAX    90100
@@ -40,7 +41,6 @@ static void simple_primegen(int limit)
 	for (i = 4; i <= limit; i++) {
 		isprime = 1;
 		for (j = 2; j < limit / 2; j++) {
-			//printf("i=%d j=%d\n", i, j);
 			if ((i != j) && (i % j == 0)) {
 				isprime = 0;
 				break;
@@ -48,7 +48,7 @@ static void simple_primegen(int limit)
 		}
 		if (isprime) {
 			num++;
-			printf("%3d, ", i);
+			printf("%6d, ", i);
 			if (num % 16 == 0)
 				printf("\n");
 		}
@@ -68,10 +68,9 @@ static void setup_cpu_rlimit(int cpulimit)
 	else
 		rlim_new.rlim_cur = rlim_new.rlim_max = cpulimit;
 
-	if (prlimit(0, RLIMIT_CPU, &rlim_new, &rlim_old) == -1) {
-		perror("prlimit:cpu failed");
-		exit(EXIT_FAILURE);
-	}
+	if (prlimit(0, RLIMIT_CPU, &rlim_new, &rlim_old) == -1)
+		handle_err(EXIT_FAILURE, "%s:%s:%d: prlimit:cpu failed\n",
+				__FILE__, __FUNCTION__, __LINE__);
 	printf
 	    ("CPU rlimit [soft,hard] new: [%ld:%ld]s : old [%ld:%ld]s (-1 = unlimited)\n",
 	     rlim_new.rlim_cur, rlim_new.rlim_max, rlim_old.rlim_cur,
@@ -83,9 +82,9 @@ int main(int argc, char **argv)
 	int limit, nsec;
 
 	if (argc < 3) {
-		fprintf(stderr, "Usage: %s limit-to-generate-primes-upto CPU-time\n"
-				" CPU-time: -1 = unlimited, 0 = 1s.\n",
-			argv[0]);
+		fprintf(stderr,
+			"Usage: %s limit-to-generate-primes-upto CPU-time\n"
+			" CPU-time: -1 = unlimited, 0 = 1s.\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
 

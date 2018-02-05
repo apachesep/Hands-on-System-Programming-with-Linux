@@ -24,6 +24,7 @@
 #include <unistd.h>
 #include <stdlib.h>
 #include <string.h>
+#include "../common.h"
 
 int main(int argc, char **argv)
 {
@@ -33,10 +34,9 @@ int main(int argc, char **argv)
 	int n = strlen(src);
 
 	ptr = malloc(256 * 1024);
-	if (!ptr) {
-		fprintf(stderr, "%s: fatal: malloc failed.", argv[0]);
-		exit(1);
-	}
+	if (!ptr)
+		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
+				__FILE__, __FUNCTION__, __LINE__);
 
 	if (argc == 1)
 		dest = ptr;	/* correct */

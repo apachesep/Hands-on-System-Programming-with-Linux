@@ -1,33 +1,53 @@
 # Makefile
 # This program is part of the source code released for the book
-#  "Linux System Programming"
+#  "Hands-On Linux System Programming"
 #  (c) Kaiwan N Billimoria
 #  Packt Publishers
 #
 # From: Ch 2
-ALL := mem_app1buggy mem_app1buggy_dbg rlimits_show rlimits_show_dbg rlimit_primes rlimit_primes_dbg
+ALL :=  mem_app1buggy mem_app1buggy_dbg \
+	rlimits_show rlimits_show_dbg   \
+	rlimit_primes rlimit_primes_dbg
 
 CC=gcc
-CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
 CFLAGS=-Wall
+CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
+CFLAGS_DBG_ASAN=${CFLAGS_DBG} -fsanitize=address
+CFLAGS_DBG_UB=${CFLAGS_DBG} -fsanitize=undefined
 
 all: ${ALL}
 CB_FILES := *.[ch]
 
-mem_app1buggy: mem_app1buggy.c
-	${CC} ${CFLAGS} mem_app1buggy.c -o mem_app1buggy
-mem_app1buggy_dbg: mem_app1buggy.c
-	${CC} ${CFLAGS_DBG} mem_app1buggy.c -o mem_app1buggy_dbg
 
-rlimits_show: rlimits_show.c
-	${CC} ${CFLAGS} rlimits_show.c -o rlimits_show
-rlimits_show_dbg: rlimits_show.c
-	${CC} ${CFLAGS_DBG} rlimits_show.c -o rlimits_show_dbg
+common.o: ../common.c ../common.h
+	gcc -Wall -c ../common.c -o common.o
+common_dbg.o: ../common.c ../common.h
+	gcc -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c ../common.c -o common_dbg.o
 
-rlimit_primes: rlimit_primes.c
-	${CC} ${CFLAGS} rlimit_primes.c -o rlimit_primes
-rlimit_primes_dbg: rlimit_primes.c
-	${CC} ${CFLAGS_DBG} rlimit_primes.c -o rlimit_primes_dbg
+
+mem_app1buggy: common.o mem_app1buggy.o
+	gcc -Wall -o mem_app1buggy mem_app1buggy.c common.o
+mem_app1buggy_dbg.o: mem_app1buggy.c
+	gcc -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c mem_app1buggy.c -o mem_app1buggy_dbg.o
+mem_app1buggy_dbg: mem_app1buggy_dbg.o common_dbg.o
+	gcc -o mem_app1buggy_dbg mem_app1buggy_dbg.o common_dbg.o
+
+
+rlimits_show: common.o rlimits_show.o
+	gcc -Wall -o rlimits_show rlimits_show.c common.o
+rlimits_show_dbg.o: rlimits_show.c
+	gcc -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c rlimits_show.c -o rlimits_show_dbg.o
+rlimits_show_dbg: rlimits_show_dbg.o common_dbg.o
+	gcc -o rlimits_show_dbg rlimits_show_dbg.o common_dbg.o
+
+
+rlimit_primes: common.o rlimit_primes.o
+	gcc -Wall -o rlimit_primes rlimit_primes.c common.o
+rlimit_primes_dbg.o: rlimit_primes.c
+	gcc -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c rlimit_primes.c -o rlimit_primes_dbg.o
+rlimit_primes_dbg: rlimit_primes_dbg.o common_dbg.o
+	gcc -o rlimit_primes_dbg rlimit_primes_dbg.o common_dbg.o
+
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
@@ -37,4 +57,4 @@ cb: ${CB_FILES}
 	indent -linux ${CB_FILES}
 
 clean:
-	rm -vf ${ALL} core* *.o
+	rm -vf ${ALL} core* *.o *~
