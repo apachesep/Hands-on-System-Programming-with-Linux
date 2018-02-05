@@ -28,12 +28,9 @@ static const size_t BLK_1MB = 1024*1024;
 
 /*---------------- Functions ----------------------------------*/
 
-static void amleaky(unsigned int rep, size_t mem, unsigned int total_reps)
+static void amleaky(size_t mem)
 {
 	char *ptr;
-
-	if ((total_reps <= rep) || (rep % (total_reps*10/100)) == 0) /* only print 10% of the time.. */
-		printf("%s():%6d:malloc(%zu)\n", __FUNCTION__, rep, mem);
 
 	ptr = malloc(mem);
 	if (!ptr)
@@ -53,13 +50,20 @@ static void leakage_case2(size_t size, unsigned int reps)
 	if (reps == 0)
 		reps = 1;
 	mem_leaked = size * reps;
-	printf("%s(): will now leak a total of %.0f bytes (%.2f MB)\n",
-			__FUNCTION__, mem_leaked, mem_leaked/(1024*1024));
+	printf("%s(): will now leak a total of %.0f bytes (%.2f MB)"
+			" [%zu bytes * %u loops]\n",
+			__FUNCTION__, mem_leaked, mem_leaked/(1024*1024),
+			size, reps);
 
 	if (mem_leaked >= threshold)
 		system("free|sed '1d'|head -n1");
-	for (i=0; i<reps; i++)
-		amleaky(i, size, reps);
+
+	for (i=0; i<reps; i++) {
+		if (i%10000 == 0)
+			printf("%s():%6d:malloc(%zu)\n", __FUNCTION__, i, size);
+		amleaky(size);
+	}
+
 	if (mem_leaked >= threshold)
 		system("free|sed '1d'|head -n1");
 	printf("\n");
@@ -70,7 +74,7 @@ static void leakage_case1(size_t size)
 {
 	printf("%s(): will now leak %zu bytes (%ld MB)\n",
 			__FUNCTION__, size, size/(1024*1024));
-	amleaky(1, size, 1);
+	amleaky(size);
 }
 
 /* option = 10 : double-free test case */
