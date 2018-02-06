@@ -28,6 +28,41 @@ static const size_t BLK_1MB = 1024*1024;
 
 /*---------------- Functions ----------------------------------*/
 
+/*
+ * A demo: this function allocates memory internally; the caller
+ * is responsibe for freeing it!
+ */
+static void silly_getpath(char **ptr)
+{
+#include <linux/limits.h>
+	*ptr = malloc(PATH_MAX);
+	if (!ptr)
+		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
+			   __FILE__, __FUNCTION__, __LINE__);
+
+	strcpy(*ptr, getenv("PATH"));
+	if (!*ptr) {
+		handle_err(0, "%s:%s:%d: getenv failed\n",
+			   __FILE__, __FUNCTION__, __LINE__);
+	}
+}
+
+/* option = 13 : memory leak test case 3: "lib" API leak */
+static void leakage_case3(int cond)
+{
+	char *mypath=NULL;
+
+	printf("\n## Leakage test: case 3: \"lib\" API"
+		": runtime cond = %d\n", cond);
+
+	/* Use C's illusory 'pass-by-reference' model */
+	silly_getpath(&mypath);
+	printf("mypath = %s\n", mypath);
+
+	if (cond) /* Bug: if cond==0 then we have a leak! */
+		free(mypath);
+}
+
 static void amleaky(size_t mem)
 {
 	char *ptr;
@@ -267,7 +302,7 @@ static void usage(char *name)
 		" option = 10 : double-free test case\n"
 		" option = 11 : memory leak test case 1: simple leak\n"
 		" option = 12 : memory leak test case 2: leak more (in a loop)\n"
-		" option = 13 : memory leak test case 3: lib API leak\n"
+		" option = 13 : memory leak test case 3: \"lib\" API leak\n"
 		"-h | --help : show this help screen\n", name);
 }
 
@@ -329,8 +364,8 @@ static void process_args(int argc, char **argv)
 			leakage_case2(BLK_1MB, 12);
 			break;
 		case 13:
-			printf("## Leakage test: case 3: lib API\n");
-			//leakage_case3();
+			leakage_case3(0);
+			leakage_case3(1);
 			break;
 		default:
 			usage(argv[0]);
