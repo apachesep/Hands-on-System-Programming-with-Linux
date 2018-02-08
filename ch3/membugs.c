@@ -278,12 +278,24 @@ static void write_overflow_compilemem(void)
 /* option =  1 : uninitialized var test case */
 static void uninit_var()
 {
-	int x;
+	int x;       /* static mem */
+	char *dyn;   /* dynamic mem */
 
+#if 1
 	if (x > MAXVAL)
 		printf("true: x=%d\n", x);
 	else
 		printf("false: x=%d\n", x);
+#else
+	dyn = malloc(128*1024);
+	memset(dyn, 'a', 128);
+	free(dyn);
+
+	dyn = malloc(56*1024);
+	if (dyn[1000] == 'g')
+		printf("it's a girl!\n");
+	free(dyn);
+#endif
 }
 
 static void usage(char *name)
