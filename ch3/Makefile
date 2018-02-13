@@ -5,8 +5,11 @@
 #  Packt Publishers
 #
 # From: Ch 3
-ALL := show_curbrk show_curbrk_dbg malloc_brk_test malloc_brk_test_dbg \
-  membugs membugs_dbg membugs_dbg_asan membugs_dbg_ub membugs_dbg_msan
+ALL := show_curbrk show_curbrk_dbg \
+  malloc_brk_test malloc_brk_test_dbg \
+  membugs membugs_dbg membugs_dbg_asan membugs_dbg_ub membugs_dbg_msan \
+  alloca_try alloca_try_dbg \
+  mlock_try mlock_try_dbg
 
 CC=gcc
 CL=clang
@@ -51,6 +54,22 @@ membugs_dbg: membugs_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_ASAN} -o membugs_dbg_asan membugs_dbg_asan.o common_dbg.o
 	${CL} ${CFLAGS_DBG_UB} -o membugs_dbg_ub membugs_dbg_ub.o common_dbg.o
 	${CL} ${CFLAGS_DBG_MSAN} -o membugs_dbg_msan membugs_dbg_msan.o common_dbg.o
+
+alloca_try: common.o alloca_try.o
+	${CC} ${CFLAGS} -o alloca_try alloca_try.c common.o
+alloca_try_dbg.o: alloca_try.c
+	${CC} ${CFLAGS_DBG} -c alloca_try.c -o alloca_try_dbg.o
+alloca_try_dbg: alloca_try_dbg.o common_dbg.o
+	${CC} -o alloca_try_dbg alloca_try_dbg.o common_dbg.o
+
+mlock_try: common.o mlock_try.o
+	${CC} ${CFLAGS} -o mlock_try mlock_try.c common.o
+mlock_try_dbg.o: mlock_try.c
+	${CC} ${CFLAGS_DBG} -c mlock_try.c -o mlock_try_dbg.o
+	${CC} ${CFLAGS_DBG_ASAN} -c mlock_try.c -o mlock_try_dbg_asan.o
+mlock_try_dbg: mlock_try_dbg.o common_dbg.o
+	${CC} -o mlock_try_dbg mlock_try_dbg.o common_dbg.o
+	${CC} ${CFLAGS_DBG_ASAN} -o mlock_try_dbg_asan mlock_try_dbg_asan.o common_dbg.o
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
