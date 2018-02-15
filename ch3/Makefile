@@ -9,7 +9,8 @@ ALL := show_curbrk show_curbrk_dbg \
   malloc_brk_test malloc_brk_test_dbg \
   membugs membugs_dbg membugs_dbg_asan membugs_dbg_ub membugs_dbg_msan \
   alloca_try alloca_try_dbg \
-  mlock_try mlock_try_dbg
+  mlock_try mlock_try_dbg \
+  memprot memprot_dbg
 
 CC=gcc
 CL=clang
@@ -70,6 +71,15 @@ mlock_try_dbg.o: mlock_try.c
 mlock_try_dbg: mlock_try_dbg.o common_dbg.o
 	${CC} -o mlock_try_dbg mlock_try_dbg.o common_dbg.o
 	${CC} ${CFLAGS_DBG_ASAN} -o mlock_try_dbg_asan mlock_try_dbg_asan.o common_dbg.o
+
+memprot: common.o memprot.o
+	${CC} ${CFLAGS} -o memprot memprot.c common.o
+memprot_dbg.o: memprot.c
+	${CC} ${CFLAGS_DBG} -c memprot.c -o memprot_dbg.o
+	${CC} ${CFLAGS_DBG_ASAN} -c memprot.c -o memprot_dbg_asan.o
+memprot_dbg: memprot_dbg.o common_dbg.o
+	${CC} -o memprot_dbg memprot_dbg.o common_dbg.o
+	${CC} ${CFLAGS_DBG_ASAN} -o memprot_dbg_asan memprot_dbg_asan.o common_dbg.o
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
