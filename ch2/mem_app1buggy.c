@@ -35,8 +35,7 @@ int main(int argc, char **argv)
 
 	ptr = malloc(256 * 1024);
 	if (!ptr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-				__FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc(256*1024) failed\n");
 
 	if (argc == 1)
 		dest = ptr;	/* correct */

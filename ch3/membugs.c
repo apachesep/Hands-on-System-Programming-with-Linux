@@ -37,14 +37,11 @@ static void silly_getpath(char **ptr)
 #include <linux/limits.h>
 	*ptr = malloc(PATH_MAX);
 	if (!ptr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 
 	strcpy(*ptr, getenv("PATH"));
-	if (!*ptr) {
-		handle_err(0, "%s:%s:%d: getenv failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
-	}
+	if (!*ptr)
+		WARN("getenv failed\n");
 }
 
 /* option = 13 : memory leak test case 3: "lib" API leak */
@@ -69,8 +66,7 @@ static void amleaky(size_t mem)
 
 	ptr = malloc(mem);
 	if (!ptr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc(%zu) failed\n", mem);
 	memset(ptr, 0, mem);
 
 	/* Bug: no free, leakage */
@@ -122,8 +118,7 @@ static void doublefree(int cond)
 	printf("%s(): cond %d\n", __FUNCTION__, cond);
 	ptr = malloc(n);
 	if (!ptr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 	strncpy(ptr, name, strlen(name));
 	free(ptr);
 
@@ -158,16 +153,14 @@ static void uaf(void)
 
 	arr = malloc(n);
 	if (!arr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 	memset(arr, 'a', n);
 	arr[n-1]='\0';
 	printf("%s():%d: arr = %p:%.*s\n", __FUNCTION__, __LINE__, arr, 32, arr);
 
 	next = malloc(n);
 	if (!next)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 	free(arr);
 
 	strncpy(arr, name, strlen(name)); /* Bug: UAF */
@@ -183,8 +176,7 @@ static void read_underflow(int cond)
 	printf("%s(): cond %d\n", __FUNCTION__, cond);
 	dest = malloc(25);
 	if (!dest)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 	orig = dest;
 
 	strncpy(dest, src, strlen(src));
@@ -204,8 +196,7 @@ static void read_overflow_dynmem(void)
 
 	arr = malloc(5);
 	if (!arr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 	memset(arr, 'a', 5);
 	/* Bug 1: Steal secrets via a buffer overread.
 	 * Ensure the next few bytes are _not_ NULL.
@@ -241,8 +232,7 @@ static void write_underflow(void)
 	char *p = malloc(8);
 
 	if (!p)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 
 	p--;
 	strncpy(p, "abcd5678", 8);	/* Bug: write underflow */
@@ -256,8 +246,7 @@ static void write_overflow_dynmem(void)
 
 	dest = malloc(8);
 	if (!dest)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("malloc failed\n");
 
 	strcpy(dest, src);	/* Bug: write overflow */
 	free(dest);

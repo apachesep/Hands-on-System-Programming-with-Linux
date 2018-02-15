@@ -39,8 +39,7 @@ static void try_alloca(const char *csz, int do_the_memset)
 
 	aptr = alloca(sz);
 	if (!aptr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: alloca(%zu) failed\n",
-			   __FILE__, __FUNCTION__, __LINE__, sz);
+		FATAL("alloca(%zu) failed\n", sz);
 
 	if (1 == do_the_memset)
 		memset(aptr, 'a', sz);

@@ -60,8 +60,7 @@ static void query_rlimits(void)
 	printf("RESOURCE LIMIT                 SOFT              HARD\n");
 	for (i = 0; i < ARRAY_LEN(rlimpair_arr); i++) {
 		if (prlimit(0, rlimpair_arr[i].rlim, 0, &rlim) == -1)
-			handle_err(EXIT_FAILURE, "%s:%s:%d: prlimit[%d] failed\n",
-				__FILE__, __FUNCTION__, __LINE__, i);
+			FATAL("prlimit[%d] failed\n", i);
 
 		snprintf(tmp1, 16, "%ld", rlim.rlim_cur);
 		snprintf(tmp2, 16, "%ld", rlim.rlim_max);

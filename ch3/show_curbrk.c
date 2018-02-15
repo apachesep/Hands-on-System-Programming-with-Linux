@@ -51,15 +51,14 @@ int main(int argc, char **argv)
 	num = strtoul(argv[1], 0, 10);
 	if ((errno == ERANGE && num == ULONG_MAX)
 	    || (errno != 0 && num == 0))
-		handle_err(EXIT_FAILURE, "strtoul(%s) failed!\n", argv[1]);
+		FATAL("strtoul(%s) failed!\n", argv[1]);
 	if (num >= 128 * 1024)
-		handle_err(EXIT_FAILURE, "%s: pl pass a value < 128 KB\n",
-			   argv[0]);
+		FATAL("%s: pl pass a value < 128 KB\n", argv[0]);
 
 	printf("Original program break: %p ; ", sbrk(0));
 	heap_ptr = malloc(num);
 	if (!heap_ptr)
-		handle_err(EXIT_FAILURE, "malloc failed!");
+		FATAL("malloc failed!");
 	printf("malloc(%lu) = %16p ; curr break = %16p\n",
 	       num, heap_ptr, sbrk(0));
 	free(heap_ptr);

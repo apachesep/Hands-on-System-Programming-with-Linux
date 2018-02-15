@@ -69,8 +69,7 @@ static void setup_cpu_rlimit(int cpulimit)
 		rlim_new.rlim_cur = rlim_new.rlim_max = cpulimit;
 
 	if (prlimit(0, RLIMIT_CPU, &rlim_new, &rlim_old) == -1)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: prlimit:cpu failed\n",
-				__FILE__, __FUNCTION__, __LINE__);
+		FATAL("prlimit:cpu failed\n");
 	printf
 	    ("CPU rlimit [soft,hard] new: [%ld:%ld]s : old [%ld:%ld]s (-1 = unlimited)\n",
 	     rlim_new.rlim_cur, rlim_new.rlim_max, rlim_old.rlim_cur,

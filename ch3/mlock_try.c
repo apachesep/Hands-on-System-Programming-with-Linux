@@ -46,8 +46,7 @@ static void disp_locked_mem(void)
 
 	cmd = malloc(CMD_MAX);
 	if (!cmd)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: malloc(%zu) failed\n",
-			   __FILE__, __FUNCTION__, __LINE__, CMD_MAX);
+		FATAL("malloc(%zu) failed\n", CMD_MAX);
 	snprintf(cmd, CMD_MAX-1, "grep Lck /proc/%d/status", getpid());
 	system(cmd);
 	free(cmd);
@@ -62,21 +61,18 @@ static void try_mlock(const char *cpgs)
 
 	len = num_pg * pgsz;
 	if (len >= LONG_MAX)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: too many bytes to alloc (%zu), aborting now\n",
-			   __FILE__, __FUNCTION__, __LINE__, len);
+		FATAL("too many bytes to alloc (%zu), aborting now\n", len);
 
 	/* ptr = malloc(len); */
 	/* POSIX wants page-aligned memory for mlock */
 	posix_memalign(&ptr, pgsz, len);
 	if (!ptr)
-		handle_err(EXIT_FAILURE, "%s:%s:%d: posix_memalign(for %zu bytes) failed\n",
-			   __FILE__, __FUNCTION__, __LINE__, len);
+		FATAL("posix_memalign(for %zu bytes) failed\n", len);
 
 	/* Lock the memory region! */
 	if (mlock(ptr, len)) {
 		free(ptr);
-		handle_err(EXIT_FAILURE, "%s:%s:%d: mlock failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("mlock failed\n");
 	}
 	printf("Locked %zu bytes from address %p\n", len, ptr);
 	memset(ptr, 'L', len);
@@ -86,8 +82,7 @@ static void try_mlock(const char *cpgs)
 	/* Now unlock it.. */
 	if (munlock(ptr, len)) {
 		free(ptr);
-		handle_err(EXIT_FAILURE, "%s:%s:%d: munlock failed\n",
-			   __FILE__, __FUNCTION__, __LINE__);
+		FATAL("munlock failed\n");
 	}
 	printf("unlocked..\n");
 	free(ptr);
