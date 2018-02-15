@@ -19,6 +19,9 @@
  * If you attempt to lock more than the allowed resource limit
  * (64 KB by default), it fails, unless you run as root (or set
  * the CAP_IPC_LOCK capability bit - covered later).
+ *
+ * Also, we have the process query the amount of currently
+ * locked memory it has via procfs.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
