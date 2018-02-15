@@ -2,7 +2,7 @@
 *.o
 *~
 .*.swp
-
+vgcore*
 */bkp/*
 
 # Executables: generate by:
