@@ -5,15 +5,18 @@
 #  Packt Publishers
 #
 # From: Ch 3
-ALL := show_curbrk show_curbrk_dbg \
+ALL := mallocmax mallocmax_dbg mallocmax32\
+  show_curbrk show_curbrk_dbg \
   malloc_brk_test malloc_brk_test_dbg \
   membugs membugs_dbg membugs_dbg_asan membugs_dbg_ub membugs_dbg_msan \
   alloca_try alloca_try_dbg \
-  mlock_try mlock_try_dbg \
-  memprot memprot_dbg
+  mlock_try mlock_try_dbg mlock_try_dbg_asan\
+  memprot memprot_dbg memprot_dbg_asan
 
-CC=gcc
-CL=clang
+CROSS_COMPILE=
+  #arm-none-linux-gnueabi-
+CC=${CROSS_COMPILE}gcc
+CL=${CROSS_COMPILE}clang
 
 CFLAGS=-Wall
 CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
@@ -26,8 +29,17 @@ CB_FILES := *.[ch]
 
 common.o: ../common.c ../common.h
 	${CC} ${CFLAGS} -c ../common.c -o common.o
+	${CC} ${CFLAGS} -m32 -c ../common.c -o common32.o
 common_dbg.o: ../common.c ../common.h
 	${CC} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
+
+mallocmax: common.o mallocmax.o
+	${CC} ${CFLAGS} -o mallocmax mallocmax.c common.o -lm
+	${CC} ${CFLAGS} -o mallocmax32 mallocmax.c common32.o -m32 -lm
+mallocmax_dbg.o: mallocmax.c
+	${CC} ${CFLAGS_DBG} -c mallocmax.c -o mallocmax_dbg.o
+mallocmax_dbg: mallocmax_dbg.o common_dbg.o
+	${CC} -o mallocmax_dbg mallocmax_dbg.o common_dbg.o -lm
 
 show_curbrk: common.o show_curbrk.o
 	${CC} ${CFLAGS} -o $@ $^
@@ -89,4 +101,4 @@ cb: ${CB_FILES}
 	indent -linux ${CB_FILES}
 
 clean:
-	rm -vf ${ALL} core* *.o *~
+	rm -vf ${ALL} core* vgcore* *.o *~
