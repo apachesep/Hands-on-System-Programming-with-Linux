@@ -189,7 +189,7 @@ static void read_underflow(int cond)
 	free(orig);
 }
 
-/* option =  6 : out-of-bounds : read overflow [on dynamic memory]\n" */
+/* option =  6 : out-of-bounds : read overflow [on dynamic memory] */
 static void read_overflow_dynmem(void)
 {
 	char *arr;
