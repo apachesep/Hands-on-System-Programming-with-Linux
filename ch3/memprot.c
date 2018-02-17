@@ -69,7 +69,7 @@ static void protect_mem(void *ptr)
 	printf("%s():\n", __FUNCTION__);
 	for (i=0; i<4; i++) {
 		start_off = (u64)ptr+(i*gPgsz);
-		printf("page %d: protections: %20s: range [0x%016llx, 0x%016llx]\n",
+		printf("page %d: protections: %30s: range [0x%016llx, 0x%016llx]\n",
 			i, str_prots[i], start_off, start_off+gPgsz-1);
 
 		if (mprotect((void *)start_off, gPgsz, prots[i]) == -1)
@@ -86,6 +86,12 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	gPgsz = getpagesize();
+#if 0
+	/* FAILS */
+	printf("Attempting to change text (of &main 0th page here %p) to [rwx] now...\n", &main);
+	if (mprotect((void *)&main, gPgsz, PROT_READ|PROT_WRITE|PROT_EXEC) == -1)
+		WARN("mprotect(%s) on main failed\n", "PROT_READ|PROT_WRITE|PROT_EXEC");
+#endif
 
 	/* POSIX wants page-aligned memory for mprotect(2) */
 	posix_memalign(&ptr, gPgsz, 4*gPgsz);
