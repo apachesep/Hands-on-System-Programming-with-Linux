@@ -54,13 +54,13 @@ int main(int argc, char **argv)
 	savedsetuid = geteuid();
 
 	printf("2. Becoming my original self!\n");
-	if (setuid(getuid()) == -1)
-		FATAL("setuid() failed!");
+	if (seteuid(getuid()) == -1)
+		FATAL("setuid() failed!\n");
 	SHOW_CREDS();
 
 	printf("3. Switching back to privileged state now...\n");
 	if (seteuid(savedsetuid) == -1)
-		FATAL("seteuid() failed!");
+		FATAL("seteuid() failed!\n");
 	SHOW_CREDS();
 
 	exit (EXIT_SUCCESS);
