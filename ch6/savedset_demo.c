@@ -55,12 +55,19 @@ int main(int argc, char **argv)
 
 	printf("2. Becoming my original self!\n");
 	if (seteuid(getuid()) == -1)
-		FATAL("setuid() failed!\n");
+		FATAL("seteuid() step 2 failed!\n");
 	SHOW_CREDS();
 
-	printf("3. Switching back to privileged state now...\n");
+	printf("3. Switching to privileged state now...\n");
 	if (seteuid(savedsetuid) == -1)
-		FATAL("seteuid() failed!\n");
+		FATAL("seteuid() step 3 failed!\n");
+	SHOW_CREDS();
+	if (0 == geteuid())
+		printf(" Yup, we're root again!\n");
+
+	printf("4. Switching back to unprivileged state now ...\n");
+	if (seteuid(getuid()) == -1)
+		FATAL("seteuid() step 4 failed!\n");
 	SHOW_CREDS();
 
 	exit (EXIT_SUCCESS);
