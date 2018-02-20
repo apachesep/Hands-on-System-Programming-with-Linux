@@ -7,8 +7,7 @@
  *  (c) Author: Kaiwan N Billimoria
  *  Publisher:  Packt
  *
- * From:
- *  Ch 4 : Virtual Memory
+ * From: Ch 4
  ****************************************************************
  * Brief Description:
  *
@@ -39,6 +38,7 @@ static void max_malloc(void)
 	printf("sizeof size_t = %u; max param to malloc = %.0f\n", 
 			szt, max);
 }
+
 static void negative_malloc(void)
 {
 	int szt = sizeof(size_t);
@@ -93,12 +93,11 @@ static void negative_malloc(void)
 	free(ptr);
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
-// malloc(0)
 	max_malloc();
 	negative_malloc();
-	exit (EXIT_SUCCESS);
+	exit(EXIT_SUCCESS);
 }
 
 /* vi: ts=8 */

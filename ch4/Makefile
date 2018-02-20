@@ -4,14 +4,13 @@
 #  (c) Kaiwan N Billimoria
 #  Packt Publishers
 #
-# From: Ch 3
-ALL := mallocmax mallocmax_dbg mallocmax32\
-  show_curbrk show_curbrk_dbg \
-  malloc_brk_test malloc_brk_test_dbg \
-  membugs membugs_dbg membugs_dbg_asan membugs_dbg_ub membugs_dbg_msan \
-  alloca_try alloca_try_dbg \
-  mlock_try mlock_try_dbg mlock_try_dbg_asan\
-  memprot memprot_dbg memprot_dbg_asan
+# From: Ch 4
+ALL := mallocmax mallocmax_dbg mallocmax32    \
+  show_curbrk show_curbrk_dbg                 \
+  malloc_brk_test malloc_brk_test_dbg         \
+  mlock_try mlock_try_dbg mlock_try_dbg_asan  \
+  memprot memprot_dbg memprot_dbg_asan        \
+  alloca_try alloca_try_dbg
 
 CROSS_COMPILE=
   #arm-none-linux-gnueabi-
@@ -55,26 +54,6 @@ malloc_brk_test_dbg.o: malloc_brk_test.c
 malloc_brk_test_dbg: malloc_brk_test_dbg.o common_dbg.o
 	${CC} -o malloc_brk_test_dbg malloc_brk_test_dbg.o common_dbg.o
 
-membugs: membugs.o common.o
-	${CL} ${CFLAGS} -o $@ $^
-membugs_dbg.o: membugs.c
-	${CL} ${CFLAGS_DBG} -c membugs.c -o membugs_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -c membugs.c -o membugs_dbg_asan.o
-	${CL} ${CFLAGS_DBG_UB} -c membugs.c -o membugs_dbg_ub.o
-	${CL} ${CFLAGS_DBG_MSAN} -c membugs.c -o membugs_dbg_msan.o
-membugs_dbg: membugs_dbg.o common_dbg.o
-	${CL} -o membugs_dbg membugs_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o membugs_dbg_asan membugs_dbg_asan.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o membugs_dbg_ub membugs_dbg_ub.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o membugs_dbg_msan membugs_dbg_msan.o common_dbg.o
-
-alloca_try: common.o alloca_try.o
-	${CC} ${CFLAGS} -o alloca_try alloca_try.c common.o
-alloca_try_dbg.o: alloca_try.c
-	${CC} ${CFLAGS_DBG} -c alloca_try.c -o alloca_try_dbg.o
-alloca_try_dbg: alloca_try_dbg.o common_dbg.o
-	${CC} -o alloca_try_dbg alloca_try_dbg.o common_dbg.o
-
 mlock_try: common.o mlock_try.o
 	${CC} ${CFLAGS} -o mlock_try mlock_try.c common.o
 mlock_try_dbg.o: mlock_try.c
@@ -92,6 +71,13 @@ memprot_dbg.o: memprot.c
 memprot_dbg: memprot_dbg.o common_dbg.o
 	${CC} -o memprot_dbg memprot_dbg.o common_dbg.o
 	${CC} ${CFLAGS_DBG_ASAN} -o memprot_dbg_asan memprot_dbg_asan.o common_dbg.o
+
+alloca_try: common.o alloca_try.o
+	${CC} ${CFLAGS} -o alloca_try alloca_try.c common.o
+alloca_try_dbg.o: alloca_try.c
+	${CC} ${CFLAGS_DBG} -c alloca_try.c -o alloca_try_dbg.o
+alloca_try_dbg: alloca_try_dbg.o common_dbg.o
+	${CC} -o alloca_try_dbg alloca_try_dbg.o common_dbg.o
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
