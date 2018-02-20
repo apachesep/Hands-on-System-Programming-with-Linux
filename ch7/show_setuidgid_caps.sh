@@ -1,5 +1,5 @@
 #!/bin/bash
-# ch6:see_setuidgid_caps.sh
+# ch7:see_setuidgid_caps.sh
 # 
 #***************************************************************
 # This program is part of the source code released for the book
@@ -8,7 +8,7 @@
 #  Publisher:  Packt
 #
 # From:
-#  Ch 6 : Process Credentials
+#  Ch 7 : Process Credentials
 #****************************************************************
 # Brief Description:
 # Based on user choice, this bash script scans the system for all
@@ -17,6 +17,7 @@
 # 2. modern POSIX capabilities-embedded programs.
 name=$(basename $0)
 SEP="------------------------------------------------------------------"
+declare -a gDirArr=('/bin' '/usr/bin' '/sbin' '/usr/sbin' '/usr/local/bin' '/usr/local/sbin');
 
 ########### Functions follow #######################
 
@@ -31,49 +32,50 @@ done
 
 show_files_with_caps()
 {
- ShowTitle "Scanning various folders for binaries with (modern) 'capabilities' embedded ..."
- aecho "Scanning /bin ..."
- scanforcaps /bin
- aecho "Scanning /usr/bin ..."
- scanforcaps /usr/bin
- aecho "Scanning /sbin ..."
- scanforcaps /sbin
- aecho "Scanning /usr/sbin ..."
- scanforcaps /usr/sbin
- aecho "Scanning /usr/local/bin ..."
- scanforcaps /usr/local/bin
- aecho "Scanning /usr/local/sbin ..."
- scanforcaps /usr/local/sbin
+ echo "Scanning various folders for binaries with (modern) 'capabilities' embedded ..."
+ echo "${SEP}"
+
+ for ((i=0; i<${#gDirArr[@]}; i++))
+ do
+	dir=${gDirArr[${i}]}
+	printf "Scanning %-15s ...\n" "${dir}"
+	scanforcaps ${dir}
+ done
 }
 
-show_traditional_setuid_root()
+show_traditional_setgid_prg()
 {
+ echo "Scanning various directories for (traditional) SETGID binaries ..."
  echo "${SEP}"
- echo "Scanning various folders for traditional setuid-root binaries ..."
+
+ for ((i=0; i<${#gDirArr[@]}; i++))
+ do
+	dir=${gDirArr[${i}]}
+	printf "Scanning %-15s ...\n" "${dir}"
+	ls -l ${dir} | grep "^-.....s" #| awk '$3=="root" {print $0}'
+	echo "${SEP}"
+ done
+}
+
+show_traditional_setuid_root_prg()
+{
+ echo "Scanning various directories for (traditional) SETUID-ROOT binaries ..."
  echo "${SEP}"
- echo "Scanning /bin ..."
- ls -l /bin/  |grep "^-..s" |awk '$3=="root" {print $0}'
- echo "${SEP}"
- echo "Scanning /usr/bin ..."
- ls -l /usr/bin/  |grep "^-..s" |awk '$3=="root" {print $0}'
- echo "${SEP}"
- echo "Scanning /sbin ..."
- ls -l /sbin/  |grep "^-..s" |awk '$3=="root" {print $0}'
- echo "${SEP}"
- echo "Scanning /usr/sbin ..."
- ls -l /usr/sbin/  |grep "^-..s" |awk '$3=="root" {print $0}'
- echo "${SEP}"
- echo "Scanning /usr/local/bin ..."
- ls -l /usr/local/bin/  |grep "^-..s" |awk '$3=="root" {print $0}'
- echo "${SEP}"
- echo "Scanning /usr/local/sbin ..."
- ls -l /usr/local/sbin/  |grep "^-..s" |awk '$3=="root" {print $0}'
+
+ for ((i=0; i<${#gDirArr[@]}; i++))
+ do
+	dir=${gDirArr[${i}]}
+	printf "Scanning %-15s ...\n" "${dir}"
+	ls -l ${dir} | grep "^-..s" | awk '$3=="root" {print $0}'
+	echo "${SEP}"
+ done
 }
 
 sysinfo()
 {
 echo "${SEP}"
 echo "System Information (LSB):"
+echo "${SEP}"
 lsb_release -a
 echo -n "kernel: "
 uname -r
@@ -95,7 +97,9 @@ echo "Usage: ${name} 1|2
 }
 case "$1" in
 	1) sysinfo
-	   show_traditional_setuid_root
+	   show_traditional_setuid_root_prg
+	   echo
+	   show_traditional_setgid_prg
 	;;
 	2) sysinfo
 	   show_files_with_caps
