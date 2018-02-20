@@ -1,5 +1,5 @@
 #!/bin/bash
-# ch7:see_setuidgid_caps.sh
+# ch7:show_setuidgid_caps.sh
 # 
 #***************************************************************
 # This program is part of the source code released for the book
