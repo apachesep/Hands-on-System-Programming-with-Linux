@@ -1,5 +1,5 @@
 /*
- * ch3:malloc_brk_test.c
+ * ch4:malloc_brk_test.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 3 : Dynamic Memory Management
+ *  Ch 4 : Dynamic Memory Allocation
  ****************************************************************
  * Brief Description:
  *
@@ -120,10 +120,10 @@ int main(int argc, char **argv)
 
 	if (gFlag_test_segfault1 == 1) {
 		q = heap_ptr[0];
-		*(q + 3000) = 'a';	/* "should" segfault but does (probably) not bcoz a *page*
-					 * or more is alloc'ed by the previous alloc, not just 8
-					 * bytes! See value of prg break compared to this pointer.
-					 */
+		*(q + 3000) = 'a'; /* "should" segfault but does (probably) not bcoz a *page*
+				    * or more is alloc'ed by the previous alloc, not just 8
+				    * bytes! See value of prg break compared to this pointer.
+				    */
 		printf("### test segfault 1:\n"
 		       " q=0x%lx ; (q+3000) is the mem loc 0x%lx ; mem here is '0x%x'.\n"
 		       "###\n",

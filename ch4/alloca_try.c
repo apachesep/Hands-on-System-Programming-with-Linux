@@ -7,8 +7,7 @@
  *  (c) Author: Kaiwan N Billimoria
  *  Publisher:  Packt
  *
- * From:
- *  Ch 4 : Virtual Memory
+ * From: Ch 4
  ****************************************************************
  * Brief Description:
  * We try out the alloca(3) API, noting how it does _not_ return

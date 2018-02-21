@@ -1,5 +1,5 @@
 /*
- * ch_:mallocmax.c
+ * ch4:mallocmax.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -35,8 +35,9 @@ static void max_malloc(void)
 
 	printf("*** %s() ***\n", __FUNCTION__);
 	max = pow(2, szt*8);
-	printf("sizeof size_t = %u; max param to malloc = %.0f\n", 
-			szt, max);
+	printf("sizeof size_t = %u; "
+		"max value of the param to malloc = %.0f\n", 
+		szt, max);
 }
 
 static void negative_malloc(void)

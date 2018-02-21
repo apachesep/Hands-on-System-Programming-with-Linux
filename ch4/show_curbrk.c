@@ -1,5 +1,5 @@
 /*
- * ch3:show_curbrk.c
+ * ch4:show_curbrk.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 3 : Dynamic Memory Management
+ *  Ch 4 : Dynamic Memory Allocation
  ****************************************************************
  * Brief Description:
  * Two cases:

@@ -7,8 +7,7 @@
  *  (c) Author: Kaiwan N Billimoria
  *  Publisher:  Packt
  *
- * From:
- *  Ch 4 : 
+ * From: Ch 4
  ****************************************************************
  * Brief Description:
  * We try out the mlock(2) API below, passing it page-aligned
