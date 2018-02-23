@@ -9,7 +9,9 @@ CFLAGS_DBG_UB= -fsanitize=undefined
 
 ALL := query_creds query_creds_dbg \
 	savedset_demo savedset_demo_dbg \
-	rootsh_hack2 rootsh_hack2_dbg
+	rootsh_hack2 rootsh_hack2_dbg \
+	query_pcap query_pcap_dbg \
+	hello_pause hello_pause_dbg
 
 all: ${ALL}
 CB_FILES := *.[ch]
@@ -43,6 +45,23 @@ savedset_demo_dbg: savedset_demo_dbg.o common_dbg.o
 	${CC} -o savedset_demo_dbg savedset_demo_dbg.o common_dbg.o
 	#sudo chown root savedset_demo_dbg
 	#sudo chmod u+s savedset_demo_dbg
+
+query_pcap: common.o query_pcap.o
+	${CC} ${CFLAGS} -o query_pcap query_pcap.c common.o -lcap
+query_pcap_dbg.o: query_pcap.c
+	${CC} ${CFLAGS_DBG} -c query_pcap.c -o query_pcap_dbg.o
+query_pcap_dbg: query_pcap_dbg.o common_dbg.o
+	${CC} -o query_pcap_dbg query_pcap_dbg.o common_dbg.o -lcap
+
+hello_pause: common.o hello_pause.o
+	${CC} ${CFLAGS} -o hello_pause hello_pause.c common.o
+	#sudo setcap cap_net_admin,cap_net_raw+ep ./hello_pause
+hello_pause_dbg.o: hello_pause.c
+	${CC} ${CFLAGS_DBG} -c hello_pause.c -o hello_pause_dbg.o
+hello_pause_dbg: hello_pause_dbg.o common_dbg.o
+	${CC} -o hello_pause_dbg hello_pause_dbg.o common_dbg.o
+	#sudo setcap cap_net_admin,cap_net_raw+ep ./hello_pause_dbg
+
 
 # indent- "beautifies" C code into the "Linux kernel style"\.
 # (cb = C Beautifier :) )
