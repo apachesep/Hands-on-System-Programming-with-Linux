@@ -4,6 +4,7 @@
 .*.swp
 vgcore*
 */bkp/*
+unused/
 
 # Executables: generate by:
 # find . -executable -type f >> .gitignore
