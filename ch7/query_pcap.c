@@ -1,5 +1,5 @@
 /*
- * ch7:query_cap.c
+ * ch7:query_pcap.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book

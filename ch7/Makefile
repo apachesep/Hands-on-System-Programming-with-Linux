@@ -61,7 +61,6 @@ hello_pause_dbg.o: hello_pause.c
 hello_pause_dbg: hello_pause_dbg.o common_dbg.o
 	${CC} -o hello_pause_dbg hello_pause_dbg.o common_dbg.o
 	#sudo setcap cap_net_admin,cap_net_raw+ep ./hello_pause_dbg
-	# testing 1 ...
 
 
 # indent- "beautifies" C code into the "Linux kernel style"\.
@@ -71,6 +70,5 @@ cb: ${CB_FILES}
 	mkdir bkp 2> /dev/null; cp -f ${CB_FILES} bkp/
 	indent -linux ${CB_FILES}
 
-	# testing 2 ...
 clean:
 	rm -vf ${ALL} core* vgcore* *.o *~
