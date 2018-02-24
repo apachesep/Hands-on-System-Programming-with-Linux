@@ -11,7 +11,8 @@ ALL := query_creds query_creds_dbg \
 	savedset_demo savedset_demo_dbg \
 	rootsh_hack2 rootsh_hack2_dbg \
 	query_pcap query_pcap_dbg \
-	hello_pause hello_pause_dbg
+	hello_pause hello_pause_dbg \
+	set_pcap set_pcap_dbg
 
 all: ${ALL}
 CB_FILES := *.[ch]
@@ -61,6 +62,15 @@ hello_pause_dbg.o: hello_pause.c
 hello_pause_dbg: hello_pause_dbg.o common_dbg.o
 	${CC} -o hello_pause_dbg hello_pause_dbg.o common_dbg.o
 	#sudo setcap cap_net_admin,cap_net_raw+ep ./hello_pause_dbg
+
+set_pcap: common.o set_pcap.o
+	${CC} ${CFLAGS} -o set_pcap set_pcap.c common.o -lcap
+	sudo setcap cap_setuid,cap_sys_admin+ep ./set_pcap
+set_pcap_dbg.o: set_pcap.c
+	${CC} ${CFLAGS_DBG} -c set_pcap.c -o set_pcap_dbg.o
+set_pcap_dbg: set_pcap_dbg.o common_dbg.o
+	${CC} -o set_pcap_dbg set_pcap_dbg.o common_dbg.o -lcap
+	sudo setcap cap_setuid,cap_sys_admin+ep ./set_pcap_dbg
 
 
 # indent- "beautifies" C code into the "Linux kernel style"\.
