@@ -10,7 +10,17 @@
  * From: Ch 7
  ****************************************************************
  * Brief Description:
- *
+ * This program briefly demonstrates how a process can add or drop
+ * capabilities (that are of course within it's permitted capset).
+ * Run with option '1', it adds the CAP_SETUID capability and
+ * "proves" it via a simple test function (test_setuid()). 
+ * The other interesting bit: since the _file_ already has two
+ * capabilities embedded within it (we do a setcap in the Makefile),
+ * we actually need to drop the CAP_SYS_ADMIN capability (from the
+ * effective set); the code is shown below.
+ * With option '2', we want two capabilities- CAP_SETUID and
+ * CAP_SYS_ADMIN; it will work as these are embedded into the
+ * effective and permitted capsets.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -62,8 +72,8 @@ static void test_setuid(void)
 static void usage(char **argv, int stat)
 {
 	fprintf(stderr, "Usage: %s 1|2\n"
-		" 1 : use just one capability - CAP_SETUID\n"
-		" 2 : use two capabilities - CAP_SETUID and CAP_SYS_ADMIN\n"
+		" 1 : add just one capability - CAP_SETUID\n"
+		" 2 : add two capabilities - CAP_SETUID and CAP_SYS_ADMIN\n"
 		"Tip: run it in the background so that capsets can be looked up\n"
 		, argv[0]);
 	exit(stat);
@@ -75,18 +85,18 @@ int main(int argc, char **argv)
 	cap_t mycaps;
 	cap_value_t caps2set[2];
 
-	/* Simple signal handling for the pause... */
-	if (signal(SIGINT, boing) == SIG_ERR)
-		FATAL("signal() failed, aborting...\n");
-	if (signal(SIGTERM, boing) == SIG_ERR)
-		FATAL("signal() failed, aborting...\n");
-
 	if (argc < 2)
 		usage(argv, EXIT_FAILURE);
 
 	opt = atoi(argv[1]);
 	if (opt != 1 && opt != 2)
 		usage(argv, EXIT_FAILURE);
+
+	/* Simple signal handling for the pause... */
+	if (signal(SIGINT, boing) == SIG_ERR)
+		FATAL("signal() failed, aborting...\n");
+	if (signal(SIGTERM, boing) == SIG_ERR)
+		FATAL("signal() failed, aborting...\n");
 
 	if (!CAP_IS_SUPPORTED(CAP_SETUID))
 		FATAL("CAP_SETUID capability not supported on system, aborting...\n");
@@ -101,11 +111,12 @@ int main(int argc, char **argv)
 		FATAL("cap_get_proc() for CAP_SETUID failed, aborting...\n");
 
 	if (opt == 1) {
-		caps2set[0] = CAP_SETUID;
 		ncap = 1;
+		caps2set[0] = CAP_SETUID;
 	} else if (opt == 2) {
-		caps2set[1] = CAP_SYS_ADMIN;
 		ncap = 2;
+		caps2set[0] = CAP_SETUID;
+		caps2set[1] = CAP_SYS_ADMIN;
 	}
 	if (cap_set_flag(mycaps, CAP_EFFECTIVE, ncap, caps2set, CAP_SET) == -1) {
 		cap_free(mycaps);
