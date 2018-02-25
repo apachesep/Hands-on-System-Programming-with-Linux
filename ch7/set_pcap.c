@@ -40,7 +40,10 @@ static void drop_caps_be_normal(void)
 	/* cap_init() guarantees all caps are cleared */
 	if ((none = cap_init()) == NULL)
 		FATAL("cap_init() failed, aborting...\n");
-	cap_set_proc(none);
+	if (cap_set_proc(none) == -1) {
+		cap_free(none);
+		FATAL("cap_set_proc('none') failed, aborting...\n");
+	}
 	cap_free(none);
 
 	/* Become your normal true self again! */
