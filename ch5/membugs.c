@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 3 : Dynamic Memory Management
+ *  Ch 5 : Linux Memory Issues
  ****************************************************************
  * Brief Description:
  *
