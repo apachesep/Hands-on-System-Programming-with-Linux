@@ -1,5 +1,5 @@
 /*
- * ch3:membugs.c
+ * ch5:membugs.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
