@@ -44,7 +44,7 @@ static void silly_getpath(char **ptr)
 		WARN("getenv failed\n");
 }
 
-/* test case = 13 : memory leak test case 3: "lib" API leak */
+/* test case 13 : memory leak test case 3: "lib" API leak */
 static void leakage_case3(int cond)
 {
 	char *mypath=NULL;
