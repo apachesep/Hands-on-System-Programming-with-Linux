@@ -5,7 +5,8 @@
 #  Packt Publishers
 #
 # From: Ch 8
-ALL :=  execl_eg execl_eg_dbg execl_eg_asan execl_eg_msan execl_eg_ub
+ALL :=  execl_eg execl_eg_dbg execl_eg_asan execl_eg_msan execl_eg_ub \
+	predcs_name successor_setnm
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -32,6 +33,21 @@ execl_eg_dbg: execl_eg_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_ASAN} -o execl_eg_asan execl_eg_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_UB} -o execl_eg_ub execl_eg_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_MSAN} -o execl_eg_msan execl_eg_dbg.o common_dbg.o
+
+
+predcs_name: common.o predcs_name.o
+	${CC} ${CFLAGS} -o predcs_name predcs_name.c common.o
+predcs_name_dbg.o: predcs_name.c
+	${CC} ${CFLAGS_DBG} -c predcs_name.c -o predcs_name_dbg.o
+predcs_name_dbg: predcs_name_dbg.o common_dbg.o
+	${CC} -o predcs_name_dbg predcs_name_dbg.o common_dbg.o
+
+successor_setnm: common.o successor_setnm.o
+	${CC} ${CFLAGS} -o successor_setnm successor_setnm.c common.o
+successor_setnm_dbg.o: successor_setnm.c
+	${CC} ${CFLAGS_DBG} -c successor_setnm.c -o successor_setnm_dbg.o
+successor_setnm_dbg: successor_setnm_dbg.o common_dbg.o
+	${CC} -o successor_setnm_dbg successor_setnm_dbg.o common_dbg.o
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
