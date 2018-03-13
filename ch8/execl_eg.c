@@ -45,7 +45,7 @@ int main(int argc, char **argv)
 	if (execl("/bin/uname", "uname", argv[1], (char *)0) == -1)
 		FATAL("execl failed\n");
 	
-	printf("This should never get executed if all's well!\n");
+	printf("This should never get executed!\n");
 	exit (EXIT_SUCCESS);
 }
 
