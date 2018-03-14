@@ -49,8 +49,9 @@ int main(int argc, char **argv)
 		if (prctl(PR_SET_NAME, argv[2], 0, 0, 0) < 0)
 			FATAL("prctl failed\n");
 	} else { /* wrong way... */
-		printf("%s: attempt to set name to 1st param \"%s\""
-				" [Wrong]\n", argv[0], argv[1]);
+		printf("%s: attempt to implicitly set name to \"%s\""
+			" via the argv[0] passed to execl [Wrong]\n",
+			argv[0], argv[1]);
 	}
 
 	printf("%s: pausing now...\n", argv[0]);
