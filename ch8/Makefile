@@ -5,7 +5,7 @@
 #  Packt Publishers
 #
 # From: Ch 8
-ALL :=  execl_eg execl_eg_dbg execl_eg_asan execl_eg_msan execl_eg_ub \
+ALL :=  execl_eg execl_eg_dbg \
 	predcs_name successor_setnm
 
 CC=${CROSS_COMPILE}gcc
@@ -29,10 +29,10 @@ execl_eg: common.o execl_eg.o
 execl_eg_dbg.o: execl_eg.c
 	${CC} ${CFLAGS_DBG} -c execl_eg.c -o execl_eg_dbg.o
 execl_eg_dbg: execl_eg_dbg.o common_dbg.o
-	${CL} -o execl_eg_dbg execl_eg_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o execl_eg_asan execl_eg_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o execl_eg_ub execl_eg_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o execl_eg_msan execl_eg_dbg.o common_dbg.o
+	${CC} -o execl_eg_dbg execl_eg_dbg.o common_dbg.o
+	#${CL} ${CFLAGS_DBG_ASAN} -o execl_eg_asan execl_eg_dbg.o common_dbg.o
+	#${CL} ${CFLAGS_DBG_UB} -o execl_eg_ub execl_eg_dbg.o common_dbg.o
+	#${CL} ${CFLAGS_DBG_MSAN} -o execl_eg_msan execl_eg_dbg.o common_dbg.o
 
 
 predcs_name: common.o predcs_name.o
