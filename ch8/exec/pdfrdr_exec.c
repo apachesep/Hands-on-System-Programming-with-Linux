@@ -30,7 +30,7 @@ static int exec_pdf_reader_app(char *pdfdoc)
 	char * const pdf_argv[] = {"evince", pdfdoc, 0};
 
 	if (execv(pdf_reader_app, pdf_argv) < 0) {
-		WARN("execv failed");
+		WARN("execv failed\n");
 		return -1;
 	}
 	return 0; /* never reached */
