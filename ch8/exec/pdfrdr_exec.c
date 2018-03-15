@@ -21,7 +21,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include "../common.h"
+#include "../../common.h"
 
 const char *pdf_reader_app="/usr/bin/evince";
 

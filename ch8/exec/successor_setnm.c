@@ -27,7 +27,7 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include <sys/prctl.h>
-#include "../common.h"
+#include "../../common.h"
 
 int main(int argc, char **argv)
 {
