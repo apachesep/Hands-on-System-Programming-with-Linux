@@ -1,5 +1,5 @@
 /*
- * ch8:fork4.c
+ * ch8:fork4_prnum.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -14,6 +14,8 @@
  * A quick and simple demo of the fork(2) system call.
  * This is a better version: we take into account some of the
  * 'rules' of fork.
+ * Here, we use a simple DELAY_LOOP macro to simulate 'real work",
+ * printing p's and c's (for parent and child) as they run.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -22,26 +24,13 @@
 #include <sys/types.h>
 #include "../../common.h"
 
-static void bar(unsigned int nsec)
-{
-	printf(" %s:%s :: will take a nap for %us ...\n",
-			__FILE__, __FUNCTION__, nsec);
-	sleep(nsec);
-}
-static void foo(unsigned int nsec)
-{
-	printf(" %s:%s :: will take a nap for %us ...\n",
-			__FILE__, __FUNCTION__, nsec);
-	sleep(nsec);
-}
-
 int main(int argc, char **argv)
 {
 	pid_t ret;
 
 	if (argc != 3) {
 		fprintf(stderr,
-			"Usage: %s {child-write-sec} {parent-alive-sec}\n",
+		"Usage: %s {child-numbytes-to-write} {parent-numbytes-to-write}\n",
 			argv[0]);
 		exit(EXIT_FAILURE);
 	}
@@ -55,7 +44,7 @@ int main(int argc, char **argv)
 			  printf("Child process, PID %d:\n"
 				 " return %d from fork()\n"
 					  , getpid(), ret);
-			  foo(atoi(argv[1]));
+			  DELAY_LOOP('c', atoi(argv[1]));
 			  printf("Child process (%d) done, exiting ...\n",
 				  getpid());
 			  exit(EXIT_SUCCESS);
@@ -63,7 +52,7 @@ int main(int argc, char **argv)
 			  printf("Parent process, PID %d:\n"
 				 " return %d from fork()\n"
 					  , getpid(), ret);
-			  bar(atoi(argv[2]));
+			  DELAY_LOOP('p', atoi(argv[2]));
 	}
 	printf("Parent (%d) will exit now...\n", getpid());
 	exit(EXIT_SUCCESS);
