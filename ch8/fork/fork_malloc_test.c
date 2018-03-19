@@ -52,26 +52,26 @@
 		, loc, g, &loc, &g);         \
 } while(0)
 
-const int memsz=2048;
+const int memsz = 2048;
 static char *gptr;
-static int g=5;
+static int g = 5;
 
 static inline void disp_few(char *p)
 {
 	int i;
 	printf(" malloc gptr=%p\n ", p);
-	for (i=0; i<16; i++)
-		printf("%c", *(p+i));
+	for (i = 0; i < 16; i++)
+		printf("%c", *(p + i));
 	printf("\n");
 }
 
 int main(int argc, char **argv)
 {
 	pid_t ret;
-	int show_vars=0, loc = 8;
+	int show_vars = 0, loc = 8;
 
 	if (argc > 1)
-		show_vars=1;
+		show_vars = 1;
 
 	gptr = malloc(memsz);
 	if (!gptr)
