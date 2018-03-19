@@ -5,7 +5,8 @@ ALL := fork1 fork2 fork3 fork4 fork5 \
 	fork4_prnum fork_r6_of \
 	fork_malloc_test fork_malloc_test_dbg \
 	fork_malloc_test_asan fork_malloc_test_msan fork_malloc_test_ub \
-	simpsh_v1 simpsh_v1_dbg simpsh_v1_asan simpsh_msan simpsh_v1_ub
+	simpsh_v1 simpsh_v1_dbg simpsh_v1_asan simpsh_v1_msan simpsh_v1_ub \
+	simpsh_v2 simpsh_v2_dbg simpsh_v2_asan simpsh_v2_msan simpsh_v2_ub
 
 
 CC=${CROSS_COMPILE}gcc
@@ -67,6 +68,16 @@ simpsh_v1_dbg: simpsh_v1_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_ASAN} -o simpsh_v1_asan simpsh_v1_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_UB} -o simpsh_v1_ub simpsh_v1_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_MSAN} -o simpsh_v1_msan simpsh_v1_dbg.o common_dbg.o
+
+simpsh_v2: common.o simpsh_v2.o
+	${CC} ${CFLAGS} -o simpsh_v2 simpsh_v2.c common.o
+simpsh_v2_dbg.o: simpsh_v2.c
+	${CC} ${CFLAGS_DBG} -c simpsh_v2.c -o simpsh_v2_dbg.o
+simpsh_v2_dbg: simpsh_v2_dbg.o common_dbg.o
+	${CC} -o simpsh_v2_dbg simpsh_v2_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_ASAN} -o simpsh_v2_asan simpsh_v2_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_UB} -o simpsh_v2_ub simpsh_v2_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_MSAN} -o simpsh_v2_msan simpsh_v2_dbg.o common_dbg.o
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
