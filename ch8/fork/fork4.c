@@ -25,13 +25,14 @@
 static void bar(unsigned int nsec)
 {
 	printf(" %s:%s :: will take a nap for %us ...\n",
-			__FILE__, __FUNCTION__, nsec);
+	       __FILE__, __FUNCTION__, nsec);
 	sleep(nsec);
 }
+
 static void foo(unsigned int nsec)
 {
 	printf(" %s:%s :: will take a nap for %us ...\n",
-			__FILE__, __FUNCTION__, nsec);
+	       __FILE__, __FUNCTION__, nsec);
 	sleep(nsec);
 }
 
@@ -49,21 +50,19 @@ int main(int argc, char **argv)
 	 * exercise to the reader :-)
 	 */
 
-	switch((ret = fork())) {
-		case -1 : FATAL("fork failed, aborting!\n");
-		case 0 : /* Child */
-			  printf("Child process, PID %d:\n"
-				 " return %d from fork()\n"
-					  , getpid(), ret);
-			  foo(atoi(argv[1]));
-			  printf("Child process (%d) done, exiting ...\n",
-				  getpid());
-			  exit(EXIT_SUCCESS);
-		default : /* Parent */
-			  printf("Parent process, PID %d:\n"
-				 " return %d from fork()\n"
-					  , getpid(), ret);
-			  bar(atoi(argv[2]));
+	switch ((ret = fork())) {
+	case -1:
+		FATAL("fork failed, aborting!\n");
+	case 0:		/* Child */
+		printf("Child process, PID %d:\n"
+		       " return %d from fork()\n", getpid(), ret);
+		foo(atoi(argv[1]));
+		printf("Child process (%d) done, exiting ...\n", getpid());
+		exit(EXIT_SUCCESS);
+	default:		/* Parent */
+		printf("Parent process, PID %d:\n"
+		       " return %d from fork()\n", getpid(), ret);
+		bar(atoi(argv[2]));
 	}
 	printf("Parent (%d) will exit now...\n", getpid());
 	exit(EXIT_SUCCESS);

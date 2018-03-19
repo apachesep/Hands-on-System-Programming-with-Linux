@@ -30,7 +30,7 @@ int main(int argc, char **argv)
 
 	if (argc != 3) {
 		fprintf(stderr,
-		"Usage: %s {child-numbytes-to-write} {parent-numbytes-to-write}\n",
+			"Usage: %s {child-numbytes-to-write} {parent-numbytes-to-write}\n",
 			argv[0]);
 		exit(EXIT_FAILURE);
 	}
@@ -38,21 +38,19 @@ int main(int argc, char **argv)
 	 * exercise to the reader :-)
 	 */
 
-	switch((ret = fork())) {
-		case -1 : FATAL("fork failed, aborting!\n");
-		case 0 : /* Child */
-			  printf("Child process, PID %d:\n"
-				 " return %d from fork()\n"
-					  , getpid(), ret);
-			  DELAY_LOOP('c', atoi(argv[1]));
-			  printf("Child process (%d) done, exiting ...\n",
-				  getpid());
-			  exit(EXIT_SUCCESS);
-		default : /* Parent */
-			  printf("Parent process, PID %d:\n"
-				 " return %d from fork()\n"
-					  , getpid(), ret);
-			  DELAY_LOOP('p', atoi(argv[2]));
+	switch ((ret = fork())) {
+	case -1:
+		FATAL("fork failed, aborting!\n");
+	case 0:		/* Child */
+		printf("Child process, PID %d:\n"
+		       " return %d from fork()\n", getpid(), ret);
+		DELAY_LOOP('c', atoi(argv[1]));
+		printf("Child process (%d) done, exiting ...\n", getpid());
+		exit(EXIT_SUCCESS);
+	default:		/* Parent */
+		printf("Parent process, PID %d:\n"
+		       " return %d from fork()\n", getpid(), ret);
+		DELAY_LOOP('p', atoi(argv[2]));
 	}
 	printf("Parent (%d) will exit now...\n", getpid());
 	exit(EXIT_SUCCESS);
