@@ -73,9 +73,11 @@ static void do_simpsh(void)
 		}
 
 		/* Stopping condition */
-		if (!strncmp(cmd, "q", 1) ||
-		     !strncmp(cmd, "quit", 4))
+		if (!strncmp(cmd, "quit", 4))
 			break;
+
+		if (cmd[0] == 0)    /* user pressed [Enter] */
+			continue;
 
 		/* Wield the powerful fork-exec-wait semantic ! */
 		switch ((ret = fork())) {
