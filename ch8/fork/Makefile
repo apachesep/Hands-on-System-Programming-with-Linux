@@ -2,7 +2,10 @@
 #  ch8 / fork
 
 ALL := fork1 fork2 fork3 fork4 fork5 \
-	fork4_prnum
+	fork4_prnum fork_r6_of \
+	fork_malloc_test fork_malloc_test_dbg \
+	fork_malloc_test_asan fork_malloc_test_msan fork_malloc_test_ub
+
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -33,6 +36,27 @@ fork4_prnum: common.o fork4_prnum.o
 	${CC} ${CFLAGS} -o fork4_prnum fork4_prnum.c common.o
 fork5: common.o fork5.o
 	${CC} ${CFLAGS} -o fork5 fork5.c common.o
+
+fork_r6_of: common.o fork_r6_of.o
+	${CC} ${CFLAGS} -o fork_r6_of fork_r6_of.c common.o
+fork_r6_of_dbg.o: fork_r6_of.c
+	${CC} ${CFLAGS_DBG} -c fork_r6_of.c -o fork_r6_of_dbg.o
+fork_r6_of_dbg: fork_r6_of_dbg.o common_dbg.o
+	${CC} -o fork_r6_of_dbg fork_r6_of_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_ASAN} -o fork_r6_of_asan fork_r6_of_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_UB} -o fork_r6_of_ub fork_r6_of_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_MSAN} -o fork_r6_of_msan fork_r6_of_dbg.o common_dbg.o
+
+fork_malloc_test: common.o fork_malloc_test.o
+	${CC} ${CFLAGS} -o fork_malloc_test fork_malloc_test.c common.o
+fork_malloc_test_dbg.o: fork_malloc_test.c
+	${CC} ${CFLAGS_DBG} -c fork_malloc_test.c -o fork_malloc_test_dbg.o
+fork_malloc_test_dbg: fork_malloc_test_dbg.o common_dbg.o
+	${CC} -o fork_malloc_test_dbg fork_malloc_test_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_ASAN} -o fork_malloc_test_asan fork_malloc_test_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_UB} -o fork_malloc_test_ub fork_malloc_test_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_MSAN} -o fork_malloc_test_msan fork_malloc_test_dbg.o common_dbg.o
+
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
