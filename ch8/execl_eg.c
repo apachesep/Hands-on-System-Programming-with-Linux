@@ -20,7 +20,7 @@
 #include <string.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include "../../common.h"
+#include "../common.h"
 
 /*---------------- Globals, Macros ----------------------------*/
 

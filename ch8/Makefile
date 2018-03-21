@@ -7,7 +7,8 @@
 # From: Ch 8
 ALL :=  execl_eg execl_eg_dbg \
 	predcs_name successor_setnm \
-	pdfrdr_exec pdfrdr_exec_dbg
+	pdfrdr_exec pdfrdr_exec_dbg \
+	 pdfrdr_exec_asan pdfrdr_exec_msan pdfrdr_exec_ub 
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -20,10 +21,10 @@ CFLAGS_DBG_UB=${CFLAGS_DBG} -fsanitize=undefined
 all: ${ALL}
 CB_FILES := *.[ch]
 
-common.o: ../../common.c ../../common.h
-	${CC} ${CFLAGS} -c ../../common.c -o common.o
-common_dbg.o: ../../common.c ../../common.h
-	${CC} ${CFLAGS_DBG} -c ../../common.c -o common_dbg.o
+common.o: ../common.c ../common.h
+	${CC} ${CFLAGS} -c ../common.c -o common.o
+common_dbg.o: ../common.c ../common.h
+	${CC} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
 
 execl_eg: common.o execl_eg.o
 	${CC} ${CFLAGS} -o execl_eg execl_eg.c common.o
