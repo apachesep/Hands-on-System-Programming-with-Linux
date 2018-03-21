@@ -79,6 +79,16 @@ simpsh_v2_dbg: simpsh_v2_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_UB} -o simpsh_v2_ub simpsh_v2_dbg.o common_dbg.o
 	${CL} ${CFLAGS_DBG_MSAN} -o simpsh_v2_msan simpsh_v2_dbg.o common_dbg.o
 
+simpsh_v3: common.o simpsh_v3.o
+	${CC} ${CFLAGS} -o simpsh_v3 simpsh_v3.c common.o
+simpsh_v3_dbg.o: simpsh_v3.c
+	${CC} ${CFLAGS_DBG} -c simpsh_v3.c -o simpsh_v3_dbg.o
+simpsh_v3_dbg: simpsh_v3_dbg.o common_dbg.o
+	${CC} -o simpsh_v3_dbg simpsh_v3_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_ASAN} -o simpsh_v3_asan simpsh_v3_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_UB} -o simpsh_v3_ub simpsh_v3_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_MSAN} -o simpsh_v3_msan simpsh_v3_dbg.o common_dbg.o
+
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
