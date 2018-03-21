@@ -69,7 +69,7 @@ static void do_simpsh(void)
 	while (1) {
 		if (!getcmd(cmd)) {
 			free(cmd);
-			FATAL("getcmd() failed\n");
+			FATAL("getcmd(): EOF or failed\n");
 		}
 
 		/* Stopping condition */
@@ -98,7 +98,8 @@ static void do_simpsh(void)
 		default: /* Parent */
 			VPRINT("Parent process (%7d) issuing the wait...\n",
 			       getpid());
-			/* sync: child runs first, parent waits for child */
+			/* sync: child runs first, parent waits for
+			 * child's death */
 			if (wait(0) < 0) 
 				FATAL("wait failed, aborting..\n");
 		} // switch
