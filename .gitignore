@@ -4,6 +4,8 @@
 .*.swp
 vgcore*
 */bkp/*
+bkp/*
+older/*
 unused/
 
 # Executables: generate by:
