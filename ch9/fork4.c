@@ -20,7 +20,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <sys/types.h>
-#include "../../common.h"
+#include "../common.h"
 
 static void bar(unsigned int nsec)
 {

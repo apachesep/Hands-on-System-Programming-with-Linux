@@ -26,7 +26,7 @@
 #include <string.h>
 #include <sys/types.h>
 #include <sys/wait.h>
-#include "../../common.h"
+#include "../common.h"
 
 /*---------------- Globals, Macros ----------------------------*/
 #define CMD_MAXLEN   128

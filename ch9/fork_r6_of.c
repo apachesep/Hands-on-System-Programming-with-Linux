@@ -30,7 +30,7 @@
 #include <sys/types.h>
 #include <sys/stat.h>
 #include <fcntl.h>
-#include "../../common.h"
+#include "../common.h"
 
 #define CHILD        1
 #define PARENT       2
