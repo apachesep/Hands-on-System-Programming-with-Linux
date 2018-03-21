@@ -1,5 +1,5 @@
 /*
- * ch8:fork_r6_of.c
+ * ch9:fork_r6_of.c
  *   'rule6_openfiles'
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 8 : Process Execution and Creation
+ *  Ch 9 : Process Creation
  ****************************************************************
  * Brief Description:
  * This small program is used to demonstrate 'fork rule #6':

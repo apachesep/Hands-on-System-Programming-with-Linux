@@ -1,5 +1,5 @@
 /*
- * ch8:simpsh_v1.c
+ * ch9:simpsh_v1.c
  ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 8 : Process Execution and Creation
+ *  Ch 9 : Process Creation
  ****************************************************************
  * Brief Description:
  * A small 'project': build a tiny, minimally functional shell.

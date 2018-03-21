@@ -1,5 +1,5 @@
 /*
- * ch8:fork4_prnum.c
+ * ch9:fork4_prnum.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 8 : Process Execution and Creation
+ *  Ch 9 : Process Creation
  ****************************************************************
  * Brief Description:
  * A quick and simple demo of the fork(2) system call.

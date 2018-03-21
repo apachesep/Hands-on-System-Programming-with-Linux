@@ -6,8 +6,8 @@ ALL := fork1 fork2 fork3 fork4 fork5 \
 	fork_malloc_test fork_malloc_test_dbg \
 	fork_malloc_test_asan fork_malloc_test_msan fork_malloc_test_ub \
 	simpsh_v1 simpsh_v1_dbg simpsh_v1_asan simpsh_v1_msan simpsh_v1_ub \
-	simpsh_v2 simpsh_v2_dbg simpsh_v2_asan simpsh_v2_msan simpsh_v2_ub
-
+	simpsh_v2 simpsh_v2_dbg simpsh_v2_asan simpsh_v2_msan simpsh_v2_ub \
+	simpsh_v3 simpsh_v3_dbg simpsh_v3_asan simpsh_v3_msan simpsh_v3_ub
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
