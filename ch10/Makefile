@@ -1,6 +1,6 @@
 # Makefile
 # ch10
-ALL := sig1
+ALL := sig1 sig2
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -22,6 +22,8 @@ common_dbg.o: ../common.c ../common.h
 
 sig1: common.o sig1.o
 	${CC} ${CFLAGS} -o sig1 sig1.c common.o
+sig2: common.o sig2.o
+	${CC} ${CFLAGS} -o sig2 sig2.c common.o
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
