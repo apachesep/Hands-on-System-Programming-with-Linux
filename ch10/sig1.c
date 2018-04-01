@@ -11,7 +11,11 @@
  *  Ch 10 : Signalling
  ****************************************************************
  * Brief Description:
- *
+ * Put a process in an infinite loop, run it and then, "manually"
+ * send it a signal via the keyboard.
+ * This program does nothing in terms of signalling except demonstrate
+ * that, when unhandled, the default action of the SIGINT (^C, value 2)
+ * is to kill the foreground process.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -20,16 +24,16 @@
 #include <sys/types.h>
 #include "../common.h"
 
-int main(int argc, char **argv)
+int main(void)
 {
-	int i=1;
+	unsigned long int i = 1;
 
-	while(1) {
-		printf("Looping, iteration #%02d ...\n", i++);
-		sleep(1);
+	while (1) {
+		printf("Looping, iteration #%02ld ...\n", i++);
+		(void)sleep(1);
 	}
-	
-	exit (EXIT_SUCCESS);
+
+	exit(EXIT_SUCCESS);
 }
 
 /* vi: ts=8 */
