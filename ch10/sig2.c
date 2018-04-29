@@ -11,7 +11,9 @@
  *  Ch 10 : Signalling
  ****************************************************************
  * Brief Description:
- *
+ * A simple signal handling program: here, we 'trap' two signals -
+ * SIGINT and SIGQUIT - via the sigaction(2) system call, and demonstrate
+ * a simple signal handler function that 'handles' them, writing out a message.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
@@ -22,7 +24,7 @@
 #include <signal.h>
 #include "../common.h"
 
-/* Our simple signal hanlder */
+/* Our simple signal handler */
 static void siggy(int signum)
 {
 	const char *str1 = "*** siggy: handled SIGINT ***\n";
@@ -63,5 +65,4 @@ int main(void)
 
 	exit(EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */
