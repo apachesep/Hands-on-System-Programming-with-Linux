@@ -11,8 +11,8 @@
  *  'Common' code.
  ****************************************************************
  * Brief Description:
- *  This is the 'common' code that gets dynamically linked into
- *  all binary executables.
+ * This is the 'common' code that gets compiled into all binary
+ * executables.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
