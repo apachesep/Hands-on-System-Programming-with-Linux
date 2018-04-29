@@ -11,8 +11,8 @@
  *  'Common' code.
  ****************************************************************
  * Brief Description:
- *  This is the 'common' code that gets dynamically linked into
- *  all binary executables.
+ * This is the 'common' code that gets compiled into all binary
+ * executables.
  */
 #ifndef __HOLSP_COMMON_H__
 #define __HOLSP_COMMON_H__
@@ -20,6 +20,12 @@
 #ifndef _GNU_SOURCE
 #define _GNU_SOURCE
 #endif
+
+/*--- 'Regular' headers ---*/
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+/*---*/
 
 #define NON_FATAL    0
 int handle_err(int fatal, const char *fmt, ...);
