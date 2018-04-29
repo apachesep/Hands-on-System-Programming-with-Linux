@@ -13,9 +13,9 @@
  * Brief Description:
  * Put a process in an infinite loop, run it and then, "manually"
  * send it a signal via the keyboard.
- * This program does nothing in terms of signalling except demonstrate
+ * This program does _nothing_ in terms of signalling except demonstrate
  * that, when unhandled, the default action of the SIGINT (^C, value 2)
- * is to kill the foreground process.
+ * signal is to kill the foreground process.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
