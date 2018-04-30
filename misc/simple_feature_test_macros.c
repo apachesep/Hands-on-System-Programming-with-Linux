@@ -23,7 +23,12 @@
 
 int main(int argc, char **argv)
 {
+	printf("C STD = %ldL :", __STDC_VERSION__);
+	if (__STDC_VERSION__ == 201112L)
+		printf(" C11 [latest ver as of date]\n");
+	
 	printf("=========== Simple Feature Test Macros ===========\n");
+
 #ifdef _POSIX_C_SOURCE
 	printf("_POSIX_C_SOURCE is defined         : value = %ldL\n", _POSIX_C_SOURCE);
 #else
