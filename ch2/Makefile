@@ -5,7 +5,7 @@
 #  Packt Publishers
 #
 # From: Ch 2
-ALL :=  mem_app1buggy mem_app1buggy_dbg
+ALL :=  mem_app1buggy mem_app1buggy_dbg stacker stacker_dbg
 
 CC=gcc
 CFLAGS=-Wall
@@ -25,6 +25,13 @@ mem_app1buggy_dbg.o: mem_app1buggy.c
 	gcc -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c mem_app1buggy.c -o mem_app1buggy_dbg.o
 mem_app1buggy_dbg: mem_app1buggy_dbg.o common_dbg.o
 	gcc -o mem_app1buggy_dbg mem_app1buggy_dbg.o common_dbg.o
+
+stacker: common.o stacker.o
+	${CC} ${CFLAGS} -o stacker stacker.c common.o
+stacker_dbg.o: stacker.c
+	${CC} ${CFLAGS_DBG} -c stacker.c -o stacker_dbg.o
+stacker_dbg: stacker_dbg.o common_dbg.o
+	${CC} -o stacker_dbg stacker_dbg.o common_dbg.o
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
