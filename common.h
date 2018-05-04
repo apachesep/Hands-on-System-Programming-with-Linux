@@ -62,7 +62,19 @@ static inline void beep(int what)
 		beep((val));                                                   \
 		c++;                                                           \
 		for(inner_index=0;inner_index<HZ*1000;inner_index++)           \
-			for(m=0;m<50;m++);                                     \
+			for(m=0;m<30;m++);                                     \
+		}                                                              \
+	/*printf("c=%d\n",c);*/                                                \
+}
+#define DELAY_LOOP_SILENT(val,loop_count)                                      \
+{                                                                              \
+	int c=0, m;                                                            \
+	unsigned int for_index,inner_index;                                    \
+	                                                                       \
+	for(for_index=0;for_index<loop_count;for_index++) {                    \
+		c++;                                                           \
+		for(inner_index=0;inner_index<HZ*1000;inner_index++)           \
+			for(m=0;m<30;m++);                                     \
 		}                                                              \
 	/*printf("c=%d\n",c);*/                                                \
 }
