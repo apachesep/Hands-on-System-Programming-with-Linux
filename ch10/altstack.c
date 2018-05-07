@@ -60,8 +60,6 @@ void *stack(void)
  */
 static void sighdlr(int signum)
 {
-	int saved;
-
 	if (t == 0)
 		stk_start = (unsigned long)stack();
 
@@ -71,10 +69,9 @@ static void sighdlr(int signum)
 		s ++; t ++;
 		if (s >= MAX)
 			s = 1;
-		saved = s;
 		fprintf(stderr, " s=%d ; total=%d; stack %p\n", s, t, stack());
 		/* Spend some time inside the signal handler ... */
-		DELAY_LOOP_SILENT(saved+48, 5); /* +48 to get the equivalent ASCII value */
+		DELAY_LOOP_SILENT(s+48, 5); /* +48 to get the equivalent ASCII value */
 		break;
 	case SIGUSR2:
 		fprintf(stderr, "*** signal %d:: stack@: t0=%lx last=%lx : delta=%ld ***\n",
