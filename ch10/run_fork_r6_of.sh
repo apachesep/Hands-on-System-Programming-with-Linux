@@ -5,7 +5,7 @@
 #  Publisher:  Packt
 #
 # From:
-#  Ch 9 : Process Creation
+#  Ch 10 : Process Creation
 # 
 # run_fork_r6_of.sh : simple wrapper over fork_r6_of
 FILE=tst

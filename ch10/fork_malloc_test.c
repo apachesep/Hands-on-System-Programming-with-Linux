@@ -1,5 +1,5 @@
 /*
- * ch9:fork_malloc_test.c
+ * ch10:fork_malloc_test.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 9 : Process Creation
+ *  Ch 10 : Process Creation
  ****************************************************************
  * Brief Description:
  *
@@ -111,5 +111,4 @@ int main(int argc, char **argv)
 	printf("Parent (%d) will exit now...\n", getpid());
 	exit(EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

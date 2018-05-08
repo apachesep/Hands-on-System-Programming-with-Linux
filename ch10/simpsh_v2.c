@@ -1,5 +1,5 @@
 /*
- * ch9:simpsh_v2.c
+ * ch10:simpsh_v2.c
  ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 9 : Process Creation
+ *  Ch 10 : Process Creation
  ****************************************************************
  * Brief Description:
  * A small 'project': build a tiny, minimally functional shell.
@@ -27,7 +27,6 @@
 #include <sys/wait.h>
 #include "../common.h"
 
-/*---------------- Globals, Macros ----------------------------*/
 #define CMD_MAXLEN   128
 #define VPRINT(str, args...) do {    \
 	if (gVerbose)                \
@@ -36,10 +35,6 @@
 
 static int gVerbose = 0;
 const char *PromptStr = ">> ";
-
-/*---------------- Typedef's, constants, etc ------------------*/
-
-/*---------------- Functions ----------------------------------*/
 
 static void interpret_wait(pid_t child, int wstatus)
 {
@@ -155,5 +150,4 @@ int main(int argc, char **argv)
 	VPRINT("Parent process (%7d) exiting...\n", getpid());
 	exit(EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

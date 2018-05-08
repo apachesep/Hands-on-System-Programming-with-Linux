@@ -1,5 +1,5 @@
 /*
- * ch9:fork4.c
+ * ch10:fork4.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 9 : Process Creation
+ *  Ch 10 : Process Creation
  ****************************************************************
  * Brief Description:
  * A quick and simple demo of the fork(2) system call.
@@ -47,7 +47,7 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	/* We leave the validation of the two parameters as a small
-	 * exercise to the reader :-)
+	 * exercise to you, dear reader :-)
 	 */
 
 	switch ((ret = fork())) {
@@ -67,5 +67,4 @@ int main(int argc, char **argv)
 	printf("Parent (%d) will exit now...\n", getpid());
 	exit(EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

@@ -1,5 +1,5 @@
 /*
- * ch9:fork2.c
+ * ch10:fork2.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 9 : Process Creation
+ *  Ch 10 : Process Creation
  ****************************************************************
  * Brief Description:
  * A very quick and simple demo of the fork(2) system call.
@@ -28,5 +28,4 @@ int main(int argc, char **argv)
 	printf("Hello, fork.\n");
 	exit(EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */
