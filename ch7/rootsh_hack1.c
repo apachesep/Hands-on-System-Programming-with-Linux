@@ -20,15 +20,6 @@
 #include <sys/types.h>
 #include "../common.h"
 
-/*---------------- Globals, Macros ----------------------------*/
-
-
-/*---------------- Typedef's, constants, etc ------------------*/
-
-
-/*---------------- Functions ----------------------------------*/
-
-
 int main(int argc, char **argv)
 {
 	/* Just spawn a shell.
@@ -38,5 +29,4 @@ int main(int argc, char **argv)
 	system("/bin/bash");
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */
