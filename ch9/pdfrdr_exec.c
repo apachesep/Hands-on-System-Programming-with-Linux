@@ -1,5 +1,5 @@
 /*
- * ch8:pdfrdr_exec.c
+ * ch9:pdfrdr_exec.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 8 : Process Execution and Creation
+ *  Ch 9 : Process Execution
  ****************************************************************
  * Brief Description:
  * A simple demo of using the exec API; this program contains a
@@ -23,6 +23,9 @@
 #include <sys/types.h>
 #include "../common.h"
 
+/* NOTE! We assume that the PDF reader app 'Evince' is
+ * installed at this location
+ */
 const char *pdf_reader_app="/usr/bin/evince";
 
 static int exec_pdf_reader_app(char *pdfdoc)
@@ -49,5 +52,4 @@ int main(int argc, char **argv)
 	
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

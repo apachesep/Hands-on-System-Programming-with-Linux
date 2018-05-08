@@ -1,5 +1,5 @@
 /*
- * ch8:execl_eg.c
+ * ch9:execl_eg.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 8 : Process Execution and Creation
+ *  Ch 9 : Process Execution
  ****************************************************************
  * Brief Description:
  * A simple demo of using the execl(3) API; we execute the
@@ -21,15 +21,6 @@
 #include <unistd.h>
 #include <sys/types.h>
 #include "../common.h"
-
-/*---------------- Globals, Macros ----------------------------*/
-
-
-/*---------------- Typedef's, constants, etc ------------------*/
-
-
-/*---------------- Functions ----------------------------------*/
-
 
 int main(int argc, char **argv)
 {
@@ -48,5 +39,4 @@ int main(int argc, char **argv)
 	printf("This should never get executed!\n");
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

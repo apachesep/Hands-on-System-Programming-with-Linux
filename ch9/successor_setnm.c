@@ -1,5 +1,5 @@
 /*
- * ch8:successor_setnm.c
+ * ch9:successor_setnm.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,11 +8,13 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 8 : Process Execution and Creation
+ *  Ch 9 : Process Execution
  ****************************************************************
  * Brief Description:
+ * [Paired with the 'predcs_name.c' code].
  * A demo of using the execl(3) API; this is the second of two
  * programs. 
+ *
  * In this program, we accept a name (provided by the user)
  * passed o us by the predecessor program.
  * However, we find that this does not actually change the name of
@@ -48,7 +50,7 @@ int main(int argc, char **argv)
 				" [Right]\n", argv[0], argv[2]);
 		if (prctl(PR_SET_NAME, argv[2], 0, 0, 0) < 0)
 			FATAL("prctl failed\n");
-	} else { /* wrong way... */
+	} else {         /* wrong way... */
 		printf("%s: attempt to implicitly set name to \"%s\""
 			" via the argv[0] passed to execl [Wrong]\n",
 			argv[0], argv[1]);
@@ -59,5 +61,4 @@ int main(int argc, char **argv)
 
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

@@ -1,5 +1,5 @@
 /*
- * ch8:predcs_name.c
+ * ch9:predcs_name.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 8 : Process Execution and Creation
+ *  Ch 9 : Process Execution
  ****************************************************************
  * Brief Description:
  * A demo of using the execl(3) API; this is the first of two
@@ -39,15 +39,16 @@ int main(int argc, char **argv)
 	/* Have us, the predecessor, exec the successor! 
 	 * Notice how we "cleverly" pass argv[1] as the successor's
 	 * argv[0] and argv[1]; hence, the thinking is, it will receive
-	 * this name as "it's" name (here, we're proved wrong though)
+	 * this name as "it's" name (here, we're proved wrong though),
 	 * and it's first parameter (that works). 
+	 *
 	 * So, to right the wrong, lets use this logic:
 	 * if the user passes us 2 params, we'll pass them along to
 	 * the successor; if the successor detects 3 params, it
 	 * uses the 'correct' approach to naming. See the successor
-	 * code for more...
+	 * code for details on how this is done ...
 	 */
-	if (argc == 2) { /* the wrong way */
+	if (argc == 2) {        /* the wrong way */
 		if (execl("./successor_setnm", argv[1], argv[1],
 					(char *)0) == -1)
 			FATAL("execl \"successor_setnm\" 1 failed\n");
@@ -58,5 +59,4 @@ int main(int argc, char **argv)
 	}
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

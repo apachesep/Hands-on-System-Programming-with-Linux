@@ -4,11 +4,10 @@
 #  (c) Kaiwan N Billimoria
 #  Packt Publishers
 #
-# From: Ch 8
+# From: Ch 9
 ALL :=  execl_eg execl_eg_dbg \
 	predcs_name successor_setnm \
-	pdfrdr_exec pdfrdr_exec_dbg \
-	 pdfrdr_exec_asan pdfrdr_exec_msan pdfrdr_exec_ub 
+	pdfrdr_exec pdfrdr_exec_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -58,10 +57,9 @@ pdfrdr_exec_dbg.o: pdfrdr_exec.c
 	${CC} ${CFLAGS_DBG} -c pdfrdr_exec.c -o pdfrdr_exec_dbg.o
 pdfrdr_exec_dbg: pdfrdr_exec_dbg.o common_dbg.o
 	${CC} -o pdfrdr_exec_dbg pdfrdr_exec_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o pdfrdr_exec_asan pdfrdr_exec_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o pdfrdr_exec_ub pdfrdr_exec_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o pdfrdr_exec_msan pdfrdr_exec_dbg.o common_dbg.o
-
+#	${CL} ${CFLAGS_DBG_ASAN} -o pdfrdr_exec_asan pdfrdr_exec_dbg.o common_dbg.o
+#	${CL} ${CFLAGS_DBG_UB} -o pdfrdr_exec_ub pdfrdr_exec_dbg.o common_dbg.o
+#	${CL} ${CFLAGS_DBG_MSAN} -o pdfrdr_exec_msan pdfrdr_exec_dbg.o common_dbg.o
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
