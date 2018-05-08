@@ -1,5 +1,5 @@
 /*
- * ch10:handle_segv.c
+ * ch11:handle_segv.c
  * ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 10 : Signalling
+ *  Ch 11 : Signalling
  ****************************************************************
  * Brief Description:
  * This program tests two ways of haveing a process (or thread) sleep:

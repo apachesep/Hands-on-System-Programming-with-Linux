@@ -1,5 +1,5 @@
 /*
- * ch_:sig1.c
+ * ch11:sig1.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 10 : Signalling
+ *  Ch 11 : Signalling
  ****************************************************************
  * Brief Description:
  * Put a process in an infinite loop, run it and then, "manually"
@@ -35,5 +35,4 @@ int main(void)
 
 	exit(EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

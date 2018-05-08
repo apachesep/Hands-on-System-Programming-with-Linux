@@ -1,5 +1,5 @@
 /*
- * ch_:sig2.c
+ * ch11:sig2.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 10 : Signalling
+ *  Ch 11 : Signalling
  ****************************************************************
  * Brief Description:
  * A simple signal handling program: here, we 'trap' two signals -

@@ -1,5 +1,5 @@
 #!/bin/bash
-# bombard_sig.sh
+# Ch 11 : bombard_sig.sh
 #
 # Shell script to bombard a given process with signals.
 # Really a test case for the 'C' signal handling programs..

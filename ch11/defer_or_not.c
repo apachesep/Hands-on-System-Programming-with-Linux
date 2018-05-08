@@ -1,5 +1,5 @@
 /*
- * ch10:defer_or_not.c
+ * ch11:defer_or_not.c
  * ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 10 : Signalling
+ *  Ch 11 : Signalling
  ****************************************************************
  * Brief Description:
  *

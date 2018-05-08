@@ -1,5 +1,5 @@
 /*
- * ch10:zombies_clear_linux26.c
+ * ch11:zombies_clear_linux26.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 10 : Signalling
+ *  Ch 11 : Signalling
  ****************************************************************
  * Brief Description:
  *
