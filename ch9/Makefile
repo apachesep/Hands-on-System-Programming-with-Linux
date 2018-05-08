@@ -1,21 +1,22 @@
 # Makefile
-#  ch8 / fork
-
-ALL := fork1 fork2 fork3 fork4 fork5 \
-	fork4_prnum fork_r6_of \
-	fork_malloc_test fork_malloc_test_dbg \
-	fork_malloc_test_asan fork_malloc_test_msan fork_malloc_test_ub \
-	simpsh_v1 simpsh_v1_dbg simpsh_v1_asan simpsh_v1_msan simpsh_v1_ub \
-	simpsh_v2 simpsh_v2_dbg simpsh_v2_asan simpsh_v2_msan simpsh_v2_ub \
-	simpsh_v3 simpsh_v3_dbg simpsh_v3_asan simpsh_v3_msan simpsh_v3_ub
+# This program is part of the source code released for the book
+#  "Hands-On Linux System Programming"
+#  (c) Kaiwan N Billimoria
+#  Packt Publishers
+#
+# From: Ch 8
+ALL :=  execl_eg execl_eg_dbg \
+	predcs_name successor_setnm \
+	pdfrdr_exec pdfrdr_exec_dbg \
+	 pdfrdr_exec_asan pdfrdr_exec_msan pdfrdr_exec_ub 
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
 
 CFLAGS=-Wall
 CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
-CFLAGS_DBG_ASAN= -fsanitize=address
-CFLAGS_DBG_UB= -fsanitize=undefined
+CFLAGS_DBG_ASAN=${CFLAGS_DBG} -fsanitize=address
+CFLAGS_DBG_UB=${CFLAGS_DBG} -fsanitize=undefined
 CFLAGS_DBG_MSAN= -fsanitize=memory -fPIE -pie
 
 all: ${ALL}
@@ -26,69 +27,40 @@ common.o: ../common.c ../common.h
 common_dbg.o: ../common.c ../common.h
 	${CC} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
 
+execl_eg: common.o execl_eg.o
+	${CC} ${CFLAGS} -o execl_eg execl_eg.c common.o
+execl_eg_dbg.o: execl_eg.c
+	${CC} ${CFLAGS_DBG} -c execl_eg.c -o execl_eg_dbg.o
+execl_eg_dbg: execl_eg_dbg.o common_dbg.o
+	${CC} -o execl_eg_dbg execl_eg_dbg.o common_dbg.o
+	#${CL} ${CFLAGS_DBG_ASAN} -o execl_eg_asan execl_eg_dbg.o common_dbg.o
+	#${CL} ${CFLAGS_DBG_UB} -o execl_eg_ub execl_eg_dbg.o common_dbg.o
+	#${CL} ${CFLAGS_DBG_MSAN} -o execl_eg_msan execl_eg_dbg.o common_dbg.o
 
-fork1: common.o fork1.o
-	${CC} ${CFLAGS} -o fork1 fork1.c common.o
-fork2: common.o fork2.o
-	${CC} ${CFLAGS} -o fork2 fork2.c common.o
-fork3: common.o fork3.o
-	${CC} ${CFLAGS} -o fork3 fork3.c common.o
-fork4: common.o fork4.o
-	${CC} ${CFLAGS} -o fork4 fork4.c common.o
-fork4_prnum: common.o fork4_prnum.o
-	${CC} ${CFLAGS} -o fork4_prnum fork4_prnum.c common.o
-fork5: common.o fork5.o
-	${CC} ${CFLAGS} -o fork5 fork5.c common.o
 
-fork_r6_of: common.o fork_r6_of.o
-	${CC} ${CFLAGS} -o fork_r6_of fork_r6_of.c common.o
-fork_r6_of_dbg.o: fork_r6_of.c
-	${CC} ${CFLAGS_DBG} -c fork_r6_of.c -o fork_r6_of_dbg.o
-fork_r6_of_dbg: fork_r6_of_dbg.o common_dbg.o
-	${CC} -o fork_r6_of_dbg fork_r6_of_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o fork_r6_of_asan fork_r6_of_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o fork_r6_of_ub fork_r6_of_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o fork_r6_of_msan fork_r6_of_dbg.o common_dbg.o
+predcs_name: common.o predcs_name.o
+	${CC} ${CFLAGS} -o predcs_name predcs_name.c common.o
+predcs_name_dbg.o: predcs_name.c
+	${CC} ${CFLAGS_DBG} -c predcs_name.c -o predcs_name_dbg.o
+predcs_name_dbg: predcs_name_dbg.o common_dbg.o
+	${CC} -o predcs_name_dbg predcs_name_dbg.o common_dbg.o
 
-fork_malloc_test: common.o fork_malloc_test.o
-	${CC} ${CFLAGS} -o fork_malloc_test fork_malloc_test.c common.o
-fork_malloc_test_dbg.o: fork_malloc_test.c
-	${CC} ${CFLAGS_DBG} -c fork_malloc_test.c -o fork_malloc_test_dbg.o
-fork_malloc_test_dbg: fork_malloc_test_dbg.o common_dbg.o
-	${CC} -o fork_malloc_test_dbg fork_malloc_test_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o fork_malloc_test_asan fork_malloc_test_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o fork_malloc_test_ub fork_malloc_test_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o fork_malloc_test_msan fork_malloc_test_dbg.o common_dbg.o
+successor_setnm: common.o successor_setnm.o
+	${CC} ${CFLAGS} -o successor_setnm successor_setnm.c common.o
+successor_setnm_dbg.o: successor_setnm.c
+	${CC} ${CFLAGS_DBG} -c successor_setnm.c -o successor_setnm_dbg.o
+successor_setnm_dbg: successor_setnm_dbg.o common_dbg.o
+	${CC} -o successor_setnm_dbg successor_setnm_dbg.o common_dbg.o
 
-simpsh_v1: common.o simpsh_v1.o
-	${CC} ${CFLAGS} -o simpsh_v1 simpsh_v1.c common.o
-simpsh_v1_dbg.o: simpsh_v1.c
-	${CC} ${CFLAGS_DBG} -c simpsh_v1.c -o simpsh_v1_dbg.o
-simpsh_v1_dbg: simpsh_v1_dbg.o common_dbg.o
-	${CC} -o simpsh_v1_dbg simpsh_v1_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o simpsh_v1_asan simpsh_v1_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o simpsh_v1_ub simpsh_v1_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o simpsh_v1_msan simpsh_v1_dbg.o common_dbg.o
-
-simpsh_v2: common.o simpsh_v2.o
-	${CC} ${CFLAGS} -o simpsh_v2 simpsh_v2.c common.o
-simpsh_v2_dbg.o: simpsh_v2.c
-	${CC} ${CFLAGS_DBG} -c simpsh_v2.c -o simpsh_v2_dbg.o
-simpsh_v2_dbg: simpsh_v2_dbg.o common_dbg.o
-	${CC} -o simpsh_v2_dbg simpsh_v2_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o simpsh_v2_asan simpsh_v2_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o simpsh_v2_ub simpsh_v2_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o simpsh_v2_msan simpsh_v2_dbg.o common_dbg.o
-
-simpsh_v3: common.o simpsh_v3.o
-	${CC} ${CFLAGS} -o simpsh_v3 simpsh_v3.c common.o
-simpsh_v3_dbg.o: simpsh_v3.c
-	${CC} ${CFLAGS_DBG} -c simpsh_v3.c -o simpsh_v3_dbg.o
-simpsh_v3_dbg: simpsh_v3_dbg.o common_dbg.o
-	${CC} -o simpsh_v3_dbg simpsh_v3_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -o simpsh_v3_asan simpsh_v3_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_UB} -o simpsh_v3_ub simpsh_v3_dbg.o common_dbg.o
-	${CL} ${CFLAGS_DBG_MSAN} -o simpsh_v3_msan simpsh_v3_dbg.o common_dbg.o
+pdfrdr_exec: common.o pdfrdr_exec.o
+	${CC} ${CFLAGS} -o pdfrdr_exec pdfrdr_exec.c common.o
+pdfrdr_exec_dbg.o: pdfrdr_exec.c
+	${CC} ${CFLAGS_DBG} -c pdfrdr_exec.c -o pdfrdr_exec_dbg.o
+pdfrdr_exec_dbg: pdfrdr_exec_dbg.o common_dbg.o
+	${CC} -o pdfrdr_exec_dbg pdfrdr_exec_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_ASAN} -o pdfrdr_exec_asan pdfrdr_exec_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_UB} -o pdfrdr_exec_ub pdfrdr_exec_dbg.o common_dbg.o
+	${CL} ${CFLAGS_DBG_MSAN} -o pdfrdr_exec_msan pdfrdr_exec_dbg.o common_dbg.o
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
