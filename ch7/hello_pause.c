@@ -7,11 +7,11 @@
  *  (c) Kaiwan N Billimoria
  *  Packt Publishers
  *
- * From: Ch 7
+ * From: Ch 8
  **********************************************************************
  * A quick 'Hello, World'-like program; here, we call pause(2) to keep
- * the process alive while it runs in the background. The idea is,
- *
+ * the process alive while it runs in the background. The idea is, this
+ * simple process serves as a test-bed for other apps.
  */
 #define _GNU_SOURCE
 #include <stdio.h>
