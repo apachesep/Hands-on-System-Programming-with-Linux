@@ -27,7 +27,7 @@ show_traditional_setgid_prg()
  for ((i=0; i<${#gDirArr[@]}; i++))
  do
 	dir=${gDirArr[${i}]}
-	printf "Scanning %-15s ...\n" "${dir}"
+	printf "[+] Scanning %-15s ...\n" "${dir}"
 	ls -l ${dir} | grep "^-.....s" #| awk '$3=="root" {print $0}'
 	echo "${SEP}"
  done
@@ -41,7 +41,7 @@ show_traditional_setuid_root_prg()
  for ((i=0; i<${#gDirArr[@]}; i++))
  do
 	dir=${gDirArr[${i}]}
-	printf "Scanning %-15s ...\n" "${dir}"
+	printf "[+] Scanning %-15s ...\n" "${dir}"
 	ls -l ${dir} | grep "^-..s" | awk '$3=="root" {print $0}'
 	echo "${SEP}"
  done
