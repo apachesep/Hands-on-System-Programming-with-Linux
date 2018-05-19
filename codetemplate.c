@@ -38,5 +38,4 @@ int main(int argc, char **argv)
 	
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */
