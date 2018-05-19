@@ -13,7 +13,7 @@ ALL := mallocmax mallocmax_dbg mallocmax32    \
   alloca_try alloca_try_dbg
 
 CROSS_COMPILE=
-  #arm-none-linux-gnueabi-
+  #arm-linux-gnueabihf-
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
 
