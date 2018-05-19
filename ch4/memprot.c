@@ -24,6 +24,7 @@
 
 /*---------------- Globals, Macros ----------------------------*/
 int gPgsz;
+int okornot[4];
 
 /*---------------- Typedef's, constants, etc ------------------*/
 typedef unsigned long long u64;
@@ -39,6 +40,9 @@ static void test_mem(void *ptr, int write_on_ro_mem)
 	/* Page 0 : rw [default] mem protection */
 	*start_off = 'a';
 	printf("page 0 @ 0x%016llx: read: 0x%x\n", (u64)start_off, *start_off);
+	if (okornot[0] == 1) {
+	} else
+		printf("*** Page 0 : skipping tests as memprot failed...\n");
 
 	/* Page 1 : ro mem protection */
 	start_off = (char *)ptr + gPgsz + byte;
@@ -49,12 +53,21 @@ static void test_mem(void *ptr, int write_on_ro_mem)
 	}
 
 	/* Page 2 : mprotect(PROT_WRITE|PROT_EXEC) fails, so no point testing it */
+	if (okornot[1] == 1) {
+	} else
+		printf("*** Page 1 : skipping tests as memprot failed...\n");
+	if (okornot[2] == 1) {
+	} else
+		printf("*** Page 2 : skipping tests as memprot failed...\n");
 
 	/* Page 3 : 'NONE' mem protection */
 	start_off = (char *)ptr + 3*gPgsz + byte;
 	printf("page 3 @ 0x%016llx: attempting read now ...\n", (u64)start_off);
 	printf(" read: 0x%x\n", *start_off); /* should segfault! */
 	*start_off = 'a'; 
+	if (okornot[3] == 1) {
+	} else
+		printf("*** Page 3 : skipping tests as memprot failed...\n");
 }
 
 static void protect_mem(void *ptr)
@@ -67,6 +80,7 @@ static void protect_mem(void *ptr)
 			PROT_READ|PROT_WRITE|PROT_EXEC, PROT_NONE};
 
 	printf("%s():\n", __FUNCTION__);
+	memset(okornot, 0, sizeof(okornot));
 
 	/* Loop over each page, setting protections as required */
 	for (i=0; i<4; i++) {
@@ -77,6 +91,8 @@ static void protect_mem(void *ptr)
 
 		if (mprotect((void *)start_off, gPgsz, prots[i]) == -1)
 			WARN("mprotect(%s) failed\n", str_prots[i]);
+		else
+			okornot[i] = 1;
 	}
 }
 
