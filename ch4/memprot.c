@@ -1,5 +1,5 @@
 /*
- * ch_:memprot.c
+ * ch4:memprot.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch  : Dynamic Memory
+ *  Ch 4 : Dynamic Memory Allocation
  ****************************************************************
  * Brief Description:
  *
@@ -18,6 +18,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <string.h>
 #include <sys/types.h>
 #include <sys/mman.h>       /* for mprotect(2) */
 #include "../common.h"
@@ -25,6 +26,22 @@
 /*---------------- Globals, Macros ----------------------------*/
 int gPgsz;
 int okornot[4];
+
+#define TEST_READ(pgnum, addr) do { \
+	printf("page %d: reading: byte @ 0x%016llx is ", \
+			pgnum, (u64)addr); \
+	fflush(stdout); \
+	printf(" %x", *addr); \
+	printf(" [OK]\n"); \
+} while (0)
+
+#define TEST_WRITE(pgnum, addr, byte) do { \
+	printf("page %d: writing: byte '%c' to address 0x%016llx now ...", \
+			pgnum, byte, (u64)addr); \
+	fflush(stdout); \
+	*addr = byte; \
+	printf(" [OK]\n"); \
+} while (0)
 
 /*---------------- Typedef's, constants, etc ------------------*/
 typedef unsigned long long u64;
@@ -35,37 +52,38 @@ static void test_mem(void *ptr, int write_on_ro_mem)
 	int byte = random() % gPgsz;
 	char *start_off = (char *)ptr + byte;
 
-	printf("\n%s():\n", __FUNCTION__);
+	printf("\n----- %s() -----\n", __FUNCTION__);
 
 	/* Page 0 : rw [default] mem protection */
-	*start_off = 'a';
-	printf("page 0 @ 0x%016llx: read: 0x%x\n", (u64)start_off, *start_off);
 	if (okornot[0] == 1) {
+		TEST_WRITE(0, start_off, 'a');
+		TEST_READ(0, start_off);
 	} else
 		printf("*** Page 0 : skipping tests as memprot failed...\n");
 
 	/* Page 1 : ro mem protection */
-	start_off = (char *)ptr + gPgsz + byte;
-	printf("page 1 @ 0x%016llx: read: 0x%x\n", (u64)start_off, *start_off);
-	if (write_on_ro_mem == 1) {
-		printf("page 1 @ 0x%016llx: attempting write now ...\n", (u64)start_off);
-		*start_off = 'a'; /* should segfault! */
-	}
-
-	/* Page 2 : mprotect(PROT_WRITE|PROT_EXEC) fails, so no point testing it */
 	if (okornot[1] == 1) {
+		start_off = (char *)ptr + 1*gPgsz + byte;
+		TEST_READ(1, start_off);
+		if (write_on_ro_mem == 1) {
+			TEST_WRITE(1, start_off, 'b');
+		}
 	} else
 		printf("*** Page 1 : skipping tests as memprot failed...\n");
+
+	/* Page 2 : RWX mem protection */
 	if (okornot[2] == 1) {
+		start_off = (char *)ptr + 2*gPgsz + byte;
+		TEST_READ(2, start_off);
+		TEST_WRITE(0, start_off, 'c');
 	} else
 		printf("*** Page 2 : skipping tests as memprot failed...\n");
 
 	/* Page 3 : 'NONE' mem protection */
-	start_off = (char *)ptr + 3*gPgsz + byte;
-	printf("page 3 @ 0x%016llx: attempting read now ...\n", (u64)start_off);
-	printf(" read: 0x%x\n", *start_off); /* should segfault! */
-	*start_off = 'a'; 
 	if (okornot[3] == 1) {
+		start_off = (char *)ptr + 3*gPgsz + byte;
+		TEST_READ(3, start_off);
+		TEST_WRITE(3, start_off, 'd');
 	} else
 		printf("*** Page 3 : skipping tests as memprot failed...\n");
 }
@@ -79,7 +97,7 @@ static void protect_mem(void *ptr)
 	int prots[4] = {PROT_READ|PROT_WRITE, PROT_READ,
 			PROT_READ|PROT_WRITE|PROT_EXEC, PROT_NONE};
 
-	printf("%s():\n", __FUNCTION__);
+	printf("----- %s() -----\n", __FUNCTION__);
 	memset(okornot, 0, sizeof(okornot));
 
 	/* Loop over each page, setting protections as required */
@@ -123,5 +141,4 @@ int main(int argc, char **argv)
 	free(ptr);
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */
