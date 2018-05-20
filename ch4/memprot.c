@@ -28,7 +28,7 @@ int gPgsz;
 int okornot[4];
 
 #define TEST_READ(pgnum, addr) do { \
-	printf("page %d: reading: byte @ 0x%016llx is ", \
+	printf("page %d: reading: byte @ 0x%llx is ", \
 			pgnum, (u64)addr); \
 	fflush(stdout); \
 	printf(" %x", *addr); \
@@ -36,7 +36,7 @@ int okornot[4];
 } while (0)
 
 #define TEST_WRITE(pgnum, addr, byte) do { \
-	printf("page %d: writing: byte '%c' to address 0x%016llx now ...", \
+	printf("page %d: writing: byte '%c' to address 0x%llx now ...", \
 			pgnum, byte, (u64)addr); \
 	fflush(stdout); \
 	*addr = byte; \
@@ -75,7 +75,7 @@ static void test_mem(void *ptr, int write_on_ro_mem)
 	if (okornot[2] == 1) {
 		start_off = (char *)ptr + 2*gPgsz + byte;
 		TEST_READ(2, start_off);
-		TEST_WRITE(0, start_off, 'c');
+		TEST_WRITE(2, start_off, 'c');
 	} else
 		printf("*** Page 2 : skipping tests as memprot failed...\n");
 
@@ -104,7 +104,7 @@ static void protect_mem(void *ptr)
 	for (i=0; i<4; i++) {
 		start_off = (u64)ptr+(i*gPgsz);
 		printf("page %d: protections: %30s: "
-			"range [0x%016llx, 0x%016llx]\n",
+			"range [0x%16llx, 0x%16llx]\n",
 			i, str_prots[i], start_off, start_off+gPgsz-1);
 
 		if (mprotect((void *)start_off, gPgsz, prots[i]) == -1)
