@@ -12,10 +12,11 @@ ALL := mallocmax mallocmax_dbg mallocmax32    \
   memprot memprot_dbg memprot_dbg_asan        \
   alloca_try alloca_try_dbg
 
-CROSS_COMPILE=
-  #arm-linux-gnueabihf-
-CC=${CROSS_COMPILE}gcc
-CL=${CROSS_COMPILE}clang
+CROSS_COMPILE=arm-linux-gnueabihf-
+CC=gcc
+CCARM=${CROSS_COMPILE}gcc
+CL=clang
+CLARM=${CROSS_COMPILE}clang
 
 CFLAGS=-Wall
 CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
@@ -29,12 +30,14 @@ CB_FILES := *.[ch]
 common.o: ../common.c ../common.h
 	${CC} ${CFLAGS} -c ../common.c -o common.o
 	${CC} ${CFLAGS} -m32 -c ../common.c -o common32.o
+common_arm.o: ../common.c ../common.h
+	${CCARM} ${CFLAGS} -c ../common.c -o common_arm.o
 common_dbg.o: ../common.c ../common.h
 	${CC} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
 
 mallocmax: common.o mallocmax.o
 	${CC} ${CFLAGS} -o mallocmax mallocmax.c common.o -lm
-	${CC} ${CFLAGS} -o mallocmax32 mallocmax.c common32.o -m32 -lm
+	${CC} ${CFLAGS} -m32 -o mallocmax32 mallocmax.c common32.o -lm
 mallocmax_dbg.o: mallocmax.c
 	${CC} ${CFLAGS_DBG} -c mallocmax.c -o mallocmax_dbg.o
 mallocmax_dbg: mallocmax_dbg.o common_dbg.o
@@ -71,6 +74,11 @@ memprot_dbg.o: memprot.c
 memprot_dbg: memprot_dbg.o common_dbg.o
 	${CC} -o memprot_dbg memprot_dbg.o common_dbg.o
 	${CC} ${CFLAGS_DBG_ASAN} -o memprot_dbg_asan memprot_dbg_asan.o common_dbg.o
+
+memprot_arm.o: common_arm.o
+	${CCARM} ${CFLAGS} -c -o memprot_arm memprot_arm.c common_arm.o
+memprot_arm: common_arm.o memprot_arm.o
+	${CCARM} ${CFLAGS} -o memprot_arm memprot_arm.c common_arm.o
 
 alloca_try: common.o alloca_try.o
 	${CC} ${CFLAGS} -o alloca_try alloca_try.c common.o
