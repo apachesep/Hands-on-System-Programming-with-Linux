@@ -15,19 +15,44 @@
  * executables.
  */
 #define _GNU_SOURCE
+#include "common.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <signal.h>
 #include <stdarg.h>
 #include <unistd.h>
 #include <string.h>
 #include <errno.h>
-#include "common.h"
 
 /*---------------- Globals, Macros ----------------------------*/
 
 /*---------------- Typedef's, constants, etc ------------------*/
 
 /*---------------- Functions ----------------------------------*/
+
+/*
+ * Signaling: Prints (to stdout) all signal integer values that are
+ * currently in the Blocked (masked) state.
+ */
+void show_blocked_signals(void)
+{
+	sigset_t oldset;
+	int i;
+
+	/* sigprocmask: if 'set' is NULL, the 'how' is ignored, but the
+	 * 'oldset' sigmask value is populated; thus we can query the
+	 * signal mask without altering it */
+	sigemptyset(&oldset);
+	if (sigprocmask(SIG_UNBLOCK, 0, &oldset) < 0)
+		FATAL("sigprocmask -query- failed\n");
+	printf("\n[SigBlk: ");
+	for (i=1; i<=64; i++) {
+		if (sigismember(&oldset, i))
+			printf("%d ", i);
+	}
+	printf("]\n");
+	fflush(stdout);
+}
 
 int handle_err(int fatal, const char *fmt, ...)
 {
