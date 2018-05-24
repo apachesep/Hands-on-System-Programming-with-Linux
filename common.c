@@ -39,7 +39,9 @@ void show_blocked_signals(void)
 	sigset_t oldset;
 	int i, none=1;
 
-	/* sigprocmask: if 'set' is NULL, the 'how' is ignored, but the
+	/* sigprocmask: 
+	 * int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
+	 * if 'set' is NULL, the 'how' is ignored, but the
 	 * 'oldset' sigmask value is populated; thus we can query the
 	 * signal mask without altering it */
 	sigemptyset(&oldset);
