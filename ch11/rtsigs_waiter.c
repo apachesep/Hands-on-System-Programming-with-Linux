@@ -10,10 +10,21 @@
  *  Ch 11 : Signalling
  ****************************************************************
  * Brief Description:
- *
- *
+ * Aim: to test how realtime signals are delivered after being unblocked.
+ * We have a process trap 3 RT signals of varying priorities; we then
+ * arrange for the RT sigs to be *blocked* when the handler runs (by calling
+ * sigfillset before the sigaction). 
+ * 
  * Useful to use the shell script 'bombard_sigrt.sh' to literally bombard
  * the process with multiple realtime signals repeatedly.
+ *
+ * We find that the first RT sig sent is delivered immediately and processed;
+ * as we deliberately have the handler running for a while, the remaining
+ * RT sigs that have been sent are not lost, rather, they are *queued* for
+ * delivery. Once the previous handler is done, the next RT sig in the Q is
+ * delivered and processed. A key point: the delivery of RT signals from the
+ * Q is in *priority order* - lower-numbered RT sigs to higher-numbered RT
+ * sigs.
  */
 #include <stdio.h>
 #include <stdlib.h>
@@ -24,7 +35,7 @@
 #include "../common.h"
 
 #define	MAX	10
-static volatile sig_atomic_t s=0, t=0, blocked=1;
+static volatile sig_atomic_t s=0, t=0;
 
 /* 
  * stack(): return the current value of the stack pointer register.
@@ -42,12 +53,16 @@ void *stack(void)
 /* Accumulator holds the return value */
 }
 
+#undef SHOW_MASKED
 /* 
  * Strictly speaking, should not use fprintf here as it's not
  * async-signal safe; indeed, it sometimes does not work well!
  */
 static void rt_sighdlr(int signum)
 {
+#ifdef SHOW_MASKED
+	show_blocked_signals();
+#endif
 	fprintf(stderr, "\nsighdlr: signal %d,", signum);
 	if ((signum == SIGRTMAX-5) ||
 	    (signum == SIGRTMIN+5) ||
@@ -56,73 +71,30 @@ static void rt_sighdlr(int signum)
 		if (s >= MAX)
 			s = 1;
 		fprintf(stderr, " s=%d ; total=%d; stack %p :", s, t, stack());
-		DELAY_LOOP_SILENT(s+48, 25); /* +48 to get the equivalent ASCII value */
+		//DELAY_LOOP('o', 8);
+		DELAY_LOOP_SILENT(8);
 		fprintf(stderr, "*");
-	}
-}
-static void toggle_rtsigs(int signum)
-{
-	sigset_t sigset;
-
-	sigemptyset(&sigset);
-	sigaddset(&sigset, SIGRTMAX-5);
-	sigaddset(&sigset, SIGRTMIN+5);
-	sigaddset(&sigset, SIGRTMAX);
-
-	if (blocked) {
-		fprintf(stderr, "\n*** SIGUSR1 : now *unblocking* the three realtime signals\n");
-		if (sigprocmask(SIG_UNBLOCK, &sigset, 0) < 0)
-			FATAL("sigprocmask -unblock- failed\n");
-		blocked=0;
-	} else {
-		fprintf(stderr, "\n*** SIGUSR1 : first checking if any of the 3 RT signals\n"
-				"are pending delivery...");
-		if (sigismember(&sigset, SIGRTMAX-5) ||
-		    sigismember(&sigset, SIGRTMIN+5) ||
-		    sigismember(&sigset, SIGRTMAX)) {
-			fprintf(stderr, " yes; unmasking them\n");
-			if (sigprocmask(SIG_UNBLOCK, &sigset, 0) < 0)
-				FATAL("sigprocmask -unblock- failed\n");
-		}
-		fprintf(stderr, " \nNow *blocking* the three realtime signals\n");
-		if (sigprocmask(SIG_BLOCK, &sigset, 0) < 0)
-			FATAL("sigprocmask -block- failed\n");
-		blocked=1;
 	}
 }
 
 int main(int argc, char **argv)
 {
 	struct sigaction act;
-	sigset_t sigset;
 
 	printf("Trapping the three realtime signals\n");
 	memset(&act, 0, sizeof(act));
 	act.sa_handler = rt_sighdlr;
 	act.sa_flags = SA_RESTART;
+	/* Set sigmask to all 1's, thus masking all signals
+	   while this handler runs */
+	sigfillset(&act.sa_mask);
+
 	if (sigaction(SIGRTMAX-5, &act, 0) == -1)
 		FATAL("sigaction %s failed\n", "SIGRTMAX-5");
 	if (sigaction(SIGRTMIN+5, &act, 0) == -1)
 		FATAL("sigaction %s failed\n", "SIGRTMIN+5");
 	if (sigaction(SIGRTMAX, &act, 0) == -1)
 		FATAL("sigaction %s failed\n", "SIGRTMAX");
-
-	printf("Now blocking the three realtime signals\n");
-	sigemptyset(&sigset);
-	sigaddset(&sigset, SIGRTMAX-5);
-	sigaddset(&sigset, SIGRTMIN+5);
-	sigaddset(&sigset, SIGRTMAX);
-	if (sigprocmask(SIG_BLOCK, &sigset, 0) < 0)
-		FATAL("sigprocmask -block- failed\n");
-	blocked=1;
-
-	/* Trap SIGUSR1 : we'll unblock the RT sigs when this arrives! */
-	printf("Trapping SIGUSR1 (RT signal mask toggler)\n");
-	memset(&act, 0, sizeof(act));
-	act.sa_handler = toggle_rtsigs;
-	act.sa_flags = SA_RESTART;
-	if (sigaction(SIGUSR1, &act, 0) == -1)
-		FATAL("sigaction %s failed\n", "SIGUSR1");
 
 	printf("Process awaiting signals ...\n");
 	while (1)
