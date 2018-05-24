@@ -66,7 +66,7 @@ static inline void beep(int what)
 		}                                                              \
 	/*printf("c=%d\n",c);*/                                                \
 }
-#define DELAY_LOOP_SILENT(val,loop_count)                                      \
+#define DELAY_LOOP_SILENT(loop_count)                                          \
 {                                                                              \
 	int c=0, m;                                                            \
 	unsigned int for_index,inner_index;                                    \
