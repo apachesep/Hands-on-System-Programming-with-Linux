@@ -4,9 +4,9 @@
 # Shell script to bombard a given process with some specific RT signals.
 # Really a test case for the 'C' signal handling programs..
 name=$(basename $0)
-SIG1=SIGRTMAX-5
-SIG2=SIGRTMIN+5
-SIG3=SIGRTMAX
+SIG1=SIGRTMAX-5   # sig# 59
+SIG2=SIGRTMAX     # sig# 64
+SIG3=SIGRTMIN+5   # sig# 39
 
 # Parameters: 
 # $1 : signal to deliver
@@ -23,7 +23,7 @@ sendsig()
 # "main" here
 
 if [ $# -ne 2 ] ; then
-	echo "Usage: ${name} PID-of-process num-RT-signals-to-send
+	echo "Usage: ${name} PID-of-process num-RT-signals-batches-to-send
  (-1 to continously bombard the process with signals)."
 	exit 1
 fi
