@@ -37,7 +37,7 @@
 void show_blocked_signals(void)
 {
 	sigset_t oldset;
-	int i;
+	int i, none=1;
 
 	/* sigprocmask: if 'set' is NULL, the 'how' is ignored, but the
 	 * 'oldset' sigmask value is populated; thus we can query the
@@ -47,10 +47,15 @@ void show_blocked_signals(void)
 		FATAL("sigprocmask -query- failed\n");
 	printf("\n[SigBlk: ");
 	for (i=1; i<=64; i++) {
-		if (sigismember(&oldset, i))
+		if (sigismember(&oldset, i)) {
+			none=0;
 			printf("%d ", i);
+		}
 	}
-	printf("]\n");
+	if (none)
+		printf("-none-]\n");
+	else
+		printf("]\n");
 	fflush(stdout);
 }
 
