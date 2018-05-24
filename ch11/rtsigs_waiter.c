@@ -53,11 +53,12 @@ void *stack(void)
 /* Accumulator holds the return value */
 }
 
-#undef SHOW_MASKED
 /* 
  * Strictly speaking, should not use fprintf here as it's not
  * async-signal safe; indeed, it sometimes does not work well!
  */
+#undef SHOW_MASKED
+/*#define SHOW_MASKED*/
 static void rt_sighdlr(int signum)
 {
 #ifdef SHOW_MASKED
