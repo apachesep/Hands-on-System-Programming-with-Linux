@@ -27,8 +27,13 @@
 #include <stdlib.h>
 /*---*/
 
-#define NON_FATAL    0
+/*--- Function prototypes ---*/
+void show_blocked_signals(void);
 int handle_err(int fatal, const char *fmt, ...);
+
+
+/*--- Macros ---*/
+#define NON_FATAL    0
 
 #define WARN(warnmsg, args...) do {                           \
 	handle_err(NON_FATAL, "!WARNING! %s:%s:%d: " warnmsg, \
@@ -66,7 +71,7 @@ static inline void beep(int what)
 		}                                                              \
 	/*printf("c=%d\n",c);*/                                                \
 }
-#define DELAY_LOOP_SILENT(val,loop_count)                                      \
+#define DELAY_LOOP_SILENT(loop_count)                                          \
 {                                                                              \
 	int c=0, m;                                                            \
 	unsigned int for_index,inner_index;                                    \
