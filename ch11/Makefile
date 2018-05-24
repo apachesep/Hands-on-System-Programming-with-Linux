@@ -1,7 +1,7 @@
 # Makefile
 # ch11 : Signalling
 ALL := sig1 sig2 zombies_clear_linux26 defer_or_not altstack \
-	handle_segv sleeping_beauty
+	handle_segv sleeping_beauty rtsigs_waiter
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -31,6 +31,9 @@ zombies_clear_linux26: common.o zombies_clear_linux26.o
 defer_or_not: common.o defer_or_not.o
 	${CC} ${CFLAGS} -o defer_or_not defer_or_not.c common.o
 
+defer_or_not_rtsigs: common.o defer_or_not_rtsigs.o
+	${CC} ${CFLAGS} -o defer_or_not_rtsigs defer_or_not_rtsigs.c common.o
+
 altstack: common.o altstack.o
 	${CC} ${CFLAGS} -o altstack altstack.c common.o
 
@@ -44,6 +47,10 @@ handle_segv_dbg: handle_segv_dbg.o common_dbg.o
 
 sleeping_beauty: common.o sleeping_beauty.o
 	${CC} ${CFLAGS} -o sleeping_beauty sleeping_beauty.c common.o
+
+rtsigs_waiter: common.o rtsigs_waiter.o
+	${CC} ${CFLAGS} -o rtsigs_waiter rtsigs_waiter.c common.o
+
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
