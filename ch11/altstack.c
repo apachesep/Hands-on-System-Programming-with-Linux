@@ -1,5 +1,5 @@
 /*
- * ch10:altstack.c
+ * ch11:altstack.c
  * ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 10 : Signalling
+ *  Ch 11 : Signalling
  ****************************************************************
  * Brief Description:
  *
@@ -71,7 +71,7 @@ static void sighdlr(int signum)
 			s = 1;
 		fprintf(stderr, " s=%d ; total=%d; stack %p\n", s, t, stack());
 		/* Spend some time inside the signal handler ... */
-		DELAY_LOOP_SILENT(s+48, 5); /* +48 to get the equivalent ASCII value */
+		DELAY_LOOP_SILENT(5);
 		break;
 	case SIGUSR2:
 		fprintf(stderr, "*** signal %d:: stack@: t0=%lx last=%lx : delta=%ld ***\n",
