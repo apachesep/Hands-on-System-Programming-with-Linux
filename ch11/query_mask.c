@@ -53,7 +53,7 @@ int main(void)
 	memset(&act, 0, sizeof(act));
 	act.sa_handler = my_handler;
 	/* This is interesting: we fill the signal mask, implying that
-	 * _all_ signals are masked (blcoked) while the signal handler
+	 * _all_ signals are masked (blocked) while the signal handler
 	 * runs! */
 	sigfillset(&act.sa_mask);
 
