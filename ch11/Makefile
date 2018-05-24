@@ -1,6 +1,6 @@
 # Makefile
 # ch11 : Signalling
-ALL := sig1 sig2 zombies_clear_linux26 defer_or_not altstack \
+ALL := sig1 sig2 query_mask zombies_clear_linux26 defer_or_not altstack \
 	handle_segv sleeping_beauty rtsigs_waiter
 
 CC=${CROSS_COMPILE}gcc
@@ -24,6 +24,8 @@ sig1: common.o sig1.o
 	${CC} ${CFLAGS} -o sig1 sig1.c common.o
 sig2: common.o sig2.o
 	${CC} ${CFLAGS} -o sig2 sig2.c common.o
+query_mask: common.o query_mask.o
+	${CC} ${CFLAGS} -o query_mask query_mask.c common.o
 
 zombies_clear_linux26: common.o zombies_clear_linux26.o
 	${CC} ${CFLAGS} -o zombies_clear_linux26 zombies_clear_linux26.c common.o
