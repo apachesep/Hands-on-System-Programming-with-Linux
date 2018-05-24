@@ -65,9 +65,11 @@ int main(int argc, char **argv)
 	for (i=1; i<pid_max; i++) {
 		if (kill (i, 0) < 0)
 			continue;
+		printf(" SIGKILL -> %d : ", i);
 		if (kill (i, SIGKILL) < 0)
-			WARN("kill PID %d with SIGKILL failed\n", i);
-		printf(" SIGKILL -> %d\n", i);
+			printf(" [FAILED]\n");
+		else
+			printf(" [OK]\n");
 	}
 	
 	exit(EXIT_SUCCESS);
