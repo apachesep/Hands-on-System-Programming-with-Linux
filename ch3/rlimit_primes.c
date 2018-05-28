@@ -1,5 +1,5 @@
 /*
- * ch2:rlimit_primes.c
+ * ch3:rlimit_primes.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 2 : Virtual Memory
+ *  Ch 3 : Resource Limits
  ****************************************************************
  * Brief Description:
  *
@@ -27,12 +27,8 @@
 #include <sys/resource.h>
 #include "../common.h"
 
-/*---------------- Globals, Macros ----------------------------*/
 #define MAX    90100
 
-/*---------------- Typedef's, constants, etc ------------------*/
-
-/*---------------- Functions ----------------------------------*/
 static void simple_primegen(int limit)
 {
 	int i, j, num = 2, isprime;
@@ -105,5 +101,4 @@ int main(int argc, char **argv)
 
 	exit(EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */
