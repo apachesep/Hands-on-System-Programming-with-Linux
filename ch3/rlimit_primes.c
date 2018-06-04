@@ -68,7 +68,7 @@ static void setup_cpu_rlimit(int cpulimit)
 	if (cpulimit == -1)
 		rlim_new.rlim_cur = rlim_new.rlim_max = RLIM_INFINITY;
 	else
-		rlim_new.rlim_cur = rlim_new.rlim_max = cpulimit;
+		rlim_new.rlim_cur = rlim_new.rlim_max = (rlim_t)cpulimit;
 
 	if (prlimit(0, RLIMIT_CPU, &rlim_new, &rlim_old) == -1)
 		FATAL("prlimit:cpu failed\n");
