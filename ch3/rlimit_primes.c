@@ -78,8 +78,10 @@ int main(int argc, char **argv)
 
 	if (argc < 3) {
 		fprintf(stderr,
-			"Usage: %s limit-to-generate-primes-upto CPU-time\n"
-			" CPU-time: -1 = unlimited, 0 = 1s.\n", argv[0]);
+			"Usage: %s limit-to-generate-primes-upto CPU-time-limit\n"
+			" arg1 : max is %d\n"
+			" arg2 : CPU-time-limit:\n  -2 = don't set\n  -1 = unlimited\n   0 = 1s\n",
+			argv[0], MAX);
 		exit(EXIT_FAILURE);
 	}
 
@@ -93,10 +95,9 @@ int main(int argc, char **argv)
 	nsec = atoi(argv[2]);
 	if (nsec == 0)
 		nsec = 1;
-	else if (nsec < -1)
-		nsec = -1;
 
-	setup_cpu_rlimit(nsec);
+	if (nsec != -2)
+		setup_cpu_rlimit(nsec);
 	simple_primegen(limit);
 
 	exit(EXIT_SUCCESS);
