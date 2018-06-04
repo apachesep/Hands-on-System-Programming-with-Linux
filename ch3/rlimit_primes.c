@@ -27,7 +27,7 @@
 #include <sys/resource.h>
 #include "../common.h"
 
-#define MAX    90100
+#define MAX    10000000		// 10 million
 
 static void simple_primegen(int limit)
 {
@@ -45,7 +45,13 @@ static void simple_primegen(int limit)
 		if (isprime) {
 			num++;
 			printf("%6d, ", i);
-			if (num % 16 == 0)
+			/* Wrap after WRAP primes are printed on a line;
+			 * this is crude; in production code, one must query
+			 * the terminal window's width and calculate the column
+			 * to wrap at.
+			 */
+#define WRAP    16
+			if (num % WRAP == 0)
 				printf("\n");
 		}
 	}
