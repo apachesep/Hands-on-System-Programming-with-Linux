@@ -29,10 +29,10 @@ static int send_peer(pid_t target, int sig, int val)
 {
 	union sigval sv;
 
-	if (kill (target, 0) < 0)
+	if (kill(target, 0) < 0)
 		return -1;
 
-	sv.sival_int=val;
+	sv.sival_int = val;
 	if (sigqueue(target, sig, sv) == -1)
 		return -2;
 	return 0;
@@ -51,7 +51,7 @@ int main (int argc, char **argv)
 		case -1 : FATAL("Target PID invalid or no permission\n");
 		case -2 : FATAL("sigqueue failed\n");
 		case 0  : printf("Producer [%d]: sent signal %d to PID %ld with data item %d\n",
-				getpid(), SIG_COMM, atol(argv[1]), atoi(argv[1]));
+				getpid(), SIG_COMM, atol(argv[1]), atoi(argv[2]));
 	}
 	exit (EXIT_SUCCESS);
 }
