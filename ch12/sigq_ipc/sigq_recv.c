@@ -37,6 +37,23 @@ typedef struct {
 } rcv_data_t;
 static rcv_data_t recv_data;
 
+static void r_sleep(int seconds)
+{
+#include <time.h>
+#include <errno.h>
+	struct timespec req, rem;
+	int verbose=0;
+
+	req.tv_sec = seconds;
+	req.tv_nsec = 0;
+	while ((nanosleep(&req, &rem) == -1) && (errno == EINTR)) {
+		if (verbose)
+			printf("nanosleep interrupted: rem time: %07lu.%07lu\n",
+				rem.tv_sec, rem.tv_nsec);
+		req = rem;
+	}
+}
+
 /* 
  * read_msg
  * Signal handler for SIG_COMM.
@@ -54,27 +71,10 @@ static void read_msg(int signum, siginfo_t *si, void *ctx)
 	recv_data.timestamp = tm;
 	recv_data.signum = signum;
 	recv_data.sender_pid = si->si_pid;
-	recv_data.sender_pid = si->si_uid;
+	recv_data.sender_uid = si->si_uid;
 	recv_data.data = si->si_value.sival_int;
 
 	data_recvd = 1;
-}
-
-static void r_sleep(int seconds)
-{
-#include <time.h>
-#include <errno.h>
-	struct timespec req, rem;
-	int verbose=1;
-
-	req.tv_sec = seconds;
-	req.tv_nsec = 0;
-	while ((nanosleep(&req, &rem) == -1) && (errno == EINTR)) {
-		if (verbose)
-			printf("nanosleep interrupted: rem time: %07lu.%07lu\n",
-				rem.tv_sec, rem.tv_nsec);
-		req = rem;
-	}
 }
 
 static void display_recv_data(void)
@@ -82,10 +82,9 @@ static void display_recv_data(void)
 	char asctm[128];
 
 	ctime_r(&recv_data.timestamp, asctm);
-	printf ("Consumer [%d] received data @ %s:\n"
-		" signal # : %2d\n"
-		" Producer: PID : %d\n"
-		"           UID : %d\n"
+	printf ("Consumer [%d] received data @ %s"
+		" signal #  : %2d\n"
+		" Producer  : PID=%d : UID=%d\n"
 		" data item : %d\n",
 		getpid(),
 		asctm,
