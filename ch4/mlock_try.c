@@ -32,18 +32,11 @@
 #include <limits.h>
 #include "../common.h"
 
-/*---------------- Globals, Macros ----------------------------*/
 #define CMD_MAX  256
 
-/*---------------- Typedef's, constants, etc ------------------*/
-
-
-/*---------------- Functions ----------------------------------*/
 static void disp_locked_mem(void)
 {
-	char *cmd;
-
-	cmd = malloc(CMD_MAX);
+	char *cmd = malloc(CMD_MAX);
 	if (!cmd)
 		FATAL("malloc(%zu) failed\n", CMD_MAX);
 	snprintf(cmd, CMD_MAX-1, "grep Lck /proc/%d/status", getpid());
@@ -63,7 +56,7 @@ static void try_mlock(const char *cpgs)
 		FATAL("too many bytes to alloc (%zu), aborting now\n", len);
 
 	/* ptr = malloc(len); */
-	/* POSIX wants page-aligned memory for mlock */
+	/* Don't use the malloc; POSIX wants page-aligned memory for mlock */
 	posix_memalign(&ptr, pgsz, len);
 	if (!ptr)
 		FATAL("posix_memalign(for %zu bytes) failed\n", len);
@@ -97,5 +90,4 @@ int main(int argc, char **argv)
 	try_mlock(argv[1]);
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */
