@@ -50,12 +50,13 @@ typedef unsigned long long u64;
 static void test_mem(void *ptr, int write_on_ro_mem)
 {
 	int byte = random() % gPgsz;
-	char *start_off = (char *)ptr + byte;
+	char *start_off;
 
 	printf("\n----- %s() -----\n", __FUNCTION__);
 
 	/* Page 0 : rw [default] mem protection */
 	if (okornot[0] == 1) {
+		start_off = (char *)ptr + 0*gPgsz + byte;
 		TEST_WRITE(0, start_off, 'a');
 		TEST_READ(0, start_off);
 	} else
@@ -104,7 +105,7 @@ static void protect_mem(void *ptr)
 	for (i=0; i<4; i++) {
 		start_off = (u64)ptr+(i*gPgsz);
 		printf("page %d: protections: %30s: "
-			"range [0x%16llx, 0x%16llx]\n",
+			"range [0x%llx:0x%llx]\n",
 			i, str_prots[i], start_off, start_off+gPgsz-1);
 
 		if (mprotect((void *)start_off, gPgsz, prots[i]) == -1)
@@ -130,7 +131,7 @@ int main(int argc, char **argv)
 		WARN("mprotect(%s) on main failed\n", "PROT_READ|PROT_WRITE|PROT_EXEC");
 #endif
 
-	/* POSIX wants page-aligned memory for mprotect(2) */
+	/* Don't use malloc; POSIX wants page-aligned memory for mprotect(2) */
 	posix_memalign(&ptr, gPgsz, 4*gPgsz);
 	if (!ptr)
 		FATAL("posix_memalign(for %zu bytes) failed\n", 4*gPgsz);
