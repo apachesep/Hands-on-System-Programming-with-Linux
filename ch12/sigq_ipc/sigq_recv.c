@@ -42,7 +42,7 @@ static void r_sleep(int seconds)
 #include <time.h>
 #include <errno.h>
 	struct timespec req, rem;
-	int verbose=0;
+	int verbose=1;
 
 	req.tv_sec = seconds;
 	req.tv_nsec = 0;
