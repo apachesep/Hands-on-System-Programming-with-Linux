@@ -22,10 +22,10 @@ all: ${ALL}
 CB_FILES := *.[ch]
 
 common.o: ../common.c ../common.h
-	${CC} ${CFLAGS} -c ../common.c -o common.o
-	${CC} ${CFLAGS} -m32 -c ../common.c -o common32.o
+	${CL} ${CFLAGS} -c ../common.c -o common.o
+	${CL} ${CFLAGS} -m32 -c ../common.c -o common32.o
 common_dbg.o: ../common.c ../common.h
-	${CC} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
+	${CL} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
 
 membugs: membugs.o common.o
 	${CL} ${CFLAGS} -o $@ $^
