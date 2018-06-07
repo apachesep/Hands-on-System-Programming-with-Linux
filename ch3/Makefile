@@ -8,7 +8,8 @@
 ALL :=  rlimits_show rlimits_show_dbg \
 	rlimit_primes rlimit_primes_dbg
 
-CC=${CROSS_COMPILE}gcc
+CC=gcc
+ARMCC=${CROSS_COMPILE}gcc
 CFLAGS=-Wall
 CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
 CFLAGS_DBG_ASAN=${CFLAGS_DBG} -fsanitize=address
@@ -20,6 +21,8 @@ CB_FILES := *.[ch]
 
 common.o: ../common.c ../common.h
 	${CC} -Wall -c ../common.c -o common.o
+common_arm.o: ../common.c ../common.h
+	${ARMCC} -Wall -c ../common.c -o common_arm.o
 common_dbg.o: ../common.c ../common.h
 	${CC} -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c ../common.c -o common_dbg.o
 
@@ -32,6 +35,8 @@ rlimits_show_dbg: rlimits_show_dbg.o common_dbg.o
 
 rlimit_primes: common.o rlimit_primes.o
 	${CC} -Wall -o rlimit_primes rlimit_primes.c common.o
+rlimit_primes_arm: common_arm.o rlimit_primes.o
+	${ARMCC} -Wall -o rlimit_primes_arm rlimit_primes.c common_arm.o
 rlimit_primes_dbg.o: rlimit_primes.c
 	${CC} -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c rlimit_primes.c -o rlimit_primes_dbg.o
 rlimit_primes_dbg: rlimit_primes_dbg.o common_dbg.o
