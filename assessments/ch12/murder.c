@@ -27,6 +27,7 @@
 #include <limits.h>
 #include "../../common.h"
 
+static int verbose=1;
 
 static unsigned long int get_pid_max(void)
 {
@@ -61,15 +62,21 @@ int main(int argc, char **argv)
 			argv[0], pid_max);
 	fgetc(stdin);
 
+	if (verbose)
+		system("ps -e");
+
 	printf("Fair Warning given, proceeding to murder ...\n");
 	for (i=1; i<pid_max; i++) {
 		if (kill (i, 0) < 0)
 			continue;
-		printf(" SIGKILL -> %d : ", i);
+		if (verbose)
+			printf(" SIGKILL -> %6d : ", i);
 		if (kill (i, SIGKILL) < 0)
 			printf(" [FAILED]\n");
-		else
-			printf(" [OK]\n");
+		else {
+			if (verbose)
+				printf(" [OK]\n");
+		}
 	}
 	
 	exit(EXIT_SUCCESS);
