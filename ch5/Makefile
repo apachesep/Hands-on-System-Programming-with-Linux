@@ -22,7 +22,6 @@ CB_FILES := *.[ch]
 
 common.o: ../common.c ../common.h
 	${CL} ${CFLAGS} -c ../common.c -o common.o
-	${CC} ${CFLAGS} -m32 -c ../common.c -o common32.o
 common_dbg.o: ../common.c ../common.h
 	${CL} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
 
