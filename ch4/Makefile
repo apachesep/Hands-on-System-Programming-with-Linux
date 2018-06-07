@@ -75,8 +75,6 @@ memprot_dbg: memprot_dbg.o common_dbg.o
 	${CC} -o memprot_dbg memprot_dbg.o common_dbg.o
 	${CC} ${CFLAGS_DBG_ASAN} -o memprot_dbg_asan memprot_dbg_asan.o common_dbg.o
 
-memprot_arm.o: common_arm.o
-	${CCARM} ${CFLAGS} -c -o memprot_arm memprot_arm.c common_arm.o
 memprot_arm: common_arm.o memprot_arm.o
 	${CCARM} ${CFLAGS} -o memprot_arm memprot_arm.c common_arm.o
 
