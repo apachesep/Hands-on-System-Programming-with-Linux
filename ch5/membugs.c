@@ -66,6 +66,10 @@ static void amleaky(size_t mem)
 	ptr = malloc(mem);
 	if (!ptr)
 		FATAL("malloc(%zu) failed\n", mem);
+	/* Do something with the memory region; else, the compiler
+	 * might just optimize the whole thing away!
+	 * ... and we won't 'see' the leak.
+	 */
 	memset(ptr, 0, mem);
 
 	/* Bug: no free, leakage */
@@ -86,7 +90,7 @@ static void leakage_case2(size_t size, unsigned int reps)
 			size, reps);
 
 	if (mem_leaked >= threshold)
-		system("free|sed '1d'|head -n1");
+		system("free|grep \"^Mem:\"");
 
 	for (i=0; i<reps; i++) {
 		if (i%10000 == 0)
@@ -95,7 +99,7 @@ static void leakage_case2(size_t size, unsigned int reps)
 	}
 
 	if (mem_leaked >= threshold)
-		system("free|sed '1d'|head -n1");
+		system("free|grep \"^Mem:\"");
 	printf("\n");
 }
 
