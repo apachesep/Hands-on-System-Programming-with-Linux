@@ -152,17 +152,21 @@ static void uaf(void)
 
 	arr = malloc(n);
 	if (!arr)
-		FATAL("malloc failed\n");
+		FATAL("malloc arr failed\n");
 	memset(arr, 'a', n);
 	arr[n-1]='\0';
 	printf("%s():%d: arr = %p:%.*s\n", __FUNCTION__, __LINE__, arr, 32, arr);
 
 	next = malloc(n);
-	if (!next)
-		FATAL("malloc failed\n");
+	if (!next) {
+		free(arr);
+		fprintf(stderr, "Error log: arr=%p:val=%s\n", arr, arr);
+			/* Noticed one more potential UAF here? */
+		FATAL("malloc next failed\n");
+	}
 	free(arr);
-
 	strncpy(arr, name, strlen(name)); /* Bug: UAF */
+
 	printf("%s():%d: arr = %p:%.*s\n", __FUNCTION__, __LINE__, arr, 32, arr);
 	free(next);
 }
