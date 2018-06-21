@@ -10,8 +10,8 @@ ALL :=  membugs membugs_dbg membugs_dbg_asan membugs_dbg_ub membugs_dbg_msan
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
 
-CFLAGS=-Wall
-CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra
+CFLAGS=-Wall -UDEBUG
+CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra -DDEBUG
 CFLAGS_DBG_ASAN=${CFLAGS_DBG} -fsanitize=address
 CFLAGS_DBG_MSAN=${CFLAGS_DBG} -fsanitize=memory
 CFLAGS_DBG_UB=${CFLAGS_DBG} -fsanitize=undefined
@@ -39,26 +39,22 @@ membugs: common.o membugs.o
 
 membugs_dbg.o: membugs.c
 	${CC} ${CFLAGS_DBG} -c membugs.c -o membugs_dbg.o
-	${CL} ${CFLAGS_DBG_ASAN} -c membugs.c -o membugs_dbg_asan.o
-	${CL} ${CFLAGS_DBG_UB} -c membugs.c -o membugs_dbg_ub.o
-	${CL} ${CFLAGS_DBG_MSAN} -c membugs.c -o membugs_dbg_msan.o
-
 membugs_dbg: membugs_dbg.o common_dbg.o
 	${CC} ${CFLAGS_DBG} -o membugs_dbg membugs_dbg.o common_dbg.o
 
 #--- Sanitizers (use clang): <foo>_dbg_[asan|ub|msan]
-membugs_dbg_asan.o: common_dbg_asan.o
-	${CL} ${CFLAGS_DBG_ASAN} -c membugs.c -o membugs_dbg_asan.o common_dbg_asan.o
+membugs_dbg_asan.o: membugs.c
+	${CL} ${CFLAGS_DBG_ASAN} -c membugs.c -o membugs_dbg_asan.o
 membugs_dbg_asan: membugs_dbg_asan.o common_dbg_asan.o
 	${CL} ${CFLAGS_DBG_ASAN} -o membugs_dbg_asan membugs_dbg_asan.o common_dbg_asan.o
 
-membugs_dbg_ub.o: common_dbg_ub.o
-	${CL} ${CFLAGS_DBG_UB} -c membugs.c -o membugs_dbg_ub.o common_dbg_ub.o
+membugs_dbg_ub.o: membugs.c
+	${CL} ${CFLAGS_DBG_UB} -c membugs.c -o membugs_dbg_ub.o
 membugs_dbg_ub: membugs_dbg_ub.o common_dbg_ub.o
 	${CL} ${CFLAGS_DBG_UB} -o membugs_dbg_ub membugs_dbg_ub.o common_dbg_ub.o
 
-membugs_dbg_msan.o: common_dbg_msan.o
-	${CL} ${CFLAGS_DBG_MSAN} -c membugs.c -o membugs_dbg_msan.o common_dbg_msan.o
+membugs_dbg_msan.o: membugs.c
+	${CL} ${CFLAGS_DBG_MSAN} -c membugs.c -o membugs_dbg_msan.o
 membugs_dbg_msan: membugs_dbg_msan.o common_dbg_msan.o
 	${CL} ${CFLAGS_DBG_MSAN} -o membugs_dbg_msan membugs_dbg_msan.o common_dbg_msan.o
 
