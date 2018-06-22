@@ -78,7 +78,7 @@ static void rt_sighdlr(int signum)
 	}
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
 	struct sigaction act;
 
