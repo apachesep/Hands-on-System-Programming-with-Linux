@@ -24,7 +24,7 @@
 static void bar_is_now_closed(void)
 {
 	printf("In function %s\n"
-		"\t(bye, pl go \~\/ now).\n", __FUNCTION__);
+		"\t(bye, pl go '~/' now).\n", __FUNCTION__);
 	printf("\n Now blocking on pause()...\n"
 		" Connect via GDB's 'attach' and then issue the 'bt' command"
 		" to view the process stack\n");
