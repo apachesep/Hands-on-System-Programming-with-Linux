@@ -1,5 +1,5 @@
 #!/bin/bash
-# Ch 11 : bombard_sigrt.sh
+# Ch 12 : bombard_sigrt.sh
 #
 # Shell script to bombard a given process with some specific RT signals.
 # Really a test case for the 'C' signal handling programs..

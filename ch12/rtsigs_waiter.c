@@ -1,5 +1,5 @@
 /*
- * ch11:rtsigs_waiter.c
+ * ch12:rtsigs_waiter.c
  * ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 11 : Signalling
+ *  Ch 12 : Signalling
  ****************************************************************
  * Brief Description:
  * Aim: to test how realtime signals are delivered after being unblocked.
@@ -23,8 +23,8 @@
  * RT sigs that have been sent are not lost, rather, they are *queued* for
  * delivery. Once the previous handler is done, the next RT sig in the Q is
  * delivered and processed. A key point: the delivery of RT signals from the
- * Q is in *priority order* - lower-numbered RT sigs to higher-numbered RT
- * sigs.
+ * queue is in *priority order* - first the lower-numbered RT sigs to higher-
+ * numbered RT sigs.
  */
 #include <stdio.h>
 #include <stdlib.h>

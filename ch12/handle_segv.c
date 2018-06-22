@@ -1,5 +1,5 @@
 /*
- * ch11:handle_segv.c
+ * ch12:handle_segv.c
  * ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 11 : Signalling
+ *  Ch 12 : Signalling
  ****************************************************************
  * Brief Description:
  *
@@ -49,7 +49,7 @@ typedef long unsigned int u64;
 
 /*---------------- Functions ----------------------------------------*/
 
-/* arch - x86[_64] - specific! */
+/* NOTE! This code is arch-specific: ONLY works for x86[_64] */
 static inline void dump_regs(void *ucontext)
 {
 #define FMT "%016llx"
