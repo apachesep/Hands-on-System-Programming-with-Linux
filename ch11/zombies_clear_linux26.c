@@ -33,9 +33,6 @@
 #include <sys/wait.h>
 #include "../common.h"
 
-#define DEBUG
-//#undef DEBUG
-
 /* SIGCHLD handler */
 static void child_dies(int signum)
 {
