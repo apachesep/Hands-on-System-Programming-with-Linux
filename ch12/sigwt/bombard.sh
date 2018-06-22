@@ -4,9 +4,6 @@
 # Shell script to bombard a given process with All signals.
 # Really a test case for the 'C' signal handling programs..
 name=$(basename $0)
-SIG1=SIGRTMAX-5   # sig# 59
-SIG2=SIGRTMAX     # sig# 64
-SIG3=SIGRTMIN+5   # sig# 39
 
 # Parameters: 
 # $1 : signal to deliver
