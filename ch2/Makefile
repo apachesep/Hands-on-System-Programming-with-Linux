@@ -15,14 +15,14 @@ all: ${ALL}
 CB_FILES := *.[ch]
 
 common.o: ../common.c ../common.h
-	gcc -Wall -c ../common.c -o common.o
+	gcc ${CFLAGS} -c ../common.c -o common.o
 common_dbg.o: ../common.c ../common.h
-	gcc -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c ../common.c -o common_dbg.o
+	gcc ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
 
 mem_app1buggy: common.o mem_app1buggy.o
-	gcc -Wall -o mem_app1buggy mem_app1buggy.c common.o
+	gcc ${CFLAGS} -o mem_app1buggy mem_app1buggy.c common.o
 mem_app1buggy_dbg.o: mem_app1buggy.c
-	gcc -g -ggdb -gdwarf-4 -O0 -Wall -Wextra -c mem_app1buggy.c -o mem_app1buggy_dbg.o
+	gcc ${CFLAGS_DBG} -c mem_app1buggy.c -o mem_app1buggy_dbg.o
 mem_app1buggy_dbg: mem_app1buggy_dbg.o common_dbg.o
 	gcc -o mem_app1buggy_dbg mem_app1buggy_dbg.o common_dbg.o
 
