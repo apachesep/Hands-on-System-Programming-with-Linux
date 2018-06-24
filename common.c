@@ -43,11 +43,12 @@ void show_blocked_signals(void)
 	 * int sigprocmask(int how, const sigset_t *set, sigset_t *oldset);
 	 * if 'set' is NULL, the 'how' is ignored, but the
 	 * 'oldset' sigmask value is populated; thus we can query the
-	 * signal mask without altering it */
+	 * signal mask without altering it.
+	 */
 	sigemptyset(&oldset);
 	if (sigprocmask(SIG_UNBLOCK, 0, &oldset) < 0)
 		FATAL("sigprocmask -query- failed\n");
-	printf("\n[SigBlk: ");
+	printf("[SigBlk: ");
 	for (i=1; i<=64; i++) {
 		if (sigismember(&oldset, i)) {
 			none=0;
@@ -77,7 +78,7 @@ int handle_err(int fatal, const char *fmt, ...)
 
 	fprintf(stderr, "%s", err_str);
 	if (errno)
-		perror("perror says");
+		perror("kernel says");
 
 	free(err_str);
 	if (!fatal)
