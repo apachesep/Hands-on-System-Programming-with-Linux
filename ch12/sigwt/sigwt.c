@@ -66,6 +66,10 @@ int main(int argc, char **argv)
 	sigfillset(&set);  /* the '0' case - block all signals */
 
 	if (atoi(argv[1]) == 1) {
+		/* IMP: unblocking signals here removes them from the influence of 
+		 * the sigwait* APIs; this is *required* for correctly handling
+		 * fatal signals from the kernel.
+		 */
 		printf("%s: removing SIGFPE and SIGSEGV from the signal mask...\n", argv[0]);
 		sigdelset(&set, SIGFPE);
 #if 1
