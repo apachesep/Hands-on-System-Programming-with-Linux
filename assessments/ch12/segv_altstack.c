@@ -29,6 +29,8 @@
 #include <sys/file.h>
 #include "../../common.h"
 
+#define APPNAME "segv_altstack"
+
 typedef unsigned int u32;
 typedef long unsigned int u64;
 
@@ -91,10 +93,11 @@ static void fatal_sig_handler(int signum, siginfo_t *si, void *ucontext)
 	switch (signum) {
 	case SIGSEGV: 
 		fprintf(stderr,
-			"*** signal %d:: stack@: t0=%lx last=%lx : delta=%ld ***\n"
+			"%s:\n------------------- FATAL signal ---------------------------\n"
+			" signal %d :: stack@: t0=%lx last=%lx : delta=%ld\n"
 			" total signals processed=%d\n",
-			signum, stk_start, stk, (stk_start-stk), t);
-		fprintf(stderr, "Faulting insn/memory address: %p\n", si->si_addr);
+			APPNAME, signum, stk_start, stk, (stk_start-stk), t);
+		fprintf(stderr, " Faulting insn/memory address: %p\n", si->si_addr);
 		fprintf(stderr, " Origin: ");
 		switch (si->si_code) {
 		case SEGV_MAPERR:
@@ -112,7 +115,16 @@ static void fatal_sig_handler(int signum, siginfo_t *si, void *ucontext)
 			break;
 #endif
 		}
-		abort();
+		fprintf(stderr,
+			"------------------------------------------------------------\n");
+		/* Have the kernel generate the core dump:
+		 *  Reset the SIGSEGV to glibc default, and,
+		 *  Re-raise it!
+		 */
+		if (signal(SIGSEGV, SIG_DFL) == SIG_ERR)
+			FATAL("signal -reverting SIGSEGV to default- failed");
+		if (raise(SIGSEGV))
+			FATAL("raise SIGSEGV failed");
 		break;
 	}
 }
