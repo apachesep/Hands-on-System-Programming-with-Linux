@@ -5,7 +5,8 @@
 ## as desired.
 ALL :=  segv_altstack segv_altstack_dbg \
 	murder murder_dbg \
-	killer killer_dbg
+	killer killer_dbg \
+	sigtmwtinfo sigtmwtinfo_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -109,6 +110,33 @@ killer_dbg_msan.o: killer.c
 	${CL} ${CFLAGS_DBG_MSAN} -c killer.c -o killer_dbg_msan.o
 killer_dbg_msan: killer_dbg_msan.o common_dbg_msan.o
 	${CL} ${CFLAGS_DBG_MSAN} -o killer_dbg_msan killer_dbg_msan.o common_dbg_msan.o
+
+sigtmwtinfo.o: sigtmwtinfo.c
+	${CC} ${CFLAGS} -c sigtmwtinfo.c -o sigtmwtinfo.o
+sigtmwtinfo: common.o sigtmwtinfo.o
+	${CC} ${CFLAGS} -o sigtmwtinfo sigtmwtinfo.o common.o
+
+sigtmwtinfo_dbg.o: sigtmwtinfo.c
+	${CC} ${CFLAGS_DBG} -c sigtmwtinfo.c -o sigtmwtinfo_dbg.o
+sigtmwtinfo_dbg: sigtmwtinfo_dbg.o common_dbg.o
+	${CC} ${CFLAGS_DBG} -o sigtmwtinfo_dbg sigtmwtinfo_dbg.o common_dbg.o
+
+#--- Sanitizers (use clang): <foo>_dbg_[asan|ub|msan]
+sigtmwtinfo_dbg_asan.o: sigtmwtinfo.c
+	${CL} ${CFLAGS_DBG_ASAN} -c sigtmwtinfo.c -o sigtmwtinfo_dbg_asan.o
+sigtmwtinfo_dbg_asan: sigtmwtinfo_dbg_asan.o common_dbg_asan.o
+	${CL} ${CFLAGS_DBG_ASAN} -o sigtmwtinfo_dbg_asan sigtmwtinfo_dbg_asan.o common_dbg_asan.o
+
+sigtmwtinfo_dbg_ub.o: sigtmwtinfo.c
+	${CL} ${CFLAGS_DBG_UB} -c sigtmwtinfo.c -o sigtmwtinfo_dbg_ub.o
+sigtmwtinfo_dbg_ub: sigtmwtinfo_dbg_ub.o common_dbg_ub.o
+	${CL} ${CFLAGS_DBG_UB} -o sigtmwtinfo_dbg_ub sigtmwtinfo_dbg_ub.o common_dbg_ub.o
+
+sigtmwtinfo_dbg_msan.o: sigtmwtinfo.c
+	${CL} ${CFLAGS_DBG_MSAN} -c sigtmwtinfo.c -o sigtmwtinfo_dbg_msan.o
+sigtmwtinfo_dbg_msan: sigtmwtinfo_dbg_msan.o common_dbg_msan.o
+	${CL} ${CFLAGS_DBG_MSAN} -o sigtmwtinfo_dbg_msan sigtmwtinfo_dbg_msan.o common_dbg_msan.o
+
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )
