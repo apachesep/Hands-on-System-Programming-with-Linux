@@ -36,6 +36,8 @@ typedef unsigned int u32;
 typedef long unsigned int u64;
 
 /*---------------- Macros -------------------------------------------*/
+#define APPNAME "handle_segv"
+
 #define ADDR_FMT "%lx"
 #if __x86_64__   /* 64-bit; __x86_64__ works for gcc */
  #define ADDR_TYPE u64
@@ -100,7 +102,10 @@ static inline void dump_regs(void *ucontext)
 
 static void myfault(int signum, siginfo_t * si, void *ucontext)
 {
-	fprintf(stderr,"*** %s: received signal %d. errno=%d\n"
+	fprintf(stderr,
+		"%s:\n------------------- FATAL signal ---------------------------\n",
+		APPNAME);
+	fprintf(stderr," %s: received signal %d. errno=%d\n"
 	       " Cause/Origin: (si_code=%d): ",
 	       __func__, signum, si->si_errno, si->si_code);
 
@@ -150,17 +155,25 @@ static void myfault(int signum, siginfo_t * si, void *ucontext)
 
 	fprintf(stderr," Faulting instr or address = 0x" ADDR_FMT "\n",
 			(ADDR_TYPE) si->si_addr);
-	fprintf(stderr, "--- Register Dump [x86_64] ---\n");
+	fprintf(stderr, " --- Register Dump [x86_64] ---\n");
 	dump_regs(ucontext);
-	fprintf(stderr, "------\n");
+	fprintf(stderr,
+		"------------------------------------------------------------\n");
 
 	/* 
 	 * Placeholders for real-world apps:
 	 *  crashed_write_to_log();
 	 *  crashed_perform_cleanup();
 	 *  crashed_inform_enduser();
+	 *
+	 * Now have the kernel generate the core dump by:
+	 *  Reset the SIGSEGV to glibc default, and,
+	 *  Re-raise it!
 	 */
-	abort();
+	if (signal(SIGSEGV, SIG_DFL) == SIG_ERR)
+		FATAL("signal -reverting SIGSEGV to default- failed");
+	if (raise(SIGSEGV))
+		FATAL("raise SIGSEGV failed");
 }
 
 static void usage(char *nm)
