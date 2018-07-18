@@ -55,10 +55,7 @@ void show_blocked_signals(void)
 			printf("%d ", i);
 		}
 	}
-	if (none)
-		printf("-none-]\n");
-	else
-		printf("]\n");
+	printf("%s\n", none ? "-none-]" : "]");
 	fflush(stdout);
 }
 
