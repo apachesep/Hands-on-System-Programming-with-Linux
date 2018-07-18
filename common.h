@@ -84,5 +84,11 @@ static inline void beep(int what)
 	/*printf("c=%d\n",c);*/                                                \
 }
 /*------------------------------------------------------------------------*/
+/*-------------------- VPRINT : verbose print ----------------------------*/
+#define VPRINT(msg, args...) do {                      \
+	if (verbose)                                   \
+		printf(" %s:%s:%d: " msg,              \
+	   __FILE__, __FUNCTION__, __LINE__, ##args);  \
+} while(0)
 
 #endif
