@@ -32,9 +32,8 @@ static void ticktock(int signum)
 {
 	char tmstamp[128];
 	struct timespec tm;
-	int myerrno;
+	int myerrno = errno;
 
-	myerrno = errno;
 	/* Query the timestamp ; both clock_gettime(2) and
 	 * ctime_r(3) are reentrant-and-signal-safe */
 	if (clock_gettime(CLOCK_REALTIME, &tm) < 0)
@@ -76,6 +75,8 @@ int main(int argc, char **argv)
 	opt = atoi(argv[1]);
 	if ((opt != 0) && (opt != 1))
 		usage_die(argv[0]);
+
+	printf("Initializing ...\n");
 	if (opt == 1)
 		printf(" *WARNING* [Using printf in signal handler]\n");
 
@@ -105,4 +106,5 @@ int main(int argc, char **argv)
 
 	exit(EXIT_SUCCESS);
 }
+
 /* vi: ts=8 */
