@@ -30,6 +30,7 @@
 /*--- Function prototypes ---*/
 void show_blocked_signals(void);
 int handle_err(int fatal, const char *fmt, ...);
+void vprint(const char *fmt, ...);
 
 
 /*--- Macros ---*/
@@ -83,12 +84,33 @@ static inline void beep(int what)
 		}                                                              \
 	/*printf("c=%d\n",c);*/                                                \
 }
-/*------------------------------------------------------------------------*/
+
 /*-------------------- VPRINT : verbose print ----------------------------*/
 #define VPRINT(msg, args...) do {                      \
 	if (verbose)                                   \
 		printf(" %s:%s:%d: " msg,              \
 	   __FILE__, __FUNCTION__, __LINE__, ##args);  \
 } while(0)
+
+/*------------------------ timerspecsub ----------------------------------*/
+/*
+ * Macro: timerspecsub
+ * Perform (on struct timespec's): result=(a-b).
+ * Modified from the original 'timersub' macro defined in the <sys/time.h> header.
+ * From the original man page entry:
+ * "timersub() subtracts the time value in b from the time value in a, and
+ * places the result in the timeval pointed to by res. The result is
+ * normalized such that res->tv_usec (now becomes 'nsec') has a value in the
+ * range 0 to 999,999. (now 999,999,999)"
+ */
+#define timerspecsub(a, b, result)					      \
+  do {									      \
+    (result)->tv_sec = (a)->tv_sec - (b)->tv_sec;			      \
+    (result)->tv_nsec = (a)->tv_nsec - (b)->tv_nsec;			      \
+    if ((result)->tv_nsec < 0) {					      \
+      --(result)->tv_sec;						      \
+      (result)->tv_nsec += 1000000000;					      \
+    }									      \
+  } while (0)
 
 #endif
