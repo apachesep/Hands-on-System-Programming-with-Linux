@@ -83,7 +83,7 @@ static void timer_handler(int sig, siginfo_t * si, void *uc)
 			else {
 				if (ovrun)
 					printf("    overrun=%d [@count=%d]\n",
-							ovrun, c);
+					       ovrun, c);
 			}
 		}
 #endif
@@ -128,7 +128,7 @@ static void userpress(int sig)
 			     "  [~= %3.0f ms, count=%d]\n",
 			     res.tv_sec, res.tv_nsec,
 			     res.tv_sec * 1000 +
-			       round((double)res.tv_nsec / 1000000), c);
+			     round((double)res.tv_nsec / 1000000), c);
 		}
 		first_time = 0;
 	} else
@@ -212,9 +212,9 @@ static int init(void)
 	printf("Initializing timer to generate SIGRTMIN every %ld ms\n",
 	       freq_ms);
 	memset(&itv, 0, sizeof(struct itimerspec));
-	itv.it_value.tv_sec     = (freq_ms * 1000000) / 1000000000;
-	itv.it_value.tv_nsec    = (freq_ms * 1000000) % 1000000000;
-	itv.it_interval.tv_sec  = (freq_ms * 1000000) / 1000000000;
+	itv.it_value.tv_sec = (freq_ms * 1000000) / 1000000000;
+	itv.it_value.tv_nsec = (freq_ms * 1000000) % 1000000000;
+	itv.it_interval.tv_sec = (freq_ms * 1000000) / 1000000000;
 	itv.it_interval.tv_nsec = (freq_ms * 1000000) % 1000000000;
 
 	if (verbose) {
@@ -246,7 +246,7 @@ static void random_start(int min, int max)
 
 #define CHEAT_MODE	0
 #if (CHEAT_MODE == 1)
-	printf("Ok Cheater, get ready; press ^C in %ds ...\n", nr);
+	printf("Ok Cheater :-) get ready; press ^C in %ds ...\n", nr);
 #endif
 
 	alarm(nr);
@@ -296,4 +296,5 @@ int main(int argc, char **argv)
 	}
 	exit(EXIT_SUCCESS);
 }
+
 /* vi: ts=8 */
