@@ -2,12 +2,13 @@
 ALL :=  alarm1 alarm1_dbg \
 	alarm2_rep alarm2_rep_dbg \
 	intv_clksimple intv_clksimple_dbg \
-	react react_dbg
+	react react_dbg \
+	runwalk_timer runwalk_timer_dbg runwalk_timer_dbg_asan
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
 
-CFLAGS=-Wall -UDEBUG
+CFLAGS=-O2 -Wall -UDEBUG
 CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra -DDEBUG
 CFLAGS_DBG_ASAN=${CFLAGS_DBG} -fsanitize=address
 CFLAGS_DBG_MSAN=${CFLAGS_DBG} -fsanitize=memory
@@ -23,6 +24,10 @@ common.o: ../common.c ../common.h
 	${CC} ${CFLAGS} -c ../common.c -o common.o
 common_dbg.o: ../common.c ../common.h
 	${CC} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
+#--- Sanitizers (use clang): common_dbg_*
+common_dbg_asan.o: ../common.c ../common.h
+	${CL} ${CFLAGS_DBG_ASAN} -c ../common.c -o common_dbg_asan.o
+
 
 #--- Target :: alarm1
 alarm1.o: alarm1.c
@@ -68,6 +73,24 @@ react_dbg.o: react.c
 	${CC} ${CFLAGS_DBG} -c react.c -o react_dbg.o
 react_dbg: react_dbg.o common_dbg.o
 	${CC} -o react_dbg react_dbg.o common_dbg.o ${LINKIN}
+
+LINKIN := -lrt
+#--- Target :: runwalk_timer
+runwalk_timer.o: runwalk_timer.c
+	${CC} ${CFLAGS} -c runwalk_timer.c -o runwalk_timer.o
+runwalk_timer: common.o runwalk_timer.o
+	${CC} -o runwalk_timer runwalk_timer.o common.o ${LINKIN}
+
+runwalk_timer_dbg.o: runwalk_timer.c
+	${CC} ${CFLAGS_DBG} -c runwalk_timer.c -o runwalk_timer_dbg.o
+runwalk_timer_dbg: runwalk_timer_dbg.o common_dbg.o
+	${CC} -o runwalk_timer_dbg runwalk_timer_dbg.o common_dbg.o ${LINKIN}
+
+ #--- Sanitizers for runwalk_timer :: (use clang): <foo>_dbg_[asan|ub|msan]
+runwalk_timer_dbg_asan.o: runwalk_timer.c
+	${CL} ${CFLAGS_DBG_ASAN} -c runwalk_timer.c -o runwalk_timer_dbg_asan.o
+runwalk_timer_dbg_asan: runwalk_timer_dbg_asan.o common_dbg_asan.o
+	${CL} ${CFLAGS_DBG_ASAN} -o runwalk_timer_dbg_asan runwalk_timer_dbg_asan.o common_dbg_asan.o ${LINKIN}
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
