@@ -48,7 +48,7 @@ Your reaction time is displayed... Have fun!"
 #include "../common.h"
 
 /*---------------- Globals, Macros ----------------------------*/
-static int verbose = 0;
+static int gVerbose = 0;
 static long freq_ms = 0;
 static struct itimerspec itv;
 static timer_t timerid;
@@ -72,7 +72,7 @@ static void timer_handler(int sig, siginfo_t * si, void *uc)
 	char buf[] = ".";
 
 	c++;
-	if (verbose) {
+	if (gVerbose) {
 		write(2, buf, 1);
 #define SHOW_OVERRUN 1
 #if (SHOW_OVERRUN == 1)
@@ -217,7 +217,7 @@ static int init(void)
 	itv.it_interval.tv_sec = (freq_ms * 1000000) / 1000000000;
 	itv.it_interval.tv_nsec = (freq_ms * 1000000) % 1000000000;
 
-	if (verbose) {
+	if (gVerbose) {
 		show_tmval(itv);
 		show_blocked_signals();
 	}
@@ -274,7 +274,7 @@ int main(int argc, char **argv)
 		exit(EXIT_FAILURE);
 	}
 	if (argc == 3 && atoi(argv[2]) == 1)
-		verbose = 1;
+		gVerbose = 1;
 	freq_ms = atoll(argv[1]);
 	if (freq_ms < 1) {
 		help(argv[0]);
@@ -284,7 +284,7 @@ int main(int argc, char **argv)
 	init();
 	printf("[Verbose: %s]\n"
 	       "We shall start a timer anytime between %d and %d seconds from now...\n",
-	       verbose == 1 ? "Y" : "N", MIN_START_SEC, MAX_START_SEC);
+	       gVerbose == 1 ? "Y" : "N", MIN_START_SEC, MAX_START_SEC);
 	printf("\nGET READY ...\n"
 	       " [ when the \"QUICK! Press ^C\" message appears, press ^C quickly as you can ]\n");
 
