@@ -30,7 +30,7 @@
 /*--- Function prototypes ---*/
 void show_blocked_signals(void);
 int handle_err(int fatal, const char *fmt, ...);
-void vprint(const char *fmt, ...);
+int r_sleep(time_t sec, long nsec);
 
 
 /*--- Macros ---*/
@@ -86,8 +86,12 @@ static inline void beep(int what)
 }
 
 /*-------------------- VPRINT : verbose print ----------------------------*/
+/* IMP! 
+ * The VPRINT macro depends on the caller having a (usually global) variable
+ * named 'gVerbose'. IFF it exists and is True, the printf gets emitted.
+ */
 #define VPRINT(msg, args...) do {                      \
-	if (verbose)                                   \
+	if (gVerbose)                                  \
 		printf(" %s:%s:%d: " msg,              \
 	   __FILE__, __FUNCTION__, __LINE__, ##args);  \
 } while(0)
