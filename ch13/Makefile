@@ -63,16 +63,15 @@ intv_clksimple_dbg: intv_clksimple_dbg.o common_dbg.o
 	${CC} -o intv_clksimple_dbg intv_clksimple_dbg.o common_dbg.o ${LINKIN}
 
 #--- Target :: react
-LINKIN := -lrt -lm
 react.o: react.c
 	${CC} ${CFLAGS} -c react.c -o react.o
 react: common.o react.o
-	${CC} -o react react.o common.o ${LINKIN}
+	${CC} -o react react.o common.o -lrt -lm
 
 react_dbg.o: react.c
 	${CC} ${CFLAGS_DBG} -c react.c -o react_dbg.o
 react_dbg: react_dbg.o common_dbg.o
-	${CC} -o react_dbg react_dbg.o common_dbg.o ${LINKIN}
+	${CC} -o react_dbg react_dbg.o common_dbg.o -lrt -lm
 
 LINKIN := -lrt
 #--- Target :: runwalk_timer
