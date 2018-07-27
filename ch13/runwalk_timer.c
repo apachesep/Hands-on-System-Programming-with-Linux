@@ -116,7 +116,7 @@ static void its_time(int signum, siginfo_t *si, void *uctx)
 		FATAL("timer_settime failed");
 }
 
-/*------------------Run interval timer setup
+/*------------------ Our POSIX Timer setup
  * Setup a 'one-shot' POSIX Timer; initially set it to expire upon
  * 'run time' seconds elapsing.
  */
