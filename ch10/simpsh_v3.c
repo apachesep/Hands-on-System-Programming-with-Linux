@@ -29,10 +29,6 @@
 
 /*---------------- Globals, Macros ----------------------------*/
 #define CMD_MAXLEN   128
-#define VPRINT(str, args...) do {    \
-	if (gVerbose)                \
-		printf("[v]: " str, ##args); \
-} while(0)
 
 static int gVerbose = 0;
 const char *PromptStr = ">> ";
