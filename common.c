@@ -30,6 +30,39 @@
 
 /*---------------- Functions ----------------------------------*/
 
+/* 
+ * function r _ s l e e p
+ *
+ * Safe Sleep: wrapper around nanosleep(2) , and in such a way that
+ * interruption due to non-blocked signal(s) causes the sleep to restart
+ * for the time remaining.
+ */
+#ifndef _TIME_H
+#include <time.h>
+#endif
+int r_sleep(time_t sec, long nsec)
+{
+	struct timespec req, rem;
+
+	req.tv_sec = sec;
+	req.tv_nsec = nsec;
+	while (nanosleep(&req, &rem) == -1) {
+		if (errno != EINTR)
+			return -1;
+#ifdef DEBUG
+		/* NOTE! Should never use [f]printf in sig handler - not
+		 * aysnc-signal safe - just shown for demo purpose here (works
+		 * with DEBUG option on).
+		 */
+		fprintf(stderr,
+			"* nanosleep interrupted! rem time: %lu.%lu *\n",
+			rem.tv_sec, rem.tv_nsec);
+#endif
+		req = rem;
+	}
+	return 0;
+}
+
 /*
  * Signaling: Prints (to stdout) all signal integer values that are
  * currently in the Blocked (masked) state.
