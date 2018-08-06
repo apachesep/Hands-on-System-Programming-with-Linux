@@ -1,21 +1,25 @@
-# Makefile : for ch13
-ALL :=  alarm1 alarm1_dbg \
-	alarm2_rep alarm2_rep_dbg \
-	intv_clksimple intv_clksimple_dbg \
-	react react_dbg \
-	runwalk_timer runwalk_timer_dbg runwalk_timer_dbg_asan
+# Makefile : ch12
+#
+#  ASSUMPTIONS ::
+#   1. the convenience files ../common.h and ../common.c
+#      are present
+#   2. the clang/LLVM compiler is installed.
+#
+## Pl check and keep or remove <foo>_dbg_[asan|ub|msan] targets
+## as desired. (Here, we have removed from build several of the
+## <foo>_dbg_[a|m|ub]san targets).
+ALL :=  handle_segv handle_segv_dbg \
+	sleeping_beauty sleeping_beauty_dbg \
+	rtsigs_waiter rtsigs_waiter_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
 
-CFLAGS=-O2 -Wall -UDEBUG
+CFLAGS=-Wall -UDEBUG
 CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra -DDEBUG
 CFLAGS_DBG_ASAN=${CFLAGS_DBG} -fsanitize=address
 CFLAGS_DBG_MSAN=${CFLAGS_DBG} -fsanitize=memory
 CFLAGS_DBG_UB=${CFLAGS_DBG} -fsanitize=undefined
-
-LINKIN=
-   # set as required to libraries to link in; f.e.  -lrt
 
 all: ${ALL}
 CB_FILES := *.[ch]
@@ -24,73 +28,92 @@ common.o: ../common.c ../common.h
 	${CC} ${CFLAGS} -c ../common.c -o common.o
 common_dbg.o: ../common.c ../common.h
 	${CC} ${CFLAGS_DBG} -c ../common.c -o common_dbg.o
+
 #--- Sanitizers (use clang): common_dbg_*
 common_dbg_asan.o: ../common.c ../common.h
 	${CL} ${CFLAGS_DBG_ASAN} -c ../common.c -o common_dbg_asan.o
+common_dbg_ub.o: ../common.c ../common.h
+	${CL} ${CFLAGS_DBG_UB} -c ../common.c -o common_dbg_ub.o
+common_dbg_msan.o: ../common.c ../common.h
+	${CL} ${CFLAGS_DBG_MSAN} -c ../common.c -o common_dbg_msan.o
 
+handle_segv.o: handle_segv.c
+	${CC} ${CFLAGS} -c handle_segv.c -o handle_segv.o
+handle_segv: common.o handle_segv.o
+	${CC} ${CFLAGS} -o handle_segv handle_segv.o common.o
 
-#--- Target :: alarm1
-alarm1.o: alarm1.c
-	${CC} ${CFLAGS} -c alarm1.c -o alarm1.o
-alarm1: common.o alarm1.o
-	${CC} -o alarm1 alarm1.o common.o ${LINKIN}
+handle_segv_dbg.o: handle_segv.c
+	${CC} ${CFLAGS_DBG} -c handle_segv.c -o handle_segv_dbg.o
+handle_segv_dbg: handle_segv_dbg.o common_dbg.o
+	${CC} ${CFLAGS_DBG} -o handle_segv_dbg handle_segv_dbg.o common_dbg.o
 
-alarm1_dbg.o: alarm1.c
-	${CC} ${CFLAGS_DBG} -c alarm1.c -o alarm1_dbg.o
-alarm1_dbg: alarm1_dbg.o common_dbg.o
-	${CC} -o alarm1_dbg alarm1_dbg.o common_dbg.o ${LINKIN}
+#--- Sanitizers (use clang): <foo>_dbg_[asan|ub|msan]
+handle_segv_dbg_asan.o: handle_segv.c
+	${CL} ${CFLAGS_DBG_ASAN} -c handle_segv.c -o handle_segv_dbg_asan.o
+handle_segv_dbg_asan: handle_segv_dbg_asan.o common_dbg_asan.o
+	${CL} ${CFLAGS_DBG_ASAN} -o handle_segv_dbg_asan handle_segv_dbg_asan.o common_dbg_asan.o
 
-#--- Target :: alarm2_rep
-alarm2_rep.o: alarm2_rep.c
-	${CC} ${CFLAGS} -c alarm2_rep.c -o alarm2_rep.o
-alarm2_rep: common.o alarm2_rep.o
-	${CC} -o alarm2_rep alarm2_rep.o common.o ${LINKIN}
+handle_segv_dbg_ub.o: handle_segv.c
+	${CL} ${CFLAGS_DBG_UB} -c handle_segv.c -o handle_segv_dbg_ub.o
+handle_segv_dbg_ub: handle_segv_dbg_ub.o common_dbg_ub.o
+	${CL} ${CFLAGS_DBG_UB} -o handle_segv_dbg_ub handle_segv_dbg_ub.o common_dbg_ub.o
 
-alarm2_rep_dbg.o: alarm2_rep.c
-	${CC} ${CFLAGS_DBG} -c alarm2_rep.c -o alarm2_rep_dbg.o
-alarm2_rep_dbg: alarm2_rep_dbg.o common_dbg.o
-	${CC} -o alarm2_rep_dbg alarm2_rep_dbg.o common_dbg.o ${LINKIN}
+handle_segv_dbg_msan.o: handle_segv.c
+	${CL} ${CFLAGS_DBG_MSAN} -c handle_segv.c -o handle_segv_dbg_msan.o
+handle_segv_dbg_msan: handle_segv_dbg_msan.o common_dbg_msan.o
+	${CL} ${CFLAGS_DBG_MSAN} -o handle_segv_dbg_msan handle_segv_dbg_msan.o common_dbg_msan.o
 
-#--- Target :: intv_clksimple
-intv_clksimple.o: intv_clksimple.c
-	${CC} ${CFLAGS} -c intv_clksimple.c -o intv_clksimple.o
-intv_clksimple: common.o intv_clksimple.o
-	${CC} -o intv_clksimple intv_clksimple.o common.o ${LINKIN}
+sleeping_beauty.o: sleeping_beauty.c
+	${CC} ${CFLAGS} -c sleeping_beauty.c -o sleeping_beauty.o
+sleeping_beauty: common.o sleeping_beauty.o
+	${CC} ${CFLAGS} -o sleeping_beauty sleeping_beauty.o common.o
 
-intv_clksimple_dbg.o: intv_clksimple.c
-	${CC} ${CFLAGS_DBG} -c intv_clksimple.c -o intv_clksimple_dbg.o
-intv_clksimple_dbg: intv_clksimple_dbg.o common_dbg.o
-	${CC} -o intv_clksimple_dbg intv_clksimple_dbg.o common_dbg.o ${LINKIN}
+sleeping_beauty_dbg.o: sleeping_beauty.c
+	${CC} ${CFLAGS_DBG} -c sleeping_beauty.c -o sleeping_beauty_dbg.o
+sleeping_beauty_dbg: sleeping_beauty_dbg.o common_dbg.o
+	${CC} ${CFLAGS_DBG} -o sleeping_beauty_dbg sleeping_beauty_dbg.o common_dbg.o
 
-#--- Target :: react
-react.o: react.c
-	${CC} ${CFLAGS} -c react.c -o react.o
-react: common.o react.o
-	${CC} -o react react.o common.o -lrt -lm
+#--- Sanitizers (use clang): <foo>_dbg_[asan|ub|msan]
+sleeping_beauty_dbg_asan.o: sleeping_beauty.c
+	${CL} ${CFLAGS_DBG_ASAN} -c sleeping_beauty.c -o sleeping_beauty_dbg_asan.o
+sleeping_beauty_dbg_asan: sleeping_beauty_dbg_asan.o common_dbg_asan.o
+	${CL} ${CFLAGS_DBG_ASAN} -o sleeping_beauty_dbg_asan sleeping_beauty_dbg_asan.o common_dbg_asan.o
 
-react_dbg.o: react.c
-	${CC} ${CFLAGS_DBG} -c react.c -o react_dbg.o
-react_dbg: react_dbg.o common_dbg.o
-	${CC} -o react_dbg react_dbg.o common_dbg.o -lrt -lm
+sleeping_beauty_dbg_ub.o: sleeping_beauty.c
+	${CL} ${CFLAGS_DBG_UB} -c sleeping_beauty.c -o sleeping_beauty_dbg_ub.o
+sleeping_beauty_dbg_ub: sleeping_beauty_dbg_ub.o common_dbg_ub.o
+	${CL} ${CFLAGS_DBG_UB} -o sleeping_beauty_dbg_ub sleeping_beauty_dbg_ub.o common_dbg_ub.o
 
-LINKIN := -lrt
-#--- Target :: runwalk_timer
-runwalk_timer.o: runwalk_timer.c
-	${CC} ${CFLAGS} -c runwalk_timer.c -o runwalk_timer.o
-runwalk_timer: common.o runwalk_timer.o
-	${CC} -o runwalk_timer runwalk_timer.o common.o ${LINKIN}
+sleeping_beauty_dbg_msan.o: sleeping_beauty.c
+	${CL} ${CFLAGS_DBG_MSAN} -c sleeping_beauty.c -o sleeping_beauty_dbg_msan.o
+sleeping_beauty_dbg_msan: sleeping_beauty_dbg_msan.o common_dbg_msan.o
+	${CL} ${CFLAGS_DBG_MSAN} -o sleeping_beauty_dbg_msan sleeping_beauty_dbg_msan.o common_dbg_msan.o
 
-runwalk_timer_dbg.o: runwalk_timer.c
-	${CC} ${CFLAGS_DBG} -c runwalk_timer.c -o runwalk_timer_dbg.o
-runwalk_timer_dbg: runwalk_timer_dbg.o common_dbg.o
-	${CC} -o runwalk_timer_dbg runwalk_timer_dbg.o common_dbg.o ${LINKIN}
+rtsigs_waiter.o: rtsigs_waiter.c
+	${CC} ${CFLAGS} -c rtsigs_waiter.c -o rtsigs_waiter.o
+rtsigs_waiter: common.o rtsigs_waiter.o
+	${CC} ${CFLAGS} -o rtsigs_waiter rtsigs_waiter.o common.o
 
- #--- Sanitizers for runwalk_timer :: (use clang): <foo>_dbg_[asan|ub|msan]
-runwalk_timer_dbg_asan.o: runwalk_timer.c
-	${CL} ${CFLAGS_DBG_ASAN} -c runwalk_timer.c -o runwalk_timer_dbg_asan.o
-runwalk_timer_dbg_asan: runwalk_timer_dbg_asan.o common_dbg_asan.o
-	${CL} ${CFLAGS_DBG_ASAN} -o runwalk_timer_dbg_asan runwalk_timer_dbg_asan.o common_dbg_asan.o ${LINKIN}
+rtsigs_waiter_dbg.o: rtsigs_waiter.c
+	${CC} ${CFLAGS_DBG} -c rtsigs_waiter.c -o rtsigs_waiter_dbg.o
+rtsigs_waiter_dbg: rtsigs_waiter_dbg.o common_dbg.o
+	${CC} ${CFLAGS_DBG} -o rtsigs_waiter_dbg rtsigs_waiter_dbg.o common_dbg.o
 
+#--- Sanitizers (use clang): <foo>_dbg_[asan|ub|msan]
+rtsigs_waiter_dbg_asan.o: rtsigs_waiter.c
+	${CL} ${CFLAGS_DBG_ASAN} -c rtsigs_waiter.c -o rtsigs_waiter_dbg_asan.o
+rtsigs_waiter_dbg_asan: rtsigs_waiter_dbg_asan.o common_dbg_asan.o
+	${CL} ${CFLAGS_DBG_ASAN} -o rtsigs_waiter_dbg_asan rtsigs_waiter_dbg_asan.o common_dbg_asan.o
+
+rtsigs_waiter_dbg_ub.o: rtsigs_waiter.c
+	${CL} ${CFLAGS_DBG_UB} -c rtsigs_waiter.c -o rtsigs_waiter_dbg_ub.o
+rtsigs_waiter_dbg_ub: rtsigs_waiter_dbg_ub.o common_dbg_ub.o
+	${CL} ${CFLAGS_DBG_UB} -o rtsigs_waiter_dbg_ub rtsigs_waiter_dbg_ub.o common_dbg_ub.o
+
+rtsigs_waiter_dbg_msan.o: rtsigs_waiter.c
+	${CL} ${CFLAGS_DBG_MSAN} -c rtsigs_waiter.c -o rtsigs_waiter_dbg_msan.o
+rtsigs_waiter_dbg_msan: rtsigs_waiter_dbg_msan.o common_dbg_msan.o
+	${CL} ${CFLAGS_DBG_MSAN} -o rtsigs_waiter_dbg_msan rtsigs_waiter_dbg_msan.o common_dbg_msan.o
 
 # indent- "beautifies" C code into the "Linux kernel style".
 # (cb = C Beautifier :) )

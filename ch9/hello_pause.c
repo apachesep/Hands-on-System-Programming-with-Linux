@@ -7,7 +7,7 @@
  *  (c) Kaiwan N Billimoria
  *  Packt Publishers
  *
- * From: Ch 7
+ * From: Ch 8
  **********************************************************************
  * A quick 'Hello, World'-like program; here, we call pause(2) to keep
  * the process alive while it runs in the background. The idea is, this
