@@ -107,8 +107,10 @@ int handle_err(int fatal, const char *fmt, ...)
 	va_end(argp);
 
 	fprintf(stderr, "%s", err_str);
-	if (errno)
+	if (errno) {
+		fprintf(stderr, "  ");
 		perror("kernel says");
+	}
 
 	free(err_str);
 	if (!fatal)
