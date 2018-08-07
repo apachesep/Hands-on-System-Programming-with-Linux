@@ -2,7 +2,15 @@
 #----------------------------------------------------------------------
 ## Pl check and keep or remove <foo>_dbg_[asan|ub|msan] targets
 ## as desired.
-ALL :=  streamio1 streamio1_dbg #streamio1_dbg_asan streamio1_dbg_ub streamio1_dbg_msan
+ALL :=  streamio1 streamio1_dbg \
+	redirct redirct_dbg \
+	fork_printf_1 fork_printf_1_dbg \
+	fork_printf_2 fork_printf_2_dbg \
+	iobuf iobuf_dbg \
+	io_setbuf io_setbuf_dbg \
+	mode_def mode_def_dbg \
+	simpcp1 simpcp1_dbg simpcp1_dbg_asan \
+	simpcp2 simpcp2_dbg simpcp2_dbg_asan
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -43,21 +51,105 @@ streamio1_dbg.o: streamio1.c
 streamio1_dbg: streamio1_dbg.o common_dbg.o
 	${CC} -o streamio1_dbg streamio1_dbg.o common_dbg.o ${LINKIN}
 
- #--- Sanitizers for streamio1 :: (use clang): <foo>_dbg_[asan|ub|msan]
-streamio1_dbg_asan.o: streamio1.c
-	${CL} ${CFLAGS_DBG_ASAN} -c streamio1.c -o streamio1_dbg_asan.o
-streamio1_dbg_asan: streamio1_dbg_asan.o common_dbg_asan.o
-	${CL} ${CFLAGS_DBG_ASAN} -o streamio1_dbg_asan streamio1_dbg_asan.o common_dbg_asan.o ${LINKIN}
+#--- Target :: redirct
+redirct.o: redirct.c
+	${CC} ${CFLAGS} -c redirct.c -o redirct.o
+redirct: common.o redirct.o
+	${CC} -o redirct redirct.o common.o ${LINKIN}
 
-streamio1_dbg_ub.o: streamio1.c
-	${CL} ${CFLAGS_DBG_UB} -c streamio1.c -o streamio1_dbg_ub.o
-streamio1_dbg_ub: streamio1_dbg_ub.o common_dbg_ub.o
-	${CL} ${CFLAGS_DBG_UB} -o streamio1_dbg_ub streamio1_dbg_ub.o common_dbg_ub.o ${LINKIN}
+redirct_dbg.o: redirct.c
+	${CC} ${CFLAGS_DBG} -c redirct.c -o redirct_dbg.o
+redirct_dbg: redirct_dbg.o common_dbg.o
+	${CC} -o redirct_dbg redirct_dbg.o common_dbg.o ${LINKIN}
 
-streamio1_dbg_msan.o: streamio1.c
-	${CL} ${CFLAGS_DBG_MSAN} -c streamio1.c -o streamio1_dbg_msan.o
-streamio1_dbg_msan: streamio1_dbg_msan.o common_dbg_msan.o
-	${CL} ${CFLAGS_DBG_MSAN} -o streamio1_dbg_msan streamio1_dbg_msan.o common_dbg_msan.o ${LINKIN}
+#--- Target :: fork_printf_1
+fork_printf_1.o: fork_printf_1.c
+	${CC} ${CFLAGS} -c fork_printf_1.c -o fork_printf_1.o
+fork_printf_1: common.o fork_printf_1.o
+	${CC} -o fork_printf_1 fork_printf_1.o common.o ${LINKIN}
+
+fork_printf_1_dbg.o: fork_printf_1.c
+	${CC} ${CFLAGS_DBG} -c fork_printf_1.c -o fork_printf_1_dbg.o
+fork_printf_1_dbg: fork_printf_1_dbg.o common_dbg.o
+	${CC} -o fork_printf_1_dbg fork_printf_1_dbg.o common_dbg.o ${LINKIN}
+
+#--- Target :: fork_printf_2
+fork_printf_2.o: fork_printf_2.c
+	${CC} ${CFLAGS} -c fork_printf_2.c -o fork_printf_2.o
+fork_printf_2: common.o fork_printf_2.o
+	${CC} -o fork_printf_2 fork_printf_2.o common.o ${LINKIN}
+
+fork_printf_2_dbg.o: fork_printf_2.c
+	${CC} ${CFLAGS_DBG} -c fork_printf_2.c -o fork_printf_2_dbg.o
+fork_printf_2_dbg: fork_printf_2_dbg.o common_dbg.o
+	${CC} -o fork_printf_2_dbg fork_printf_2_dbg.o common_dbg.o ${LINKIN}
+
+#--- Target :: iobuf
+iobuf.o: iobuf.c
+	${CC} ${CFLAGS} -c iobuf.c -o iobuf.o
+iobuf: common.o iobuf.o
+	${CC} -o iobuf iobuf.o common.o ${LINKIN}
+
+iobuf_dbg.o: iobuf.c
+	${CC} ${CFLAGS_DBG} -c iobuf.c -o iobuf_dbg.o
+iobuf_dbg: iobuf_dbg.o common_dbg.o
+	${CC} -o iobuf_dbg iobuf_dbg.o common_dbg.o ${LINKIN}
+
+#--- Target :: io_setbuf
+io_setbuf.o: io_setbuf.c
+	${CC} ${CFLAGS} -c io_setbuf.c -o io_setbuf.o
+io_setbuf: common.o io_setbuf.o
+	${CC} -o io_setbuf io_setbuf.o common.o ${LINKIN}
+
+io_setbuf_dbg.o: io_setbuf.c
+	${CC} ${CFLAGS_DBG} -c io_setbuf.c -o io_setbuf_dbg.o
+io_setbuf_dbg: io_setbuf_dbg.o common_dbg.o
+	${CC} -o io_setbuf_dbg io_setbuf_dbg.o common_dbg.o ${LINKIN}
+
+#--- Target :: mode_def
+mode_def.o: mode_def.c
+	${CC} ${CFLAGS} -c mode_def.c -o mode_def.o
+mode_def: common.o mode_def.o
+	${CC} -o mode_def mode_def.o common.o ${LINKIN}
+
+mode_def_dbg.o: mode_def.c
+	${CC} ${CFLAGS_DBG} -c mode_def.c -o mode_def_dbg.o
+mode_def_dbg: mode_def_dbg.o common_dbg.o
+	${CC} -o mode_def_dbg mode_def_dbg.o common_dbg.o ${LINKIN}
+
+#--- Target :: simpcp1
+simpcp1.o: simpcp1.c
+	${CC} ${CFLAGS} -c simpcp1.c -o simpcp1.o
+simpcp1: common.o simpcp1.o
+	${CC} -o simpcp1 simpcp1.o common.o ${LINKIN}
+
+simpcp1_dbg.o: simpcp1.c
+	${CC} ${CFLAGS_DBG} -c simpcp1.c -o simpcp1_dbg.o
+simpcp1_dbg: simpcp1_dbg.o common_dbg.o
+	${CC} -o simpcp1_dbg simpcp1_dbg.o common_dbg.o ${LINKIN}
+
+ #--- Sanitizers for simpcp1 :: (use clang): <foo>_dbg_[asan|ub|msan]
+simpcp1_dbg_asan.o: simpcp1.c
+	${CL} ${CFLAGS_DBG_ASAN} -c simpcp1.c -o simpcp1_dbg_asan.o
+simpcp1_dbg_asan: simpcp1_dbg_asan.o common_dbg_asan.o
+	${CL} ${CFLAGS_DBG_ASAN} -o simpcp1_dbg_asan simpcp1_dbg_asan.o common_dbg_asan.o ${LINKIN}
+
+#--- Target :: simpcp2
+simpcp2.o: simpcp2.c
+	${CC} ${CFLAGS} -c simpcp2.c -o simpcp2.o
+simpcp2: common.o simpcp2.o
+	${CC} -o simpcp2 simpcp2.o common.o ${LINKIN}
+
+simpcp2_dbg.o: simpcp2.c
+	${CC} ${CFLAGS_DBG} -c simpcp2.c -o simpcp2_dbg.o
+simpcp2_dbg: simpcp2_dbg.o common_dbg.o
+	${CC} -o simpcp2_dbg simpcp2_dbg.o common_dbg.o ${LINKIN}
+
+ #--- Sanitizers for simpcp2 :: (use clang): <foo>_dbg_[asan|ub|msan]
+simpcp2_dbg_asan.o: simpcp2.c
+	${CL} ${CFLAGS_DBG_ASAN} -c simpcp2.c -o simpcp2_dbg_asan.o
+simpcp2_dbg_asan: simpcp2_dbg_asan.o common_dbg_asan.o
+	${CL} ${CFLAGS_DBG_ASAN} -o simpcp2_dbg_asan simpcp2_dbg_asan.o common_dbg_asan.o ${LINKIN}
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
@@ -68,4 +160,4 @@ cb: ${CB_FILES}
 	indent -linux ${CB_FILES}
 
 clean:
-	rm -vf ${ALL} core* vgcore* *.o *~
+	rm -vf ${ALL} core* vgcore* *.o *~ ltrc*
