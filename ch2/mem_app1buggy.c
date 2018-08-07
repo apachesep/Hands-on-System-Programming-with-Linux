@@ -38,7 +38,7 @@ int main(int argc, char **argv)
 		FATAL("malloc(256*1024) failed\n");
 
 	if (argc == 1)
-		dest = ptr;	/* correct */
+		dest = ptr;		/* correct */
 	else
 		dest = arbit_addr;	/* bug! */
 	memcpy(dest, src, n);
