@@ -1,4 +1,4 @@
-# Makefile : ch14
+# Makefile : ch7
 #----------------------------------------------------------------------
 ## Pl check and keep or remove <foo>_dbg_[asan|ub|msan] targets
 ## as desired.

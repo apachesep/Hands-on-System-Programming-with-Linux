@@ -1,5 +1,5 @@
 /*
- * ch14:streamio1.c
+ * ch7:streamio1.c
  ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -7,7 +7,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 14 : File IO Essentials
+ *  Ch 7 : File IO Essentials
  ****************************************************************
  * Brief Description:
  * Open a stream (via the fopen(3) with either mode 'r' or 'a' depending on
@@ -24,7 +24,7 @@
 
 int main(int argc, char **argv)
 {
-	FILE *fp=NULL;
+	FILE *fp = NULL;
 
 	if (argc != 3) {
 		fprintf(stderr, "Usage: %s pathname {mode=b|e}\n", argv[0]);
@@ -46,4 +46,5 @@ int main(int argc, char **argv)
 	fclose(fp);
 	exit(EXIT_SUCCESS);
 }
+
 /* vi: ts=8 */
