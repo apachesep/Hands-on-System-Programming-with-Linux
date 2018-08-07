@@ -92,7 +92,7 @@ static inline void beep(int what)
  */
 #define VPRINT(msg, args...) do {                      \
 	if (gVerbose)                                  \
-		printf(" %s:%s:%d: " msg,              \
+		printf("%s:%s:%d: " msg,               \
 	   __FILE__, __FUNCTION__, __LINE__, ##args);  \
 } while(0)
 
