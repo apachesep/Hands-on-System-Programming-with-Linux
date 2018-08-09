@@ -23,7 +23,7 @@
 
 void *do_nothing(void *data)
 {
-	int t = 0xb00da;
+	unsigned long t = 0xb00da;
 	pthread_exit(NULL);
 }
 
