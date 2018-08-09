@@ -60,7 +60,7 @@ static void print_iostats(void)
 {
 	char cmd[128];
 	snprintf(cmd, 127, "cat /proc/%d/io", getpid());
-	system(cmd);
+	(void)system(cmd);
 }
 
 
