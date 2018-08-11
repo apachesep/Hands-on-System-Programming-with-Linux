@@ -13,7 +13,7 @@
  * A quick test: matrix multiplication via: 
  * - process model; operations done in sequence;
  * - threaded model (this program); operations done in parallel.
- * Read Ch 15 for details, thank you.
+ * Refer Ch 15 for details, thank you.
  */
 #include <stdio.h>
 #include <stdlib.h>

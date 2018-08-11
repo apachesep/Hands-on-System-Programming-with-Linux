@@ -12,7 +12,8 @@
  ****************************************************************
  * Brief Description:
  * A quick test: speed of fork/wait/exit vs 
- * pthread_create/pthread_join/pthread_exit. Read Ch 15 for details, thank you.
+ * pthread_create/pthread_join/pthread_exit.
+ * Refer Ch 15 for details, thank you.
  */
 #include <stdio.h>
 #include <stdlib.h>
