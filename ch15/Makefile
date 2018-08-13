@@ -13,7 +13,8 @@
 ## as desired.
 ALL :=  pthreads1 pthreads1_dbg \
 	pthreads2 pthreads2_dbg \
-	pthreads3 pthreads3_dbg
+	pthreads3 pthreads3_dbg \
+	howmanythrds howmanythrds_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -91,6 +92,17 @@ pthreads3_dbg.o: pthreads3.c
 	${CC} ${CFLAGS_DBG} -c pthreads3.c -o pthreads3_dbg.o
 pthreads3_dbg: pthreads3_dbg.o common_dbg.o
 	${CC} -o pthreads3_dbg pthreads3_dbg.o common_dbg.o -lpthread
+
+#--- Target :: howmanythrds
+howmanythrds.o: howmanythrds.c
+	${CC} ${CFLAGS} -c howmanythrds.c -o howmanythrds.o
+howmanythrds: common.o howmanythrds.o
+	${CC} -o howmanythrds howmanythrds.o common.o -lpthread
+
+howmanythrds_dbg.o: howmanythrds.c
+	${CC} ${CFLAGS_DBG} -c howmanythrds.c -o howmanythrds_dbg.o
+howmanythrds_dbg: howmanythrds_dbg.o common_dbg.o
+	${CC} -o howmanythrds_dbg howmanythrds_dbg.o common_dbg.o -lpthread
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
