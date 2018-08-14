@@ -14,7 +14,7 @@
 ALL :=  pthreads1 pthreads1_dbg \
 	pthreads2 pthreads2_dbg \
 	pthreads3 pthreads3_dbg \
-	howmanythrds howmanythrds_dbg
+	cr8_so_many_threads cr8_so_many_threads_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -93,16 +93,16 @@ pthreads3_dbg.o: pthreads3.c
 pthreads3_dbg: pthreads3_dbg.o common_dbg.o
 	${CC} -o pthreads3_dbg pthreads3_dbg.o common_dbg.o -lpthread
 
-#--- Target :: howmanythrds
-howmanythrds.o: howmanythrds.c
-	${CC} ${CFLAGS} -c howmanythrds.c -o howmanythrds.o
-howmanythrds: common.o howmanythrds.o
-	${CC} -o howmanythrds howmanythrds.o common.o -lpthread
+#--- Target :: cr8_so_many_threads
+cr8_so_many_threads.o: cr8_so_many_threads.c
+	${CC} ${CFLAGS} -c cr8_so_many_threads.c -o cr8_so_many_threads.o
+cr8_so_many_threads: common.o cr8_so_many_threads.o
+	${CC} -o cr8_so_many_threads cr8_so_many_threads.o common.o -lpthread
 
-howmanythrds_dbg.o: howmanythrds.c
-	${CC} ${CFLAGS_DBG} -c howmanythrds.c -o howmanythrds_dbg.o
-howmanythrds_dbg: howmanythrds_dbg.o common_dbg.o
-	${CC} -o howmanythrds_dbg howmanythrds_dbg.o common_dbg.o -lpthread
+cr8_so_many_threads_dbg.o: cr8_so_many_threads.c
+	${CC} ${CFLAGS_DBG} -c cr8_so_many_threads.c -o cr8_so_many_threads_dbg.o
+cr8_so_many_threads_dbg: cr8_so_many_threads_dbg.o common_dbg.o
+	${CC} -o cr8_so_many_threads_dbg cr8_so_many_threads_dbg.o common_dbg.o -lpthread
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
