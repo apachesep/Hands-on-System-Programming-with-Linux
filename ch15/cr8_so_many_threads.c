@@ -1,5 +1,5 @@
 /*
- * ch15/howmanythrds.c
+ * ch15/cr8_so_many_threads.c
  ***************************************************************
  * This program is part of the source code released for the book
  *  "Hands-on System Programming with Linux"
@@ -10,8 +10,8 @@
  *  Ch 15 : Multithreading Part I - The Essentials
  ****************************************************************
  * Brief Description:
- * A small program to test how many threads can be created; the parameter is
- * the number of threads to create.
+ * A small program to create as many threads as the user says. The parameter is
+ * the number of threads to create. There must be a limit, yes?
  * Refer Ch 15 for details, thank you.
  */
 #include <stdio.h>
@@ -23,9 +23,9 @@
 void * worker(void *data)
 {
 	long datum = (long)data;
-	printf("Worker thread #%ld: pausing now...\n", datum);
+	printf("Worker thread #%5ld: pausing now...\n", datum);
 	(void)pause();
-	printf(" #%ld: work done, exiting now\n", datum);
+	printf(" #%5ld: work done, exiting now\n", datum);
 	pthread_exit(NULL);
 }
 
