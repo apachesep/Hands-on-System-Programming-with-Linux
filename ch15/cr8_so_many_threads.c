@@ -49,7 +49,7 @@ int main(int argc, char **argv)
 	for (i = 0; i < numthrds; i++) {
 		ret = pthread_create(&tid, NULL, worker, (void *)i);
 		if (ret)
-			FATAL("pthread_create() failed! [%d]\n", ret);
+			FATAL("pthread_create() #%d failed! [%d]\n", i, ret);
 	}
 	pthread_exit(NULL);
 }
