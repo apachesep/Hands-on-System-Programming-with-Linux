@@ -11,7 +11,8 @@
 #----------------------------------------------------------------------
 ## Pl check and keep or remove <foo>_dbg_[asan|ub|msan] targets
 ## as desired.
-ALL :=  see_tid see_tid_dbg
+ALL :=  see_tid see_tid_dbg \
+	named_threads named_threads_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -43,6 +44,17 @@ see_tid_dbg.o: see_tid.c
 	${CC} ${CFLAGS_DBG} -c see_tid.c -o see_tid_dbg.o
 see_tid_dbg: see_tid_dbg.o common_dbg.o
 	${CC} -o see_tid_dbg see_tid_dbg.o common_dbg.o -lpthread
+
+#--- Target :: named_threads
+named_threads.o: named_threads.c
+	${CC} ${CFLAGS} -c named_threads.c -o named_threads.o
+named_threads: common.o named_threads.o
+	${CC} -o named_threads named_threads.o common.o -lpthread
+
+named_threads_dbg.o: named_threads.c
+	${CC} ${CFLAGS_DBG} -c named_threads.c -o named_threads_dbg.o
+named_threads_dbg: named_threads_dbg.o common_dbg.o
+	${CC} -o named_threads_dbg named_threads_dbg.o common_dbg.o -lpthread
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
