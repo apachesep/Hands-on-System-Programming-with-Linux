@@ -14,7 +14,8 @@
 ALL :=  pthreads1 pthreads1_dbg \
 	pthreads2 pthreads2_dbg \
 	pthreads3 pthreads3_dbg \
-	cr8_so_many_threads cr8_so_many_threads_dbg
+	cr8_so_many_threads cr8_so_many_threads_dbg \
+	disp_defattr_pthread disp_defattr_pthread_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -103,6 +104,17 @@ cr8_so_many_threads_dbg.o: cr8_so_many_threads.c
 	${CC} ${CFLAGS_DBG} -c cr8_so_many_threads.c -o cr8_so_many_threads_dbg.o
 cr8_so_many_threads_dbg: cr8_so_many_threads_dbg.o common_dbg.o
 	${CC} -o cr8_so_many_threads_dbg cr8_so_many_threads_dbg.o common_dbg.o -lpthread
+
+#--- Target :: disp_defattr_pthread
+disp_defattr_pthread.o: disp_defattr_pthread.c
+	${CC} ${CFLAGS} -c disp_defattr_pthread.c -o disp_defattr_pthread.o
+disp_defattr_pthread: common.o disp_defattr_pthread.o
+	${CC} -o disp_defattr_pthread disp_defattr_pthread.o common.o -lpthread
+
+disp_defattr_pthread_dbg.o: disp_defattr_pthread.c
+	${CC} ${CFLAGS_DBG} -c disp_defattr_pthread.c -o disp_defattr_pthread_dbg.o
+disp_defattr_pthread_dbg: disp_defattr_pthread_dbg.o common_dbg.o
+	${CC} -o disp_defattr_pthread_dbg disp_defattr_pthread_dbg.o common_dbg.o -lpthread
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
