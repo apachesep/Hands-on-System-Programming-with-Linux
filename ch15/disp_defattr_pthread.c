@@ -77,7 +77,7 @@ static void display_thrd_attr(pthread_attr_t *attr)
 	printf("  Guard Size : %9zu bytes\n", guardsz);
 
 	/* Query and display the 'Stack Size':
-	 * Displaying 'stack location' will be meaningless now as there is no
+	 * 'stack location' will be meaningless now as there is no
 	 * actual thread created yet!
 	 */
 	if (pthread_attr_getstack(attr, &stackaddr, &stacksz))
@@ -93,6 +93,7 @@ int main(void)
 	ret = pthread_getattr_default_np(&attr);
 	if (ret)
 		FATAL("pthread_getattr_default_np() failed! [%d]\n", ret);
+	printf("Linux Default Thread Attributes:\n");
 	display_thrd_attr(&attr);
 
 	exit(EXIT_SUCCESS);
