@@ -51,8 +51,8 @@ static void display_thrd_attr(pthread_attr_t *attr)
 	if (pthread_attr_getinheritsched(attr, &sched_inh))
 		WARN("pthread_attr_getinheritsched() failed.\n");
 	printf(" Inheritance : %s\n",
-		(sched_inh == PTHREAD_SCOPE_SYSTEM) ? "PTHREAD_SCOPE_SYSTEM" :
-		(sched_inh == PTHREAD_SCOPE_PROCESS) ? "PTHREAD_SCOPE_PROCESS" :
+		(sched_inh == PTHREAD_INHERIT_SCHED) ? "PTHREAD_INHERIT_SCHED" :
+		(sched_inh == PTHREAD_EXPLICIT_SCHED) ? "PTHREAD_EXPLICIT_SCHED" :
 		 "<unknown>");
 
 	// Query and display the 'Scheduling Policy'
