@@ -15,7 +15,10 @@ ALL :=  pthreads1 pthreads1_dbg \
 	pthreads2 pthreads2_dbg \
 	pthreads3 pthreads3_dbg \
 	cr8_so_many_threads cr8_so_many_threads_dbg \
-	disp_defattr_pthread disp_defattr_pthread_dbg
+	disp_defattr_pthread disp_defattr_pthread_dbg \
+	pthreads_joiner1 pthreads_joiner1_dbg \
+	pthreads_joiner2 pthreads_joiner2_dbg \
+	stack_test stack_test_dbg
 
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
@@ -115,6 +118,39 @@ disp_defattr_pthread_dbg.o: disp_defattr_pthread.c
 	${CC} ${CFLAGS_DBG} -c disp_defattr_pthread.c -o disp_defattr_pthread_dbg.o
 disp_defattr_pthread_dbg: disp_defattr_pthread_dbg.o common_dbg.o
 	${CC} -o disp_defattr_pthread_dbg disp_defattr_pthread_dbg.o common_dbg.o -lpthread
+
+#--- Target :: pthreads_joiner1
+pthreads_joiner1.o: pthreads_joiner1.c
+	${CC} ${CFLAGS} -c pthreads_joiner1.c -o pthreads_joiner1.o
+pthreads_joiner1: common.o pthreads_joiner1.o
+	${CC} -o pthreads_joiner1 pthreads_joiner1.o common.o -lpthread
+
+pthreads_joiner1_dbg.o: pthreads_joiner1.c
+	${CC} ${CFLAGS_DBG} -c pthreads_joiner1.c -o pthreads_joiner1_dbg.o
+pthreads_joiner1_dbg: pthreads_joiner1_dbg.o common_dbg.o
+	${CC} -o pthreads_joiner1_dbg pthreads_joiner1_dbg.o common_dbg.o -lpthread
+
+#--- Target :: pthreads_joiner2
+pthreads_joiner2.o: pthreads_joiner2.c
+	${CC} ${CFLAGS} -c pthreads_joiner2.c -o pthreads_joiner2.o
+pthreads_joiner2: common.o pthreads_joiner2.o
+	${CC} -o pthreads_joiner2 pthreads_joiner2.o common.o -lpthread
+
+pthreads_joiner2_dbg.o: pthreads_joiner2.c
+	${CC} ${CFLAGS_DBG} -c pthreads_joiner2.c -o pthreads_joiner2_dbg.o
+pthreads_joiner2_dbg: pthreads_joiner2_dbg.o common_dbg.o
+	${CC} -o pthreads_joiner2_dbg pthreads_joiner2_dbg.o common_dbg.o -lpthread
+
+#--- Target :: stack_test
+stack_test.o: stack_test.c
+	${CC} ${CFLAGS} -c stack_test.c -o stack_test.o
+stack_test: common.o stack_test.o
+	${CC} -o stack_test stack_test.o common.o -lpthread
+
+stack_test_dbg.o: stack_test.c
+	${CC} ${CFLAGS_DBG} -c stack_test.c -o stack_test_dbg.o
+stack_test_dbg: stack_test_dbg.o common_dbg.o
+	${CC} -o stack_test_dbg stack_test_dbg.o common_dbg.o -lpthread
 
 
 # indent- "beautifies" C code into the "Linux kernel style".
