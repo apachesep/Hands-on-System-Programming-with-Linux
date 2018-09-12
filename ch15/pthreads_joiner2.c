@@ -67,8 +67,9 @@ int main(void)
 		ret = pthread_join(tid[i], (void **)&stat);
 		if (ret)
 			WARN("pthread_join() failed! [%d]\n", ret);
-		printf("Thread #%ld successfully joined; it terminated with "
-			"status=%d\n", i, stat);
+		else
+			printf("Thread #%ld successfully joined; it terminated with "
+				"status=%d\n", i, stat);
 	}
 
 	printf("\nmain: now dying... <Dramatic!> Farewell!\n");
