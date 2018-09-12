@@ -50,7 +50,7 @@ static void danger(void)
 	 *  500 * 500 * 8 = 2,000,000 ~= 2 MB.
 	 *  So thread stack space of less than 2 MB should result in a segfault.
 	 *  (On a test box, any value < 1960 KB = 2,007,040 bytes,
-	 *  resulted in segfault.
+	 *  resulted in segfault).
 	 */
 
 	/* The compiler is quite intelligent; it will optimize away the
@@ -98,7 +98,7 @@ int main(int argc, char **argv)
 		fprintf(stderr, "Usage: %s size-of-thread-stack-in-KB\n", argv[0]);
 		exit(EXIT_FAILURE);
 	}
-	stack_set = atoi(argv[1]) * 1024; // * 1024;
+	stack_set = atoi(argv[1]) * 1024;
 	if (stack_set <= 0 || stack_set > INT_MAX) {
 		fprintf(stderr, "%s: invalid stack size (%u) provided, defaulting to %d bytes\n",
 				argv[0], stack_set, TSTACK);
