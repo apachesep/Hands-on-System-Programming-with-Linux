@@ -30,11 +30,13 @@ static char *gbuf = NULL;
 
 static void testit(FILE * wrstrm, FILE * rdstrm, int numio)
 {
-	int i;
+	int i, syscalls = NREAD*numio/getpagesize();
 	size_t fnr=0;
 
+	if (syscalls <= 0)
+		syscalls = 1;
 	VPRINT("numio=%d   total rdwr=%u   expected # rw syscalls=%d\n",
-			numio, NREAD*numio, NREAD*numio/getpagesize());
+			numio, NREAD*numio, syscalls);
 
 	for (i = 0; i < numio; i++) {
 		fnr = fread(gbuf, 1, NREAD, rdstrm);
