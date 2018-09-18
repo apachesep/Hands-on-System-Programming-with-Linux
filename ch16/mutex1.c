@@ -10,8 +10,8 @@
  *  Ch 16 : Multithreading Part II - Synchronization
  ****************************************************************
  * Brief Description:
- * A small program to create as many threads as the user says. The parameter is
- * the number of threads to create. There must be a limit, yes?
+ * A small program to demonstrate a simple critical section and the usage of
+ * a mutex lock to synchronize access to it.
  * Refer Ch 16 for details, thank you.
  */
 #include <stdio.h>
@@ -25,9 +25,9 @@
 
 static int locking=1;
 static long g1=10, g2=12, g3=14;    /* our globals */
-pthread_mutex_t mylock;   /* lock to protect our globals */
+static pthread_mutex_t mylock;   /* lock to protect our globals */
 
-void * worker(void *data)
+static void * worker(void *data)
 {
 	long datum = (long)data + 1;
 	int ret=0;

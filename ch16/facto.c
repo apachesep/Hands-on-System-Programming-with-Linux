@@ -29,7 +29,7 @@
 
 static int gLocking=1, gVerbose=0;
 static unsigned long long gFactorial=1;
-pthread_mutex_t mylock;
+static pthread_mutex_t mylock;
 
 /*
  * This is the function that calculates the factorial of the given parameter.
@@ -56,7 +56,7 @@ static void factorize(int num)
  * Thread #1 : calculate 10!
  * Thread #2 : calculate 12! 
  */
-void * worker(void *data)
+static void * worker(void *data)
 {
 	long datum = (long)data + 1;
 	int N=0, ret=0;
