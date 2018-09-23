@@ -19,13 +19,13 @@ ALL :=  fork_test fork_test_dbg \
 CC=${CROSS_COMPILE}gcc
 CL=${CROSS_COMPILE}clang
 
-CFLAGS=-O2 -Wall -UDEBUG
-CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra -DDEBUG
+CFLAGS=-O2 -Wall -UDEBUG -pthread
+CFLAGS_DBG=-g -ggdb -gdwarf-4 -O0 -Wall -Wextra -DDEBUG -pthread
 CFLAGS_DBG_ASAN=${CFLAGS_DBG} -fsanitize=address
 CFLAGS_DBG_MSAN=${CFLAGS_DBG} -fsanitize=memory
 CFLAGS_DBG_UB=${CFLAGS_DBG} -fsanitize=undefined
 
-LINKIN=
+LINKIN := -pthread
    # set as required to libraries to link in; f.e.  -lrt
 
 all: ${ALL}
