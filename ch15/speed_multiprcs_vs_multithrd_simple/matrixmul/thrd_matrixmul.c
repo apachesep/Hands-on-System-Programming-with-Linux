@@ -20,10 +20,10 @@
 #include <pthread.h>
 #include "../../../common.h"
 
-#define N	1024 //320   // number of rows/columns
+#define N	1024   // number of rows/columns
 int a[N][N], b[N][N], c[N][N];
 
-#define NCORES	4      // # cores on the box
+#define NCORES	4      // # CPU cores; adjust this value for your system!
 int a[N][N], b[N][N], c[N][N];
 
 /* Each thread will run this function, working on a different row of 
