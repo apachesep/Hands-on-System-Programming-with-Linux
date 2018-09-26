@@ -1,5 +1,5 @@
 /*
- * ch2:rlimit_show.c
+ * ch3/rlimit_show.c
  * 
  ***************************************************************
  * This program is part of the source code released for the book
@@ -8,7 +8,7 @@
  *  Publisher:  Packt
  *
  * From:
- *  Ch 2 : Virtual Memory
+ *  Ch 3 : Resource Limits
  ****************************************************************
  * Brief Description:
  *
