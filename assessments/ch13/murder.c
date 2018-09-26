@@ -57,9 +57,11 @@ int main(int argc, char **argv)
 		pid_max = 32768; // :-)
 
 	printf("!WARNING! This naughty process named %s intends to\n"
-		"KILL (that too, SIGKILL) off processes in PID range {1, %lu} !!\n\n"
-		"Press [Enter] to continue, ^C to abort now ...\n",
-			argv[0], pid_max);
+	"KILL (that too, SIGKILL) off processes in PID range {1, %lu} !!\n\n",
+		argv[0], pid_max);
+	if (geteuid() == 0)
+		printf("*** !!!EXTRA WARNING!!! Running as superuser! ***\n\n");
+	printf("Press [Enter] to continue, ^C to abort now ...\n");
 	fgetc(stdin);
 
 	if (verbose)
@@ -67,7 +69,7 @@ int main(int argc, char **argv)
 
 	printf("Fair Warning given, proceeding to murder ...\n");
 	for (i=1; i<pid_max; i++) {
-		if (kill (i, 0) < 0)
+		if (kill (i, 0) < 0) // does it even exist?
 			continue;
 		if (verbose)
 			printf(" SIGKILL -> %6d : ", i);
