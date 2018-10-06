@@ -51,7 +51,6 @@ static void * workerB(void *msg)
 	printf(" [thread B] : perform the 'work' now (first sleep(1) :-)) ...\n");
 	sleep(1);
 	DELAY_LOOP('b', 72);
-	gWorkDone = 1;
 
 	printf("\n [thread B] : work done, signal thread A to continue ...\n");
 	/* It's not strictly required to lock/unlock the associated mutex
@@ -59,6 +58,7 @@ static void * workerB(void *msg)
 	 * to shut helgrind up).
 	 */
 	LOCK_MTX(&mycv_mutex);
+	gWorkDone = 1;
 	ret = pthread_cond_signal(&mycv);
 	if (ret)
 		FATAL("pthread_cond_signal() in thread B failed! [%d]\n", ret);
@@ -95,7 +95,7 @@ static void * workerA(void *msg)
 	pthread_exit((void *)0);
 }
 
-int main(int argc, char **argv)
+int main(void)
 {
 	long i;
 	int ret, stat=0;
