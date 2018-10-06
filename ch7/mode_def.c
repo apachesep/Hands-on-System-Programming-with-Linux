@@ -34,6 +34,7 @@ int main(int argc, char **argv)
 #if 0					// the buggy way
 	fd = open(argv[1], O_CREAT|O_RDONLY);
 #else					// the right way
+	umask(0);    // reset the permission bitmask
 	fd = open(argv[1], O_CREAT, S_IRUSR|S_IWUSR|S_IRGRP|S_IWGRP|S_IROTH);
 #endif
 	if (fd < 0)
