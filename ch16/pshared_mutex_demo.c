@@ -39,18 +39,6 @@
 #define NUM_PSMUTEX	  1
 #define GBUFSIZE	128
 
-#define LOCK_MTX(mtx) do {                                       \
-	int ret=0;                                               \
-	if ((ret = pthread_mutex_lock(mtx)))                     \
-		FATAL("pthread_mutex_lock failed! [%d]\n", ret); \
-} while(0)
-
-#define UNLOCK_MTX(mtx) do {                                       \
-	int ret=0;                                                 \
-	if ((ret = pthread_mutex_unlock(mtx)))                     \
-		FATAL("pthread_mutex_unlock failed! [%d]\n", ret); \
-} while(0)
-
 static pthread_once_t *mutex_init_once;
 /*static pthread_once_t mutex_init_once=PTHREAD_ONCE_INIT;
  * Ideally, this is how the pthread_once_t variable should be statically

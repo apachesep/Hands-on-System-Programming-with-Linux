@@ -117,4 +117,17 @@ static inline void beep(int what)
     }									      \
   } while (0)
 
+/*--------------- Mutex Lock and Unlock ----------------------------------*/
+#define LOCK_MTX(mtx) do {                                       \
+	int ret=0;                                               \
+	if ((ret = pthread_mutex_lock(mtx)))                     \
+		FATAL("pthread_mutex_lock failed! [%d]\n", ret); \
+} while(0)
+
+#define UNLOCK_MTX(mtx) do {                                       \
+	int ret=0;                                                 \
+	if ((ret = pthread_mutex_unlock(mtx)))                     \
+		FATAL("pthread_mutex_unlock failed! [%d]\n", ret); \
+} while(0)
+
 #endif

@@ -35,18 +35,6 @@
 #define NREAD	      512
 #define NTHREADS	2
 
-#define LOCK_MTX(mtx) do {                                       \
-	int ret=0;                                               \
-	if ((ret = pthread_mutex_lock(mtx)))                     \
-		FATAL("pthread_mutex_lock failed! [%d]\n", ret); \
-} while(0)
-
-#define UNLOCK_MTX(mtx) do {                                       \
-	int ret=0;                                                 \
-	if ((ret = pthread_mutex_unlock(mtx)))                     \
-		FATAL("pthread_mutex_unlock failed! [%d]\n", ret); \
-} while(0)
-
 static pthread_mutex_t mylock = PTHREAD_MUTEX_INITIALIZER;
 static int gVerbose = 1;
 static char *gbuf = NULL;
