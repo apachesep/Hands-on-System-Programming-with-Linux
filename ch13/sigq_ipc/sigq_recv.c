@@ -37,23 +37,6 @@ typedef struct {
 } rcv_data_t;
 static rcv_data_t recv_data;
 
-static void r_sleep(int seconds)
-{
-#include <time.h>
-#include <errno.h>
-	struct timespec req, rem;
-	int verbose=1;
-
-	req.tv_sec = seconds;
-	req.tv_nsec = 0;
-	while ((nanosleep(&req, &rem) == -1) && (errno == EINTR)) {
-		if (verbose)
-			printf("nanosleep interrupted: rem time: %07lu.%07lu\n",
-				rem.tv_sec, rem.tv_nsec);
-		req = rem;
-	}
-}
-
 /* 
  * read_msg
  * Signal handler for SIG_COMM.
@@ -110,7 +93,7 @@ int main(int argc, char **argv)
 
 	/* Poll ... not the best way, but just for this demo... */
 	while(1) {
-		r_sleep(SLP_SEC);
+		r_sleep(SLP_SEC, 0);
 		if (data_recvd) {
 			display_recv_data();
 			data_recvd = 0;
