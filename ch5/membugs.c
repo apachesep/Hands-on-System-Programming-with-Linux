@@ -274,7 +274,7 @@ static void write_overflow_compilemem(void)
 /* test case 1 : uninitialized var test case */
 static void uninit_var()
 {
-	int x;       /* static mem */
+	int x;
 
 	if (x)
 		printf("true case: x=%d\n", x);
