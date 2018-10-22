@@ -7,7 +7,7 @@
  *  (c) Author: Kaiwan N Billimoria
  *  Publisher:  Packt
  *
- * From: Ch 4
+ * From: Ch 4: Dynamic Memory Allocation
  ****************************************************************
  * Brief Description:
  *

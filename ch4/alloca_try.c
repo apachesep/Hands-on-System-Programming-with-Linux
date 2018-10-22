@@ -7,7 +7,7 @@
  *  (c) Author: Kaiwan N Billimoria
  *  Publisher:  Packt
  *
- * From: Ch 4
+ * From: Ch 4: Dynamic Memory Allocation
  ****************************************************************
  * Brief Description:
  * We try out the alloca(3) API, noting how it does _not_ return
@@ -24,13 +24,6 @@
 #include <string.h>
 #include "../common.h"
 
-/*---------------- Globals, Macros ----------------------------*/
-
-
-/*---------------- Typedef's, constants, etc ------------------*/
-
-
-/*---------------- Functions ----------------------------------*/
 static void try_alloca(const char *csz, int do_the_memset)
 {
 	size_t sz = atol(csz);
@@ -66,5 +59,4 @@ int main(int argc, char **argv)
 
 	exit (EXIT_SUCCESS);
 }
-
 /* vi: ts=8 */

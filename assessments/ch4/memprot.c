@@ -9,8 +9,7 @@
  *
  * From: Ch 4: Dynamic Memory Allocation
  ****************************************************************
- * ASSESSMENT Qs:
- *
+ * ASSESSMENT Qs #2:
  * Allocate 2 pages of page-aligned memory. 
  * Write test cases to set memory protection as:
  *  first page  to r-x 
