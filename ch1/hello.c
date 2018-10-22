@@ -3,8 +3,7 @@
  *
  **********************************************************************
  * This program is part of the source code released for the book
- *  "Linux System Programming"
- *  (c) Kaiwan N Billimoria
+ *  "Hands-On System Programming with Linux", by Kaiwan N Billimoria
  *  Packt Publishers
  *
  * From:

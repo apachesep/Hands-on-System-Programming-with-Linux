@@ -1,11 +1,9 @@
 # Makefile
-# This program is part of the source code released for the book
-#  "Linux System Programming"
-#  (c) Kaiwan N Billimoria
+# This is part of the source code released for the book
+#  "Hands-On System Programming with Linux", by Kaiwan N Billimoria
 #  Packt Publishers
-#
-# From:
-#  Ch 1 : Linux System Architecture
+# Makefile : (simplified form)
+#  For Ch 1 : Linux System Architecture
 ALL := hello hello_dbg getreg_rcx getreg_cr0
 
 CC=gcc
