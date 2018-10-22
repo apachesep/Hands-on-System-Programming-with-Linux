@@ -159,6 +159,9 @@ static void myfault(int signum, siginfo_t * si, void *ucontext)
 	dump_regs(ucontext);
 	fprintf(stderr,
 		"------------------------------------------------------------\n");
+	psiginfo(si, "psiginfo helper");
+	fprintf(stderr,
+		"------------------------------------------------------------\n");
 
 	/* 
 	 * Placeholders for real-world apps:
