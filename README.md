@@ -18,4 +18,23 @@ The repo contains the following:
   assignment is a "question type" and the answer can be found in a text file
   named as ch'n'\_solutions.txt.
 
+- Software\_Hardware\_List : details on the hardware and software requirements
+  for getting the best experience with working with the book's codebase.
 
+- the 'Further\_reading.txt' text file : details, in a chapter-wise manner,
+  useful online references as well as books; these will benefit the reader
+  in learning more.
+
+We definitely encourage the reader to clone (and try out the code!) like so:
+git clone https://github.com/PacktPublishing/Hands-on-System-Programming-with-Linux
+
+Once cloned, we suggest you browse through the 'Software\_Hardware\_List' file;
+it details the hardware and software requirements for getting the best
+experience with working with the book's codebase. It mentions which packages
+are required, which are optional, and, wherever possible, how to install it.
+
+Next, we suggest you proceed to build and try out the code examples.
+Also, a lot can be learned by working on the prescribed assignments for each
+chapter.
+
+Enjoy!
