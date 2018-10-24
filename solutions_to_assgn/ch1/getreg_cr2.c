@@ -1,6 +1,5 @@
 /*
- * getreg_cr2.c
- *
+ * solutions_to_assgn/ch1/getreg_cr2.c
  ****************************************************************
  * This program is part of the source code released for the book
  *  "Linux System Programming"
@@ -10,7 +9,7 @@
  * From:
  *  Ch 1 : Linux System Architecture
  ****************************************************************
- * ASSESSMENT
+ * Assignment #5:
  * Write a C program to access the contents of the CR2 control
  * register on the Intel x86_64 system (Tip: use inline assembly).
  * Does it work? Why?
