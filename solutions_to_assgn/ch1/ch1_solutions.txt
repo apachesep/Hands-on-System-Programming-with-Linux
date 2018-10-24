@@ -62,5 +62,31 @@ $ gdb -q <binary-executable-pathname>
 [...]
 (gdb) disassemble main
 <the assembly code shows up here>
+
 ---------------------------------------------------------
+Q5. <Program code, find it in the dir solutions_to_assgn/ch1/getreg_cr2.c
+---------------------------------------------------------
+
+Q6. Anita writes a hello, world C program, compiles and runs it. Does the
+binary executable issue library or system calls or both? Name them.
+---------------------------------------------------------
+Solution:
+---------------------------------------------------------
+Both.
+(a) printf(3) which is a library (glibc) API
+(b) printf(3) internally invokes the write(2) system call
+
+---------------------------------------------------------
+Q7. A timer chip on the system motherboard encounters a timeout. The timeout
+code in the Operating System now runs... which execution context is it
+running in?
+---------------------------------------------------------
+Solution:
+---------------------------------------------------------
+Logically, the only code that can react"when the timer chip times out is an
+interrupt handler or ISR - Interrupt Service Routine. The ISR will be part of
+the Linux OS; as it's handling the timer interrupt, it of course is executing
+in Interrupt Context.
+---------------------------------------------------------
+
 <End of File>
